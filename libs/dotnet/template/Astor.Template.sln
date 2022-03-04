@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astor.Template.WebApi", "Astor.Template.WebApi\Astor.Template.WebApi.csproj", "{8304A133-04FB-4603-9B63-5D5DB7B68CE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astor.Template.Protocol", "Astor.Template.Protocol\Astor.Template.Protocol.csproj", "{345E1B0A-2B44-40B5-8067-73A72EA16208}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astor.Template.Tests", "Astor.Template.Tests\Astor.Template.Tests.csproj", "{0FF4E6CA-9611-4BCC-911D-693338D38F3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8304A133-04FB-4603-9B63-5D5DB7B68CE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8304A133-04FB-4603-9B63-5D5DB7B68CE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8304A133-04FB-4603-9B63-5D5DB7B68CE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8304A133-04FB-4603-9B63-5D5DB7B68CE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{345E1B0A-2B44-40B5-8067-73A72EA16208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{345E1B0A-2B44-40B5-8067-73A72EA16208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{345E1B0A-2B44-40B5-8067-73A72EA16208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{345E1B0A-2B44-40B5-8067-73A72EA16208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FF4E6CA-9611-4BCC-911D-693338D38F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FF4E6CA-9611-4BCC-911D-693338D38F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FF4E6CA-9611-4BCC-911D-693338D38F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FF4E6CA-9611-4BCC-911D-693338D38F3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
