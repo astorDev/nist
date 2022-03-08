@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astor.Template.WebApi", "Astor.Template.WebApi\Astor.Template.WebApi.csproj", "{8304A133-04FB-4603-9B63-5D5DB7B68CE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.WebApi", "template\Template.WebApi\Template.WebApi.csproj", "{8304A133-04FB-4603-9B63-5D5DB7B68CE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astor.Template.Protocol", "Astor.Template.Protocol\Astor.Template.Protocol.csproj", "{345E1B0A-2B44-40B5-8067-73A72EA16208}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Protocol", "template\Template.Protocol\Template.Protocol.csproj", "{345E1B0A-2B44-40B5-8067-73A72EA16208}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "template\Template.Tests\Template.Tests.csproj", "{5042249A-5EE1-4EE2-852B-CCF2AC67076E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,5 +24,9 @@ Global
 		{0FF4E6CA-9611-4BCC-911D-693338D38F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FF4E6CA-9611-4BCC-911D-693338D38F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FF4E6CA-9611-4BCC-911D-693338D38F3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5042249A-5EE1-4EE2-852B-CCF2AC67076E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5042249A-5EE1-4EE2-852B-CCF2AC67076E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5042249A-5EE1-4EE2-852B-CCF2AC67076E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5042249A-5EE1-4EE2-852B-CCF2AC67076E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

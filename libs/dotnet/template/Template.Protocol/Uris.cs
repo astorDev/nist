@@ -1,4 +1,4 @@
-namespace Astor.Template.Protocol;
+namespace Template.Protocol;
 
 public class Uris
 {
