@@ -1,2 +1,3 @@
-﻿namespace Astor.Template.Protocol;
+﻿namespace Template.Protocol;
+
 public record About(string Description, string Version, string Environment);
