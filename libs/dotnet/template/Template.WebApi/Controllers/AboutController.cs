@@ -12,7 +12,7 @@ public class AboutController
     public About GetAbout()
     {        
         return new(
-            Description : "Template - my webapi",
+            Description : "Template webapi",
             Version : this.GetType().Assembly.GetName().Version!.ToString(),
             Environment : this.Environment.EnvironmentName
         );

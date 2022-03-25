@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Astor.Logging" Version="1.0.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Nist.Errors" Version="1.0.0" />
+    <PackageReference Include="Nist.Errors" Version="1.1.0" />
+    <PackageReference Include="Nist.Logs" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
@@ -18,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Template.Protocol" />
-    <Using Include="Microsoft.AspNetCore.Mvc" />
-    <Using Include="Nist.Errors" />
-    <Using Include="System.Net" />
-    <Using Include="Astor.Logging" />
+      <Using Include="Template.Protocol" />
+      <Using Include="Microsoft.AspNetCore.Mvc" />
+      <Using Include="Nist.Errors" />
+      <Using Include="System.Net" />
+      <Using Include="Nist.Logs" />
   </ItemGroup>
 
 </Project>

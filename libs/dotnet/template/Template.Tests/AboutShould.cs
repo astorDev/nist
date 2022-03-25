@@ -8,7 +8,7 @@ public class AboutShould : Test
     {
         var about = await this.Client.GetAbout();
         about.Should().BeEquivalentTo(new About(
-            "Template - my webapi",
+            "Template webapi",
             "1.0.0.0",
             "Development"
         ));
