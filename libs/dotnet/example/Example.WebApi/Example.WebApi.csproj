@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CA1050</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Example.Protocol\Example.Protocol.csproj" />
+    <ProjectReference Include="..\..\errors\Nist.Errors.csproj" />
+    <ProjectReference Include="..\..\logging\Nist.Logs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Example.Protocol" />
+    <Using Include="Microsoft.AspNetCore.Mvc" />
+    <Using Include="Nist.Errors" />
+    <Using Include="System.Net" />
+    <Using Include="Nist.Logs" />
+  </ItemGroup>
+
+</Project>
