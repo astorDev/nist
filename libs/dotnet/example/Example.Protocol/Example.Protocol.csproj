@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Net.Http.Json" Version="7.0.0-preview.2.22152.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\responses\Nist.Responses.csproj" />
+    <ProjectReference Include="..\..\queries\Nist.Queries\Nist.Queries.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Newtonsoft.Json" />
+    <Using Include="Nist.Queries" />
+    <Using Include="Nist.Responses" />
+    <Using Include="System.Net.Http.Json" />
+  </ItemGroup>
+  
+</Project>
