@@ -23,7 +23,6 @@
   <ItemGroup>
       <Using Include="System.Threading.Tasks" />
       <Using Include="FluentAssertions" />
-      <Using Include="NUnit.Framework" />
       <Using Include="Template.Protocol" />
       <Using Include="Microsoft.AspNetCore.Mvc.Testing" />
       <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
