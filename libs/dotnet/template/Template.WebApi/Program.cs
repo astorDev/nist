@@ -6,15 +6,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
-Astor.Logging.JsonConsoleLoggerProviderExtensions.AddJsonConsole(builder.Logging);
+builder.Logging.AddJsonStateConsole();
 
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseHttpIOLogging();
 app.UseErrorBody(Error.Interpret);
-app.UseRequestsLogging();
 app.MapControllers();
 
 app.Run();
