@@ -9,9 +9,5 @@ public class Client
         HttpClient = httpClient;
     }
 
-    public async Task<About> GetAbout()
-    {
-        var response = await this.HttpClient.GetAsync(Uris.About);
-        return await response.Read<About>();
-    }
+    public Task<About> GetAbout() => this.HttpClient.GetAsync(Uris.About).Read<About>();
 }

@@ -1,6 +1,11 @@
-class AboutShould : Test
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Template.Tests;
+
+[TestClass]
+public class AboutShould : Test
 {
-    [Test]
+    [TestMethod]
     public async Task ReturnValidMetadata()
     {
         var about = await this.Client.GetAbout();
