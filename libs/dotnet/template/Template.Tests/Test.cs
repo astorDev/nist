@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-
 public class Test
 {
     protected WebApplicationFactory Factory { get; } =  new();
