@@ -1,12 +1,26 @@
-
 using System.Diagnostics;
-
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Nist.Logs;
 
 public static class HttpIOReader
 {
+    public static async Task<HttpIOInformation> ExecuteAndGetInformation(HttpContext context, RequestDelegate requestDelegate)
+    {
+        var requestBody = await GetRequestBody(context);
+        var (elapsed, responseBody) = await GetResponseParams(context, requestDelegate);
+        
+        var exceptionHandler = context.Features.Get<IExceptionHandlerPathFeature>();
+        return new(
+            context,
+            requestBody,
+            responseBody,
+            elapsed,
+            exceptionHandler?.RouteValues ?? context.Request.RouteValues,
+            exceptionHandler?.Error
+        );
+    }
+    
     public static async Task<(TimeSpan Elapsed, string Body)> GetResponseParams(HttpContext context, RequestDelegate next)
     {
         var stopwatch = new Stopwatch();

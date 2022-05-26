@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 
 namespace Nist.Logs;

@@ -1,65 +1,43 @@
-using System.Text.RegularExpressions;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Logging;
-
 namespace Nist.Logs;
 
 public class HttpIOLoggingMiddleware
 {
-    public record Settings()
-    {
-        public List<string> IgnoredPathPatterns { get; } = new List<string>();
-        public bool Ignores(HttpContext context) => this.IgnoredPathPatterns.Any(p => Regex.IsMatch(context.Request.Path.ToString(), p));
-    }
-
     public RequestDelegate Next { get; }
-    public Settings Configuration { get; }
+    public IOLoggingSettings Settings { get; }
     public ILogger<HttpIOLoggingMiddleware> Logger { get; }
-    public HttpIOLoggingMiddleware(RequestDelegate next, Settings configuration, ILogger<HttpIOLoggingMiddleware> logger)
+    
+    public HttpIOLoggingMiddleware(
+        RequestDelegate next, 
+        IOLoggingSettings settings, 
+        ILogger<HttpIOLoggingMiddleware> logger)
     {
         this.Next = next;
-        this.Configuration = configuration;
+        this.Settings = settings;
         this.Logger = logger;
     }
     
     public async Task Invoke(HttpContext context)
     {
-        if (this.Configuration.Ignores(context))
+        if (this.Settings.Ignores(context))
         {
             await this.Next(context);
             return;
         }
 
-        var requestBody = await HttpIOReader.GetRequestBody(context);
-        var (elapsed, body) = await HttpIOReader.GetResponseParams(context, this.Next);
+        var information = await HttpIOReader.ExecuteAndGetInformation(context, this.Next);
+        var loggedParams = this.Settings.GetLoggedParams(information);
+
+        var message = String.Join(" ", loggedParams.Keys.Select(k => $"{{{k}}}"));
         
-        var exceptionHandler = context.Features.Get<IExceptionHandlerPathFeature>();
-            this.Logger.LogInformation(@"{method}
-{uri}
-{request}
-{responseCode}
-{responseBody}
-{elapsed},
-{exception}",
-            context.Request.Method,
-            context.Request.GetDisplayUrl(),
-            requestBody,
-            context.Response.StatusCode,
-            body,
-            elapsed, 
-            exceptionHandler?.Error.ToString());
+        this.Logger.LogInformation(message, loggedParams.Values.ToArray());
     }
 }
 
 public static class RequestsLoggingRegistration
 {
-    public static void UseHttpIOLogging(this IApplicationBuilder app, Action<HttpIOLoggingMiddleware.Settings>? configuration = null)
+    public static void UseHttpIOLogging(this IApplicationBuilder app, Action<IOLoggingSettings>? configuration = null)
     {
-        var settings = new HttpIOLoggingMiddleware.Settings();
+        var settings = new IOLoggingSettings();
         configuration?.Invoke(settings);
         app.UseMiddleware<HttpIOLoggingMiddleware>(settings);
     }

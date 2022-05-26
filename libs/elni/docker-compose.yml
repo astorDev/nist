@@ -1,0 +1,38 @@
+version: "3.9"
+
+networks:
+  elastic_net:
+    driver: bridge
+
+services:
+  elasticsearch:
+    labels:
+      - family=infrastructure
+    image: elasticsearch:7.17.3 # the highest version that just works
+    restart: always
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
+  kibana:
+    labels:
+      - family=infrastructure
+    image: kibana:7.17.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+
+  filebeat:
+    labels:
+      - family=infrastructure
+    build:
+      dockerfile: filebeat.Dockerfile
+      context: .
+    image: elni/filebeat
+    user: root
+    volumes:
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
