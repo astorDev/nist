@@ -1,4 +1,21 @@
-http://localhost:5000/about
+{{nist-example}}/about
 
 ###
-http://localhost:5000/swagger
+{{nist-example}}/greetings/Egor?name=Alex
+
+###
+{{nist-example}}/greetings/government?name=Falex
+
+###
+PATCH {{nist-example}}/greetings
+
+{
+    "addressee" : "Brian"
+}
+
+###
+PATCH {{nist-example}}/greetings
+
+{
+    "addressee" : "government"
+}

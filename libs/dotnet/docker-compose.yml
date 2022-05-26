@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  example_webapi:
+    image: example_webapi
+    labels:
+      - family=nist
+    build:
+      context: .
+      dockerfile: example/Example.WebApi/Dockerfile
+    ports:
+      - 7100:80

@@ -1,9 +1,12 @@
 [Route(Uris.Greetings)]
 public class GreetingController
 {
+    private readonly Random random = new Random();
+    
     [HttpGet]
-    public Greeting? Get([FromQuery] GreetingQuery query)
+    public async Task<Greeting?> Get([FromQuery] GreetingQuery query)
     {
+        await Task.Delay(this.random.Next(0, 50));
         return query.Language switch
         {
             Languages.Silence => null,
@@ -12,9 +15,18 @@ public class GreetingController
         };
     }
 
-    [HttpPatch]
-    public Greeting Patch([FromBody] GreetingChanges changes)
+    [HttpGet("{name}")]
+    public async Task<Greeting> Get(string name)
     {
+        await Task.Delay(this.random.Next(0, 10));
+        if (name == "government") throw new GovernmentNotWelcomedException();
+        return new($"Hi, {name}!");
+    }
+
+    [HttpPatch]
+    public async Task<Greeting> Patch([FromBody] GreetingChanges changes)
+    {
+        await Task.Delay(this.random.Next(0, 100));
         return changes.Addressee switch
         {
             "government" => throw new GovernmentNotWelcomedException(),
