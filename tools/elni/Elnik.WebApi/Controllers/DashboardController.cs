@@ -1,21 +1,19 @@
 [Route(Uris.Dashboards)]
 public class DashboardController
 {
-    private static readonly string ImportTemplate = File.ReadAllText("dashboardImportTemplate.json");
-    private const string NisterDashboardMarker = $"nister";
+    static readonly string importTemplate = File.ReadAllText("dashboardImportTemplate.json");
+    const string NisterDashboardMarker = "nister";
     
     public Kibana.Protocol.Client Kibana { get; }
-    public ILogger<DashboardController> Logger { get; }
 
-    public DashboardController(Kibana.Protocol.Client kibana, ILogger<DashboardController> logger) {
+    public DashboardController(Kibana.Protocol.Client kibana) {
         this.Kibana = kibana;
-        this.Logger = logger;
     }
 
     [HttpGet]
-    public async Task<DashboardCollection> GetOverview(){
-        var rawDashboards = await UnknownKibanaException.Wrap(Kibana.GetDashboards());
-        var rawDataStreams = await UnknownKibanaException.Wrap(Kibana.GetDataStreams());
+    public async Task<DashboardCollection> GetOverview() {
+        var rawDashboards = await UnknownKibanaException.Wrap(this.Kibana.GetDashboards());
+        var rawDataStreams = await UnknownKibanaException.Wrap(this.Kibana.GetDataStreams());
 
         var dashboards = rawDashboards.Items.Select(i => i.Id).ToArray();
         var dataStreams = rawDataStreams.Items.Select(i => i.Name).ToArray();
@@ -29,13 +27,12 @@ public class DashboardController
     }
 
     [HttpPut(Uris.Nisters)]
-    public async Task<Dashboard> PutNistDashboard([FromBody] NisterDashboardCandidate candidate)
-    {
+    public async Task<Dashboard> PutNistDashboard([FromBody] NisterDashboardCandidate candidate) {
         var name = $"{NisterDashboardMarker} {candidate.ServiceName}";
         var indexPatternId = $"logs-nist-{candidate.ServiceName}";
         var indexPattern = $"logs-nist-{candidate.ServiceName}-*";
 
-        var importJson = ImportTemplate
+        var importJson = importTemplate
             .Replace("{{dashboardTitle}}", name)
             .Replace("{{indexPatternId}}", indexPatternId)
             .Replace("{{indexPattern}}", indexPattern)
@@ -44,7 +41,7 @@ public class DashboardController
         var importObject = JsonSerializer.Deserialize<object>(importJson)!;
         await UnknownKibanaException.Wrap(this.Kibana.PostDashboard(importObject));
         
-        return new Dashboard(name, indexPattern);
+        return new(name, indexPattern);
     }
 
     [HttpDelete("{id}")]

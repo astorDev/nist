@@ -5,7 +5,7 @@ public class AboutController
 
     public AboutController(IHostEnvironment environment)
     {
-        Environment = environment;
+        this.Environment = environment;
     }
 
     [HttpGet]
