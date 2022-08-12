@@ -1,0 +1,30 @@
+@pendingDashboard = {{GET_dashboards.response.body.$.pendingNisters[0]}}
+
+@pendingIndexes = {{GET_indexes.response.body.$.pending[0]}}
+
+###
+# @name GET_dashboards
+GET http://localhost:5610/dashboards
+
+###
+PUT http://localhost:5610/dashboards/nisters
+
+{
+    "serviceName" : "{{pendingDashboard}}"
+}
+
+###
+# @name GET_indexes
+GET http://localhost:5610/indexes
+
+###
+POST http://localhost:5610/indexes
+
+"{{pendingIndexes}}"
+
+### Just in case delete methods
+###
+DELETE http://localhost:5610/dashboards/any
+
+###
+DELETE http://localhost:5610/indexes/any

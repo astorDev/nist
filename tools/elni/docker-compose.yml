@@ -16,6 +16,7 @@ services:
       - 9200:9200
       - 9300:9300
   kibana:
+    restart: always
     labels:
       - family=infrastructure
     image: kibana:7.17.3
@@ -25,6 +26,7 @@ services:
       - 5601:5601
 
   filebeat:
+    restart: always
     labels:
       - family=infrastructure
     build:
@@ -35,4 +37,16 @@ services:
     volumes:
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock
+
+  elnik:
+    image: elnik
+    labels:
+      - family=nist
+    build:
+      context: .
+      dockerfile: Elnik.WebApi/Dockerfile
+    environment:
+      - KIBANA_URL=http://kibana:5601
+    ports:
+      - "5610:80"
 

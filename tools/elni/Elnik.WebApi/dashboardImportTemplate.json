@@ -1,14 +1,8 @@
-@indexPatternId = {{$guid}}
-@indexPattern = logs-nist-dotnet-example*
-@dashboardTitle = Dashboard {{$guid}}
-
-POST http://localhost:5601/api/kibana/dashboards/import
-kbn-xsrf: true
-
 {
   "version": "7.17.3",
   "objects": [
     {
+      "id" : "{{dashboardId}}",
       "type": "dashboard",
       "namespaces": [
         "default"
