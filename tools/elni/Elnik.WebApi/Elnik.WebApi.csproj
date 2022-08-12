@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NEST" Version="7.17.4" />
     <PackageReference Include="Nist.Errors" Version="1.1.0" />
     <PackageReference Include="Nist.Logs" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
