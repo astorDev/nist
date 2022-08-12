@@ -39,6 +39,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   elnik:
+    restart: always
     image: elnik
     labels:
       - family=nist
