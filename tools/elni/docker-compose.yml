@@ -4,6 +4,9 @@ networks:
   elastic_net:
     driver: bridge
 
+volumes:
+  esdata:
+
 services:
   elasticsearch:
     labels:
@@ -15,6 +18,8 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
   kibana:
     restart: always
     labels:

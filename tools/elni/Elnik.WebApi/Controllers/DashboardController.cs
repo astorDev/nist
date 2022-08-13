@@ -18,7 +18,11 @@ public class DashboardController
         var dashboards = rawDashboards.Items.Select(i => i.Id).ToArray();
         var dataStreams = rawDataStreams.Items.Select(i => i.Name).ToArray();
 
-        var allNisters = dataStreams.Where(d => d.StartsWith("logs-nist-")).Select(nd => nd.Split('-')[2]);
+        var allNisters = dataStreams.Where(d => d.StartsWith("logs-nist-")).Select(nd =>
+        {
+            var parts = nd.Split('-');
+            return $"{parts[2]}-{parts[3]}";
+        });
         var dashboardedNisters = dashboards.Where(d => d.StartsWith(NisterDashboardMarker)).Select(d => d.Split(' ')[1]);
 
         var pendingNisters = allNisters.Except(dashboardedNisters).ToArray();
