@@ -1,6 +1,6 @@
 public class ElnikController
 {
-    private readonly Client client;
+    readonly Client client;
     public ElnikController(Client client) { this.client = client; }
 
     [RunsEvery("00:00:30")]
@@ -17,7 +17,7 @@ public class ElnikController
     {
         var dashboards = await this.client.GetDashboards();
         foreach (var pending in dashboards.Pending)
-            await this.client.PutDashboard(new(pending));
+            await this.client.PutDashboard(pending);
 
         return dashboards.Pending;
     }

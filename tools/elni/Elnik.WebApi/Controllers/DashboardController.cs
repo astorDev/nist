@@ -5,8 +5,8 @@ public class DashboardController
 {
     static readonly string ImportTemplate = File.ReadAllText("dashboardImportTemplate.json");
     static readonly string[] Others = { "nisters" };
-    static readonly string NisterPrefix = "nisters:";
-    
+    const string NisterPrefix = "nisters:";
+
     public Kibana.Protocol.Client Kibana { get; }
 
     public DashboardController(Kibana.Protocol.Client kibana) {
@@ -34,17 +34,32 @@ public class DashboardController
 
         return new(dashboards, pendingNistersDashboards.Union(otherPendingDashboards).ToArray(), dataStreams);
     }
-
-
-
+    
     [HttpPut("{name}")]
     public async Task<Dashboard> Put([FromRoute] string name)
     {
+        async Task<Dashboard> PutNister(string serviceName) {
+            var dashboardTitle = $"nisters:{serviceName}";
+            var indexPatternId = $"logs-nist-{serviceName}";
+            var indexPattern = $"logs-nist-{serviceName}-*";
+
+            var importJson = ImportTemplate
+                .Replace("{{dashboardTitle}}", dashboardTitle)
+                .Replace("{{indexPatternId}}", indexPatternId)
+                .Replace("{{indexPattern}}", indexPattern)
+                .Replace("{{dashboardId}}", name);
+
+            var importObject = JsonSerializer.Deserialize<object>(importJson)!;
+            await UnknownKibanaException.Wrap(this.Kibana.PostDashboard(importObject));
+
+            return new(name, indexPattern);
+        }
+        
         if (name.StartsWith(NisterPrefix)) return await PutNister(name.Replace(NisterPrefix, ""));
         
         var json = DashboardNotFoundException.Wrap<FileNotFoundException>(() => File.ReadAllText($"{name}.json"));
         var importObject = JsonSerializer.Deserialize<object>(json)!;
-        dynamic? response = await UnknownKibanaException.Wrap(this.Kibana.PostDashboard(importObject));
+        var response = await UnknownKibanaException.Wrap(this.Kibana.PostDashboard(importObject));
 
         string dashboardId = response?.objects[0].id!;
         string indexId = response?.objects[1].id!;
