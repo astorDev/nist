@@ -1,7 +1,7 @@
 [Route(Uris.Indexes)]
-public class IndexController
+public class IndexController : Controller
 {
-    static readonly string[] expecteds = { "logs-*" };
+    static readonly string[] expected = { "logs-*" };
 
     Kibana.Protocol.Client Kibana { get; }
 
@@ -12,20 +12,20 @@ public class IndexController
     [HttpGet]
     public async Task<IndexCollection> Get() {
         var rawIndexes = await UnknownKibanaException.Wrap(this.Kibana.GetIndexes());
-        var indexes = rawIndexes.Items.Select(i => i.Id).ToArray();
+        var existing = rawIndexes.Items.Select(i => i.Id).ToArray();
 
-        var pending = expecteds.Except(indexes).ToArray();
+        var pending = expected.Except(existing).ToArray();
 
-        return new(indexes, pending);
+        return new(existing, pending);
     }
 
     [HttpPost]
-    public async Task<string> Post([FromBody] string index) {
-        var candidate = new Kibana.Protocol.IndexCandidate(new(index, index));
+    public async Task<IActionResult> Post([FromBody] string index) {
+        var candidate = new Kibana.Protocol.IndexCandidate(new(index, index, "@timestamp"));
         await UnknownKibanaException.Wrap(this.Kibana.PostIndex(candidate), 
             ex => { if (ex.ErrorMessage.StartsWith("Duplicate index pattern")) throw new DuplicateException(); }
         );
-        return index;
+        return this.Json(index);
     }
 
     [HttpDelete("{id}")]

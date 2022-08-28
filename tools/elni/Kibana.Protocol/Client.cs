@@ -22,8 +22,8 @@ public class Client
     public Task<DataStreamCollection> GetDataStreams() =>
         this.Http.GetAsync(Uris.DataStreams).Read<DataStreamCollection>();
 
-    public Task<object> PostDashboard(object request) =>
-        this.Http.PostAsJsonAsync(Uris.DashboardImport, request).Read<object>();
+    public Task<dynamic?> PostDashboard(object request) =>
+        this.Http.PostAsJsonAsync(Uris.DashboardImport, request).ReadNullable<dynamic>();
 
     public Task<dynamic?> DeleteDashboard(string id) =>
         this.Http.DeleteAsync(Uris.SavedDashboard(id)).ReadNullable<dynamic>();

@@ -1,0 +1,7 @@
+GET http://localhost:6601/about
+
+###
+GET http://localhost:6601/weapons/hammer
+
+###
+GET http://localhost:6601/weapons/ice

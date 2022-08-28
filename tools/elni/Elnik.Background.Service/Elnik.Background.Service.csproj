@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Astor.Background" Version="2.3.1" />
+        <PackageReference Include="Astor.GreenPipes" Version="1.0.0" />
+        <PackageReference Include="Astor.Logging" Version="2.1.0" />
+        <PackageReference Include="Astor.Timers" Version="1.0.0" />
+        <PackageReference Include="FluentScheduler" Version="5.5.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="System.Text.Json" />
+        <Using Include="Astor.Background" />
+        <Using Include="Astor.Background.Core" />
+        <Using Include="Astor.Background.Core.Filters" />
+        <Using Include="Astor.Logging" />
+        <Using Include="Astor.Timers" />
+        <Using Include="Microsoft.Extensions.DependencyInjection" />
+        <Using Include="Microsoft.Extensions.Hosting" />
+        <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="Astor.Background.Core.Abstractions" />
+        <Using Include="Elnik.Protocol" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Elnik.Protocol\Elnik.Protocol.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  webapi:
+    image: icewizard_webapi
+    restart: always
+    labels:
+      - family=nist
+    build:
+      context: .
+      dockerfile: IceWizard.WebApi/Dockerfile
+    ports:
+      - "6602:80"
