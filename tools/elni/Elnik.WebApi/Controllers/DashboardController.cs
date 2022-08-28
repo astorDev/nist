@@ -35,23 +35,7 @@ public class DashboardController
         return new(dashboards, pendingNistersDashboards.Union(otherPendingDashboards).ToArray(), dataStreams);
     }
 
-    [HttpPut(Uris.Nisters + "/{serviceName}")]
-    public async Task<Dashboard> PutNister([FromRoute] string serviceName) {
-        var name = $"nisters:{serviceName}";
-        var indexPatternId = $"logs-nist-{serviceName}";
-        var indexPattern = $"logs-nist-{serviceName}-*";
 
-        var importJson = ImportTemplate
-            .Replace("{{dashboardTitle}}", name)
-            .Replace("{{indexPatternId}}", indexPatternId)
-            .Replace("{{indexPattern}}", indexPattern)
-            .Replace("{{dashboardId}}", name);
-
-        var importObject = JsonSerializer.Deserialize<object>(importJson)!;
-        await UnknownKibanaException.Wrap(this.Kibana.PostDashboard(importObject));
-        
-        return new(name, indexPattern);
-    }
 
     [HttpPut("{name}")]
     public async Task<Dashboard> Put([FromRoute] string name)
