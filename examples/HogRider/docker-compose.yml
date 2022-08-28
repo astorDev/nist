@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  webapi:
+    image: hogrider_webapi
+    restart: always
+    labels:
+      - family=nist
+    build:
+      context: .
+      dockerfile: HogRider.WebApi/Dockerfile
+    ports:
+      - "6601:80"

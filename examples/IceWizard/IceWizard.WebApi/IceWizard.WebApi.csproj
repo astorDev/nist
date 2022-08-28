@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-      <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,27 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Elnik.Protocol\Elnik.Protocol.csproj" />
-    <ProjectReference Include="..\Kibana.Protocol\Kibana.Protocol.csproj" />
+    <ProjectReference Include="..\IceWizard.Protocol\IceWizard.Protocol.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-      <Using Include="Elnik.Protocol" />
+      <Using Include="IceWizard.Protocol" />
       <Using Include="Microsoft.AspNetCore.Mvc" />
       <Using Include="Nist.Errors" />
       <Using Include="System.Net" />
       <Using Include="Nist.Logs" />
-      <Using Include="Nist.Responses" />
-      <Using Include="System.Text.Json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="dashboardImportTemplate.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="nisters.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

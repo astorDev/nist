@@ -1,17 +1,17 @@
-@pendingDashboard = {{GET_dashboards.response.body.$.pendingNisters[0]}}
+@pendingDashboard = {{GET_dashboards.response.body.$.pending[0]}}
+
+@existingDashboard = {{GET_dashboards.response.body.$.existing[0]}}
 
 @pendingIndexes = {{GET_indexes.response.body.$.pending[0]}}
+
+@existingIndexes = {{GET_indexes.response.body.$.existing[0]}}
 
 ###
 # @name GET_dashboards
 GET http://localhost:5610/dashboards
 
 ###
-PUT http://localhost:5610/dashboards/nisters
-
-{
-    "serviceName" : "{{pendingDashboard}}"
-}
+PUT http://localhost:5610/dashboards/{{pendingDashboard}}
 
 ###
 # @name GET_indexes
@@ -24,7 +24,7 @@ POST http://localhost:5610/indexes
 
 ### Just in case delete methods
 ###
-DELETE http://localhost:5610/dashboards/any
+DELETE http://localhost:5610/dashboards/nisters
 
 ###
-DELETE http://localhost:5610/indexes/any
+DELETE http://localhost:5610/indexes/logs-*

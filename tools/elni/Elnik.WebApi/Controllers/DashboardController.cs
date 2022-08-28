@@ -1,8 +1,11 @@
+using Elnik.WebApi.Misc;
+
 [Route(Uris.Dashboards)]
 public class DashboardController
 {
-    static readonly string importTemplate = File.ReadAllText("dashboardImportTemplate.json");
-    const string NisterDashboardMarker = "nister";
+    static readonly string ImportTemplate = File.ReadAllText("dashboardImportTemplate.json");
+    static readonly string[] Others = { "nisters" };
+    static readonly string NisterPrefix = "nisters:";
     
     public Kibana.Protocol.Client Kibana { get; }
 
@@ -23,20 +26,22 @@ public class DashboardController
             var parts = nd.Split('-');
             return $"{parts[2]}-{parts[3]}";
         });
-        var dashboardedNisters = dashboards.Where(d => d.StartsWith(NisterDashboardMarker)).Select(d => d.Split(' ')[1]);
+        var dashboardedNisters = dashboards.Where(d => d.StartsWith(NisterPrefix)).Select(d => d.Replace(NisterPrefix, ""));
 
         var pendingNisters = allNisters.Except(dashboardedNisters).ToArray();
-        
-        return new(dashboards, pendingNisters, dataStreams);
+        var pendingNistersDashboards = pendingNisters.Select(n => $"{NisterPrefix}{n}");
+        var otherPendingDashboards = Others.Except(dashboards);
+
+        return new(dashboards, pendingNistersDashboards.Union(otherPendingDashboards).ToArray(), dataStreams);
     }
 
-    [HttpPut(Uris.Nisters)]
-    public async Task<Dashboard> PutNistDashboard([FromBody] NisterDashboardCandidate candidate) {
-        var name = $"{NisterDashboardMarker} {candidate.ServiceName}";
-        var indexPatternId = $"logs-nist-{candidate.ServiceName}";
-        var indexPattern = $"logs-nist-{candidate.ServiceName}-*";
+    [HttpPut(Uris.Nisters + "/{serviceName}")]
+    public async Task<Dashboard> PutNister([FromRoute] string serviceName) {
+        var name = $"nisters:{serviceName}";
+        var indexPatternId = $"logs-nist-{serviceName}";
+        var indexPattern = $"logs-nist-{serviceName}-*";
 
-        var importJson = importTemplate
+        var importJson = ImportTemplate
             .Replace("{{dashboardTitle}}", name)
             .Replace("{{indexPatternId}}", indexPatternId)
             .Replace("{{indexPattern}}", indexPattern)
@@ -48,8 +53,22 @@ public class DashboardController
         return new(name, indexPattern);
     }
 
+    [HttpPut("{name}")]
+    public async Task<Dashboard> Put([FromRoute] string name)
+    {
+        if (name.StartsWith(NisterPrefix)) return await PutNister(name.Replace(NisterPrefix, ""));
+        
+        var json = DashboardNotFoundException.Wrap<FileNotFoundException>(() => File.ReadAllText($"{name}.json"));
+        var importObject = JsonSerializer.Deserialize<object>(json)!;
+        dynamic? response = await UnknownKibanaException.Wrap(this.Kibana.PostDashboard(importObject));
+
+        string dashboardId = response?.objects[0].id!;
+        string indexId = response?.objects[1].id!;
+        return new(dashboardId, indexId);
+    }
+
     [HttpDelete("{id}")]
-    public async Task DeleteDashboard([FromRoute] string id) {
+    public async Task Delete([FromRoute] string id) {
         await UnknownKibanaException.Wrap(this.Kibana.DeleteDashboard(id));
     }
 }

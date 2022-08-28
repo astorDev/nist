@@ -18,4 +18,4 @@ public record DataStream(string Name);
 
 public record IndexCandidate(IndexPattern index_pattern);
 
-public record IndexPattern(string title, string id);
+public record IndexPattern(string title, string id, string timeFieldName);
