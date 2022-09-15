@@ -1,4 +1,4 @@
-namespace Template.Protocol;
+namespace Template;
 
 public class Uris
 {

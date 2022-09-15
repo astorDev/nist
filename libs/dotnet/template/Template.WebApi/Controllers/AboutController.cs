@@ -2,10 +2,9 @@
 public class AboutController
 {
     public IHostEnvironment Environment { get; }
-
-    public AboutController(IHostEnvironment environment)
-    {
-        Environment = environment;
+    
+    public AboutController(IHostEnvironment environment) {
+        this.Environment = environment;
     }
 
     [HttpGet]

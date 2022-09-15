@@ -1,6 +1,15 @@
-namespace Example.Protocol;
+namespace Example;
 
-public class Client
+public interface IClient
+{
+    Task<About> GetAbout();
+
+    Task<Greeting?> GetGreeting(GreetingQuery query);
+
+    Task<Greeting> PatchGreeting(GreetingChanges changes);
+}
+
+public class Client : IClient
 {
     public HttpClient HttpClient { get; }
 

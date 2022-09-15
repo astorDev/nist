@@ -1,13 +1,9 @@
-namespace Template.Protocol;
+namespace Template;
 
 public class Client
 {
-    public HttpClient HttpClient { get; }
+    public HttpClient Http { get; }
+    public Client(HttpClient http) { this.Http = http; }
 
-    public Client(HttpClient httpClient)
-    {
-        HttpClient = httpClient;
-    }
-
-    public Task<About> GetAbout() => this.HttpClient.GetAsync(Uris.About).Read<About>();
+    public Task<About> GetAbout() => this.Http.GetAsync(Uris.About).Read<About>();
 }
