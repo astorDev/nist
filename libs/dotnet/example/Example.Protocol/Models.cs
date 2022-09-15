@@ -1,4 +1,4 @@
-﻿namespace Example.Protocol;
+﻿namespace Example;
 
 public record About(string Description, string Version, string Environment);
 

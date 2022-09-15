@@ -1,4 +1,4 @@
-namespace Example.Protocol;
+namespace Example;
 
 public class Uris
 {

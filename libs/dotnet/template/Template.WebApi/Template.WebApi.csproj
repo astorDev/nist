@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-      <Using Include="Template.Protocol" />
+      <Using Include="Template" />
       <Using Include="Microsoft.AspNetCore.Mvc" />
       <Using Include="Nist.Errors" />
       <Using Include="System.Net" />

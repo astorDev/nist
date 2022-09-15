@@ -23,6 +23,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries.Tests", "queri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "logging\Nist.Logs.csproj", "{338F5883-6428-4CDB-84B5-309536C81D08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Background.Service", "example\Example.Background.Service\Example.Background.Service.csproj", "{D0AF0387-5F4C-45CD-BA79-8F04AD0B6371}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "template", "template", "{5C303FD6-6212-412B-94EC-A5A749699679}"
+	ProjectSection(SolutionItems) = preProject
+		template\docker-compose.yml = template\docker-compose.yml
+		tempate\template.json = template\.template.config\template.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Protocol", "template\Template.Protocol\Template.Protocol.csproj", "{9699D304-7029-451F-AD23-86CEBAC9C1C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.WebApi", "template\Template.WebApi\Template.WebApi.csproj", "{9D574FF0-D745-4A9A-94FE-861DD1398D39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "template\Template.Tests\Template.Tests.csproj", "{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Registration", "registration\Nist.Registration\Nist.Registration.csproj", "{F12E302C-53E8-4355-9E33-3E4B595CF85F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +80,26 @@ Global
 		{338F5883-6428-4CDB-84B5-309536C81D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{338F5883-6428-4CDB-84B5-309536C81D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{338F5883-6428-4CDB-84B5-309536C81D08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0AF0387-5F4C-45CD-BA79-8F04AD0B6371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0AF0387-5F4C-45CD-BA79-8F04AD0B6371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0AF0387-5F4C-45CD-BA79-8F04AD0B6371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0AF0387-5F4C-45CD-BA79-8F04AD0B6371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9699D304-7029-451F-AD23-86CEBAC9C1C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9699D304-7029-451F-AD23-86CEBAC9C1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9699D304-7029-451F-AD23-86CEBAC9C1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9699D304-7029-451F-AD23-86CEBAC9C1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D574FF0-D745-4A9A-94FE-861DD1398D39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D574FF0-D745-4A9A-94FE-861DD1398D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D574FF0-D745-4A9A-94FE-861DD1398D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D574FF0-D745-4A9A-94FE-861DD1398D39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F12E302C-53E8-4355-9E33-3E4B595CF85F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F12E302C-53E8-4355-9E33-3E4B595CF85F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F12E302C-53E8-4355-9E33-3E4B595CF85F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F12E302C-53E8-4355-9E33-3E4B595CF85F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{548F0A90-A144-4CF9-9385-819647DEA030} = {E9124EF8-4F83-4D22-9874-36FEBC9B865F}
@@ -71,5 +107,9 @@ Global
 		{A3FB2638-FFE7-435B-989A-4B55C51BEFE7} = {E9124EF8-4F83-4D22-9874-36FEBC9B865F}
 		{88EC37E5-8F11-4AA1-9E2F-1A8FCFD63168} = {4F90727A-DEFE-47D0-ACDB-070F19AF78AF}
 		{88ECE2B7-6A59-411A-8E88-8AC1B686A93A} = {4F90727A-DEFE-47D0-ACDB-070F19AF78AF}
+		{D0AF0387-5F4C-45CD-BA79-8F04AD0B6371} = {E9124EF8-4F83-4D22-9874-36FEBC9B865F}
+		{9699D304-7029-451F-AD23-86CEBAC9C1C6} = {5C303FD6-6212-412B-94EC-A5A749699679}
+		{9D574FF0-D745-4A9A-94FE-861DD1398D39} = {5C303FD6-6212-412B-94EC-A5A749699679}
+		{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB} = {5C303FD6-6212-412B-94EC-A5A749699679}
 	EndGlobalSection
 EndGlobal

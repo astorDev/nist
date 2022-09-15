@@ -27,7 +27,7 @@
   <ItemGroup>
     <Using Include="System.Threading.Tasks" />
     <Using Include="FluentAssertions" />
-    <Using Include="Example.Protocol" />
+    <Using Include="Example" />
     <Using Include="Microsoft.AspNetCore.Mvc.Testing" />
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
     <Using Include="Nist.Responses" />

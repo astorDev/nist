@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Example.Protocol" />
+    <Using Include="Example" />
     <Using Include="Microsoft.AspNetCore.Mvc" />
     <Using Include="Nist.Errors" />
     <Using Include="System.Net" />
