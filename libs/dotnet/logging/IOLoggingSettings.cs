@@ -40,7 +40,7 @@ public class IOLoggingSettings
         { Fields.ResponseBody,  AsIs },
         { Fields.ResponseCode,  AsIs },
         { Fields.Elapsed,  GetMilliseconds },
-        { Fields.Exception,  AsIs },
+        { Fields.Exception,  ToSafeException },
         { Fields.Method,  AsIs }
     };
 
@@ -49,6 +49,10 @@ public class IOLoggingSettings
     public static object AsIs(object source) => source;
 
     public static object ToLowerString(object source) => source.ToString()!.ToLower();
+
+    public static object ToSafeException(Exception source) => new { source.Message, source.StackTrace, InnerExceptionMessage = source.InnerException?.Message };
+
+    public static object ToSafeException(object source) => ToSafeException((Exception)source);
 
     public bool Ignores(HttpContext context) => 
         this.Ignored.Any(p => Regex.IsMatch(context.Request.Path.ToString(), p));
@@ -59,20 +63,14 @@ public class IOLoggingSettings
         
         void MaybeAdd(string key, object? value)
         {
-            if (!this.LoggedFields.Contains(key) || value == null)
-            {
-                return;
-            }
+            if (!this.LoggedFields.Contains(key) || value == null) return;
 
             var formatter = this.Formatters[key];
             result.Add(key, formatter(value));
         }
         
         var uri = info.HttpContext.Request.GetEncodedPathAndQuery();
-        
-        var controller = info.RouteValues["controller"];
-        var action = info.RouteValues["action"];
-        var endpoint = $"{controller}.{action}";
+        var endpoint = info.HttpContext.GetEndpoint();
         
         MaybeAdd(Fields.Uri, uri);
         MaybeAdd(Fields.Endpoint, endpoint);

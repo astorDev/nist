@@ -25,6 +25,6 @@ public class GreetingShould : Test
            );
            
         exception.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-        exception.DeserializedBody<Error>()!.Reason.Should().Be(Error.GovernmentNotWelcomed.Reason);
+        exception.DeserializedBody<Nist.Errors.Error>()!.Reason.Should().Be(Errors.GovernmentNotWelcomed.Reason);
     }
 }
