@@ -23,6 +23,8 @@
     <Using Include="Nist.Queries" />
     <Using Include="Nist.Responses" />
     <Using Include="System.Net.Http.Json" />
+    <Using Include="System.Net" />
+    <Using Include="Nist.Errors" />
   </ItemGroup>
   
 </Project>
