@@ -1,7 +1,6 @@
 namespace Nist.Logs;
 
-public class 
-    HttpIOLoggingMiddleware
+public class HttpIOLoggingMiddleware
 {
     public RequestDelegate Next { get; }
     public IOLoggingSettings Settings { get; }
