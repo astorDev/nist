@@ -19,3 +19,12 @@ PATCH {{nist-example}}/greetings
 {
     "addressee" : "government"
 }
+
+###
+GET {{nist-example}}/farewells?name=Joshua
+
+###
+GET {{nist-example}}/farewells?name=dream
+
+###
+POST {{nist-example}}/companies/aldar/office

@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\responses\Nist.Responses.csproj" />
     <ProjectReference Include="..\..\queries\Nist.Queries\Nist.Queries.csproj" />
+    <ProjectReference Include="..\..\errors\Nist.Errors.csproj" />
   </ItemGroup>
 
   <ItemGroup>
