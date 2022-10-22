@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Astor",
+    "classifications": [ "Web", "WebAPI" ], 
+    "name": "Nist Minimal Web API",
+    "identity": "NistMini",         
+    "shortName": "minist",
+    "tags": {
+      "language": "C#",
+      "type":"project"
+    },
+    "sourceName": "Template",
+    "preferNameDirectory": true
+}
