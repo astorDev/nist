@@ -7,12 +7,17 @@ public class GreetingController
     public async Task<Greeting?> Get([FromQuery] GreetingQuery query)
     {
         await Task.Delay(this.random.Next(0, 50));
-        return query.Language switch
+        var baseText = query.Language switch
         {
             Languages.Silence => null,
-            Languages.English => new Greeting("Hello!"),
-            _ => new Greeting("Hello")
+            Languages.English => "Hello!",
+            _ => "Hello"
         };
+
+        var signatures = query.Signatures?.Select(s => $"{s.Key}_{s.Value}").ToArray() ?? Array.Empty<string>();
+        var signature = signatures.Any() ? $" from {String.Join(" ", signatures)}" : "";
+        
+        return baseText == null ? null : new(baseText + signature);
     }
 
     [HttpGet("{name}")]

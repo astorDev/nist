@@ -10,7 +10,7 @@ public class Uris {
 
 public record About(string Description, string Version, string Environment);
 public record Greeting(string Text);
-public record GreetingQuery(string? Language = null);
+public record GreetingQuery(string? Language = null, Dictionary<string, string>? Signatures = null);
 public record GreetingChanges(string? Addressee = null);
 
 public class Languages {
