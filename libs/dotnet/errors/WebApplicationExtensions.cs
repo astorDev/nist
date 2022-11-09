@@ -1,8 +1,9 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Nist.Errors;
 
@@ -26,10 +27,10 @@ public static class WebApplicationExtensions
                 context.Response.StatusCode = (int)error.Code;
                 context.Response.ContentType = "application/json";
 
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(error, new JsonSerializerSettings
+                await context.Response.WriteAsync(JsonSerializer.Serialize(error, new JsonSerializerOptions
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    NullValueHandling = NullValueHandling.Ignore
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
                 }));
             });
         });
