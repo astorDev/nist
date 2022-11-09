@@ -27,4 +27,16 @@ public class GreetingShould : Test
         exception.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         exception.DeserializedBody<Nist.Errors.Error>()!.Reason.Should().Be(Errors.GovernmentNotWelcomed.Reason);
     }
+
+    [TestMethod]
+    public async Task ReturnGreetingsWithSignatures()
+    {
+        var greeting = await this.Client.GetGreeting(new (Signatures: new()
+        {
+            { "Alex", "alx" },
+            { "Michael", "mch" }
+        }));
+
+        greeting!.Text.Should().Be("Hello from Alex_alx Michael_mch");
+    }
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 using FluentAssertions;
 
 namespace Nist.Queries.Tests;
@@ -41,5 +43,16 @@ public class QueryUriShould
         uri.Should().Be("resource?names=george&names=john");
     }
 
-    public record Query(DateTime? From = null, string[]? Names = null);
+    [TestMethod]
+    public void ProduceCorrectQueryForDictionary()
+    {
+        string uri = QueryUri.From("resource", new Query(Tags: new Dictionary<string, object> {
+            { "category", "test" },
+            { "createdAt", new DateTime(2020, 2, 20, 12, 16, 00) }
+        }));
+
+        uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12:16:00.0000000");
+    }
+
+    public record Query(DateTime? From = null, string[]? Names = null, Dictionary<string, object>? Tags = null);
 }
