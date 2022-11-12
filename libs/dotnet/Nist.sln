@@ -17,9 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Responses", "responses
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "queries", "queries", "{4F90727A-DEFE-47D0-ACDB-070F19AF78AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries", "..\..\dotnet\queries\Nist.Queries\Nist.Queries.csproj", "{88EC37E5-8F11-4AA1-9E2F-1A8FCFD63168}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries", "queries\Nist.Queries\Nist.Queries.csproj", "{88EC37E5-8F11-4AA1-9E2F-1A8FCFD63168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries.Tests", "..\..\dotnet\queries\Nist.Queries.Tests\Nist.Queries.Tests.csproj", "{88ECE2B7-6A59-411A-8E88-8AC1B686A93A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries.Tests", "queries\Nist.Queries.Tests\Nist.Queries.Tests.csproj", "{88ECE2B7-6A59-411A-8E88-8AC1B686A93A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "logging\Nist.Logs.csproj", "{338F5883-6428-4CDB-84B5-309536C81D08}"
 EndProject
