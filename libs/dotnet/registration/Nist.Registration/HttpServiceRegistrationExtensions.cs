@@ -6,12 +6,12 @@ public static class HttpServiceRegistrationExtensions
 {
     public static void AddHttpService<TService>(this IServiceCollection services, string urlConfigurationPath, Action<HttpClient>? configuration = null) where TService : class
     {
-        services.AddHttpClient<TService>((sp, cl) => ConfigureClient(sp, cl, urlConfigurationPath, configuration));
+        services.AddHttpClient<TService>(typeof(TService).FullName!, (sp, cl) => ConfigureClient(sp, cl, urlConfigurationPath, configuration));
     }
 
     public static void AddHttpService<TInterface, TService>(this IServiceCollection services, string urlConfigurationPath, Action<HttpClient>? configuration = null) where TService : class, TInterface where TInterface : class
     {
-        services.AddHttpClient<TInterface, TService>((sp, cl) => ConfigureClient(sp, cl, urlConfigurationPath, configuration));
+        services.AddHttpClient<TInterface, TService>(typeof(TInterface).FullName!, (sp, cl) => ConfigureClient(sp, cl, urlConfigurationPath, configuration));
     }
     
     private static void ConfigureClient(IServiceProvider serviceProvider, HttpClient client, string urlConfigurationPath, Action<HttpClient>? adjustment = null)
