@@ -10,7 +10,7 @@ public interface IClient {
     Task<About> GetAbout();
 }
 
-public class Client {
+public class Client : IClient {
     public HttpClient Http { get; }
     public Client(HttpClient http) { this.Http = http; }
 
