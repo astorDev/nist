@@ -22,6 +22,6 @@ public static class AppServicesExtensions
 {
     public static void AddApplicationServices(this IServiceCollection services)
     {
-        services.AddElnikClient();
+        services.AddHttpService<Client>("ElnikUrl");
     }
 }

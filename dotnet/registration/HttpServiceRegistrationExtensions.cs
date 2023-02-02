@@ -18,6 +18,7 @@ public static class HttpServiceRegistrationExtensions
     {
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
         var url = configuration[urlConfigurationPath];
+        if (url == null) throw new InvalidOperationException($"url not found by conifguration path `{urlConfigurationPath}`");
         var uri = new Uri(url);
         client.BaseAddress = uri;
         adjustment?.Invoke(client);

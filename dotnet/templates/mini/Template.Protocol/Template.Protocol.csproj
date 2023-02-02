@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nist.Errors" Version="1.1.0" />
+    <PackageReference Include="Nist.Errors" Version="2.0.1" />
     <PackageReference Include="Nist.Responses" Version="1.0.0" />
     <PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
   </ItemGroup>

@@ -22,16 +22,3 @@ public class Client
 
     public Task<string> PostIndex(string candidate) => this.HttpClient.PostAsJsonAsync(Uris.Indexes, candidate).Read<string>();
 }
-
-public static class ClientRegistration
-{
-    public static void AddElnikClient(this IServiceCollection services, string configurationPath = "ElnikUrl")
-    {
-        services.AddHttpClient<Client>((sp, cl) =>
-        {
-            var config = sp.GetRequiredService<IConfiguration>();
-            var rawUrl = config[configurationPath];
-            cl.BaseAddress = new(rawUrl);
-        });
-    }
-}
