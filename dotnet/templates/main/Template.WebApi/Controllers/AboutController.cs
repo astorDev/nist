@@ -8,8 +8,7 @@ public class AboutController
     }
 
     [HttpGet]
-    public About GetAbout()
-    {        
+    public About GetAbout() {        
         return new(
             Description : "Template webapi",
             Version : this.GetType().Assembly.GetName().Version!.ToString(),
