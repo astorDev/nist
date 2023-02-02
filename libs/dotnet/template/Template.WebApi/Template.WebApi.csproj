@@ -11,6 +11,7 @@
     <PackageReference Include="Nist.Errors" Version="1.1.0" />
     <PackageReference Include="Nist.Logs" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
