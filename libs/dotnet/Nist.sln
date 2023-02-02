@@ -27,16 +27,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Background.Service"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "main-template", "main-template", "{5C303FD6-6212-412B-94EC-A5A749699679}"
 	ProjectSection(SolutionItems) = preProject
-		template\docker-compose.yml = template\docker-compose.yml
-		tempate\template.json = template\.template.config\template.json
+		template\docker-compose.yml = ..\..\dotnet\templates\main\docker-compose.yml
+		tempate\template.json = ..\..\dotnet\templates\main\.template.config\template.json
 		..\..\dotnet\templates\main\requests.http = ..\..\dotnet\templates\main\requests.http
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Protocol", "template\Template.Protocol\Template.Protocol.csproj", "{9699D304-7029-451F-AD23-86CEBAC9C1C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Protocol", "..\..\dotnet\templates\main\Template.Protocol\Template.Protocol.csproj", "{9699D304-7029-451F-AD23-86CEBAC9C1C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.WebApi", "template\Template.WebApi\Template.WebApi.csproj", "{9D574FF0-D745-4A9A-94FE-861DD1398D39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.WebApi", "..\..\dotnet\templates\main\Template.WebApi\Template.WebApi.csproj", "{9D574FF0-D745-4A9A-94FE-861DD1398D39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "template\Template.Tests\Template.Tests.csproj", "{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "..\..\dotnet\templates\main\Template.Tests\Template.Tests.csproj", "{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Registration", "registration\Nist.Registration\Nist.Registration.csproj", "{F12E302C-53E8-4355-9E33-3E4B595CF85F}"
 EndProject
