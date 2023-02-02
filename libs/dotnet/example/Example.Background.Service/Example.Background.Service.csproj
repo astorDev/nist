@@ -8,18 +8,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Astor.Background" Version="2.3.1" />
+      <PackageReference Include="Astor.Background" Version="2.3.2" />
       <PackageReference Include="Astor.GreenPipes" Version="1.0.0" />
       <PackageReference Include="Astor.Logging" Version="2.1.0" />
       <PackageReference Include="Astor.Timers" Version="1.0.0" />
       <PackageReference Include="FluentScheduler" Version="5.5.1" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-      <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-      <PackageReference Include="Namotion.Reflection" Version="2.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
     </ItemGroup>
     
     <ItemGroup>
