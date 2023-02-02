@@ -6,7 +6,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
-builder.Logging.AddJsonStateConsole();
+builder.Logging.AddStateJsonConsole();
 
 var app = builder.Build();
 

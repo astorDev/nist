@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IceWizard.WebApi", "IceWizard.WebApi\IceWizard.WebApi.csproj", "{46876989-A345-40D5-84AF-B8AACC1E15F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IceWizard.Protocol", "IceWizard.Protocol\IceWizard.Protocol.csproj", "{7EB22B17-CE36-4A70-8FDB-F674C307D233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IceWizard.Tests", "IceWizard.Tests\IceWizard.Tests.csproj", "{F3BC1E22-83F8-4D55-B3CB-13FBEC7CF1ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46876989-A345-40D5-84AF-B8AACC1E15F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46876989-A345-40D5-84AF-B8AACC1E15F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46876989-A345-40D5-84AF-B8AACC1E15F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46876989-A345-40D5-84AF-B8AACC1E15F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EB22B17-CE36-4A70-8FDB-F674C307D233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EB22B17-CE36-4A70-8FDB-F674C307D233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EB22B17-CE36-4A70-8FDB-F674C307D233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EB22B17-CE36-4A70-8FDB-F674C307D233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3BC1E22-83F8-4D55-B3CB-13FBEC7CF1ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3BC1E22-83F8-4D55-B3CB-13FBEC7CF1ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3BC1E22-83F8-4D55-B3CB-13FBEC7CF1ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3BC1E22-83F8-4D55-B3CB-13FBEC7CF1ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
