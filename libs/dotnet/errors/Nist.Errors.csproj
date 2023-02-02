@@ -6,9 +6,5 @@
     <TargetFramework>net7.0</TargetFramework>
       <OutputType>Library</OutputType>
   </PropertyGroup>
-    
-    <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
 
 </Project>

@@ -17,6 +17,7 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+        <PackageReference Include="Nist.Registration" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>

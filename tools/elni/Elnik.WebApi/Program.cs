@@ -11,7 +11,7 @@ builder.Services.AddHttpClient<Kibana.Protocol.Client>(cl =>
 
 builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
-builder.Logging.AddJsonStateConsole();
+builder.Logging.AddStateJsonConsole();
 
 var app = builder.Build();
 

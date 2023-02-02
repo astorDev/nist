@@ -1,7 +1,3 @@
-using System.Net;
-
-using Nist.Errors;
-
 namespace Template;
 
 public partial class Uris

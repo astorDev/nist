@@ -38,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.WebApi", "..\..\do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "..\..\dotnet\templates\main\Template.Tests\Template.Tests.csproj", "{1BBF4960-91A2-44B5-91AF-6F5623D9DDCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Registration", "registration\Nist.Registration\Nist.Registration.csproj", "{F12E302C-53E8-4355-9E33-3E4B595CF85F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Registration", "..\..\dotnet\registration\Nist.Registration.csproj", "{F12E302C-53E8-4355-9E33-3E4B595CF85F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mini-template", "mini-template", "{4E4A1FEF-77A9-4893-BD05-F0DC9C63C8F2}"
 	ProjectSection(SolutionItems) = preProject

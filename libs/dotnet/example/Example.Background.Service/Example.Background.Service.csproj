@@ -43,7 +43,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\..\registration\Nist.Registration\Nist.Registration.csproj" />
+      <ProjectReference Include="..\..\..\..\dotnet\registration\Nist.Registration.csproj" />
       <ProjectReference Include="..\Example.Protocol\Example.Protocol.csproj" />
     </ItemGroup>
 
