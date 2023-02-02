@@ -13,13 +13,12 @@
 
   <ItemGroup>
     <PackageReference Include="Astor.Logging" Version="2.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\dotnet\logs\Nist.Logs.csproj" />
     <ProjectReference Include="..\Example.Protocol\Example.Protocol.csproj" />
-    <ProjectReference Include="..\..\logging\Nist.Logs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries", "..\..\dotne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries.Tests", "..\..\dotnet\queries\Nist.Queries.Tests\Nist.Queries.Tests.csproj", "{88ECE2B7-6A59-411A-8E88-8AC1B686A93A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "logging\Nist.Logs.csproj", "{338F5883-6428-4CDB-84B5-309536C81D08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "..\..\dotnet\logs\Nist.Logs.csproj", "{338F5883-6428-4CDB-84B5-309536C81D08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Background.Service", "example\Example.Background.Service\Example.Background.Service.csproj", "{D0AF0387-5F4C-45CD-BA79-8F04AD0B6371}"
 EndProject
