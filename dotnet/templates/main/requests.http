@@ -1,6 +1,0 @@
-### @name localAbout
-http://localhost:5000/about
-
-###
-{{template}}/about
-
