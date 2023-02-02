@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Template</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Nist.Errors" Version="2.0.1" />
     <PackageReference Include="Nist.Responses" Version="1.0.0" />
   </ItemGroup>
 

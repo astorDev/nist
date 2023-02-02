@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\dotnet\logs\Nist.Logs.csproj" />
+    <ProjectReference Include="..\..\..\..\dotnet\logging\Nist.Logs.csproj" />
     <ProjectReference Include="..\Example.Protocol\Example.Protocol.csproj" />
   </ItemGroup>
 
