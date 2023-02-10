@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Errors", "errors\Nist.Errors.csproj", "{9698660B-7DB9-4F11-80A4-6113D0DC76D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Errors", "..\..\dotnet\errors\Nist.Errors.csproj", "{9698660B-7DB9-4F11-80A4-6113D0DC76D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{E9124EF8-4F83-4D22-9874-36FEBC9B865F}"
 EndProject
@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.WebApi", "example\E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Tests", "example\Example.Tests\Example.Tests.csproj", "{A3FB2638-FFE7-435B-989A-4B55C51BEFE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Responses", "responses\Nist.Responses.csproj", "{AD41EBB6-E564-48F8-AB79-36B912124789}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Responses", "..\..\dotnet\responses\Nist.Responses.csproj", "{AD41EBB6-E564-48F8-AB79-36B912124789}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "queries", "queries", "{4F90727A-DEFE-47D0-ACDB-070F19AF78AF}"
 EndProject
