@@ -1,0 +1,17 @@
+name: Publish Nist.Responses
+on:
+  push:
+
+jobs:
+  publish:
+    name: build, pack & publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: publish on version change
+        id: publish_nuget
+        uses: brandedoutcast/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: dotnet/responses/Nist.Responses.csproj
+          NUGET_KEY: ${{ secrets.NUGET_KEY }}
