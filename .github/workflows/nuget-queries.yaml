@@ -1,7 +1,9 @@
 name: Publish Nist.Queries
 on:
   push:
-
+    branches:
+      - main
+      
 jobs:
   publish:
     name: build, pack & publish

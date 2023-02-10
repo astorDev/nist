@@ -1,6 +1,8 @@
 name: Publish Nist.Logs
 on:
   push:
+    branches:
+      - main
 
 jobs:
   publish:

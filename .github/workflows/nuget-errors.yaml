@@ -1,6 +1,8 @@
 name: Publish Nist.Errors
 on:
   push:
+    branches:
+      - main
 
 jobs:
   publish:
