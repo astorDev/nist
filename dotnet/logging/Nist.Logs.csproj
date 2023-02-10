@@ -9,7 +9,6 @@
     <IsPackable>true</IsPackable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Description>IO Logging infrasture for a NIST API</Description>
   </PropertyGroup>
 
   <ItemGroup>
