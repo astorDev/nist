@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <TargetFramework>net7.0</TargetFramework>
       <OutputType>Library</OutputType>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
