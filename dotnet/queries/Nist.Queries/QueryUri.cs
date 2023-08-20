@@ -7,7 +7,7 @@ namespace Nist.Queries;
 
 public record QueryUri(string Url, IEnumerable<QueryKeyValue> QueryParams)
 {
-    public static QueryUri From(string url, object queryObject) => new QueryUri(url, GetQueryKeyValues(queryObject));
+    public static QueryUri From(string url, object queryObject) => new(url, GetQueryKeyValues(queryObject));
 
     public static IEnumerable<QueryKeyValue> GetQueryKeyValues(object queryObject)
     {
@@ -15,7 +15,7 @@ public record QueryUri(string Url, IEnumerable<QueryKeyValue> QueryParams)
 
         var props = queryObject.GetType().GetProperties().Select(p => new { Name = CamelCased(p.Name), Value = p.GetValue(queryObject) });
         var notNullProps = props.Where(p => p.Value != null);
-    
+        
         var (enumerableProps, flatProps) = notNullProps.Fork(p => p.Value is IEnumerable && p.Value is not string);
         var (dictionaryProps, standardEnumerableProps) = enumerableProps.Fork(p => p.Value is IDictionary);
 
@@ -46,7 +46,7 @@ public record QueryKeyValue(string Key, string Value)
 
     public static QueryKeyValue From(string key, object value) => value switch
     {
-        DateTime time => new(key, time.ToString("O")),
+        DateTime time => new(key, time.ToUniversalTime().ToString("O")),
         _ => new(key, WebUtility.UrlEncode(value.ToString())!)
     };
 }

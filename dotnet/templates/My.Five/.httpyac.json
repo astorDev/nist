@@ -1,0 +1,7 @@
+{
+    "environments": {
+        "local" : {
+            "my.five" : "http://localhost:9931"
+        }
+    }
+}

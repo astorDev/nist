@@ -1,0 +1,7 @@
+{
+    "environments": {
+        "local" : {
+            "template" : "http://localhost:9988"
+        }
+    }
+}

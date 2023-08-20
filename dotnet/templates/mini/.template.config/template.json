@@ -9,6 +9,16 @@
       "language": "C#",
       "type":"project"
     },
+    "symbols": {
+      "port" : {
+        "type": "generated",    
+        "generator": "port",
+        "replaces": "9988",
+        "parameters": {
+          "fallback": 6000
+        }  
+      }
+    },
     "sourceName": "Template",
     "preferNameDirectory": true
 }

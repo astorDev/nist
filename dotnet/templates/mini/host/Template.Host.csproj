@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Astor.Logging" Version="2.1.0" />
+    <PackageReference Include="Nist.Logs" Version="2.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\protocol\Template.Protocol.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+      <Using Include="Template" />
+      <Using Include="Microsoft.AspNetCore.Mvc" />
+      <Using Include="Nist.Errors" />
+      <Using Include="System.Net" />
+      <Using Include="Nist.Logs" />
+      <Using Include="Astor.Logging" />
+      <Using Include="System.Reflection" />
+  </ItemGroup>
+
+</Project>

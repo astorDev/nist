@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Template.Protocol\Template.Protocol.csproj" />
+    <ProjectReference Include="..\protocol\My.Five.Protocol.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-      <Using Include="Template" />
+      <Using Include="My.Five" />
       <Using Include="Microsoft.AspNetCore.Mvc" />
       <Using Include="Nist.Errors" />
       <Using Include="System.Net" />

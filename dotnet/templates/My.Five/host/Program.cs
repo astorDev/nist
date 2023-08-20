@@ -1,6 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,14 +22,11 @@ app.UseHttpIOLogging();
 app.UseErrorBody(ex => ex switch {
     _ => Errors.Unknown
 });
-app.MapControllers();
 
 app.MapGet($"/{Uris.About}", (IHostEnvironment env) => new About(
-    Description: "Template webapi",
+    Description: "My.Five",
     Version: Assembly.GetEntryAssembly()!.GetName().Version!.ToString(),
     Environment: env.EnvironmentName
 ));
 
 app.Run();
-
-public partial class Program {}

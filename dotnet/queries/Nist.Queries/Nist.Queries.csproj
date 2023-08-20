@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <Version>2.2.2</Version>
-    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <LangVersion>11</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +15,7 @@
   </ItemGroup>
 
     <ItemGroup>
-    <None Include="../README.md" Pack="true" PackagePath="\"/>    
+    <None Include="../README.md" Pack="true" PackagePath="\" />    
   </ItemGroup>
 
 </Project>
