@@ -13,8 +13,4 @@
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <None Include="README.md" Pack="true" PackagePath="\" />    
-    </ItemGroup>
 </Project>
