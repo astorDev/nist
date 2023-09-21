@@ -1,19 +1,21 @@
 name: Publish Nist.Responses
+
 on:
   push:
-    branches:
-      - main
+    paths:
+      - '*/nuget-responses.yaml'
+      - 'dotnet/responses'
       
 jobs:
   publish:
+
     name: build, pack & publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: publish on version change
-        id: publish_nuget
-        uses: brandedoutcast/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: dotnet/responses/Nist.Responses.csproj
-          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+      - uses: actions/setup-dotnet@v3
+      - run: | 
+          cd dotnet/responses
+          ls
+          export VERSION = $(date +'%Y.1%m.1%d')
+          echo $VERSION
