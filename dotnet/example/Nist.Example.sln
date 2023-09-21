@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Example.Protocol", "protocol\Nist.Example.Protocol.csproj", "{4A0661A5-6C0D-4CC6-82CD-EA0FC5E9F0B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Example.Tests", "tests\Nist.Example.Tests.csproj", "{013EE13F-4535-42CD-843D-48C576A0C6ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapi", "webapi\Nist.Example.WebApi.csproj", "{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A0661A5-6C0D-4CC6-82CD-EA0FC5E9F0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A0661A5-6C0D-4CC6-82CD-EA0FC5E9F0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A0661A5-6C0D-4CC6-82CD-EA0FC5E9F0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A0661A5-6C0D-4CC6-82CD-EA0FC5E9F0B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{013EE13F-4535-42CD-843D-48C576A0C6ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{013EE13F-4535-42CD-843D-48C576A0C6ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{013EE13F-4535-42CD-843D-48C576A0C6ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{013EE13F-4535-42CD-843D-48C576A0C6ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
