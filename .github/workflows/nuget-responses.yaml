@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/nuget-responses.yaml'
-      - 'nist/responses/**'
+      - 'dotnet/responses/lib/**'
       
 jobs:
   publish:
@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-dotnet@v3
       - name: Publish
         run: | 
-          cd dotnet/responses
+          cd dotnet/responses/lib
           ls
           export JOB_ID=$GITHUB_RUN_NUMBER
           export BRANCH=$GITHUB_REF_NAME
