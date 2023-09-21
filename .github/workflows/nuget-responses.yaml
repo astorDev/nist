@@ -15,8 +15,8 @@ jobs:
         run: | 
           cd dotnet/responses
           ls
-          export JOB_ID=${{ github.job }}
-          export BRANCH=$(echo $GITHUB_REF | cut -d / -f 3)
+          export JOB_ID=$GITHUB_RUN_ID
+          export BRANCH=$GITHUB_REF_NAME
 
           echo $JOB_ID
           echo $BRANCH
