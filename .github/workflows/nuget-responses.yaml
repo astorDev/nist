@@ -16,17 +16,18 @@ jobs:
           cd dotnet/responses
           ls
           export JOB_ID=${{ github.job }}
-          export BRANCH=${{ github.ref }}
-
-          if [ "$BRANCH" = "main" ]; then
-            BRANCH=${BRANCH//\//-}
-            SUFFIX=""
-          else
-            SUFFIX="-$BRANCH"
-          fi
+          export BRANCH=$(echo $GITHUB_REF | cut -d / -f 3)
 
           echo $JOB_ID
           echo $BRANCH
+
+          if [ "$BRANCH" = "main" ]; then
+            SUFFIX=""
+          else
+            BRANCH=${BRANCH//\//-}
+            SUFFIX="-$BRANCH"
+          fi
+
           export VERSION=$(date +'%Y.1%m.1%d').$JOB_ID$SUFFIX
           echo $VERSION
           dotnet pack /p:Version=$VERSION -o ./
