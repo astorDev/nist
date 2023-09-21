@@ -3,7 +3,7 @@ name: Publish Nist.Responses
 on:
   push:
     paths:
-      - '.github/workflows.nuget-responses.yaml'
+      - '.github/workflows/nuget-responses.yaml'
       - 'nist/responses/**'
       
 jobs:
