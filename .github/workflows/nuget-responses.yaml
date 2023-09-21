@@ -1,19 +1,37 @@
 name: Publish Nist.Responses
+
 on:
   push:
-    branches:
-      - main
+    paths:
+      - '.github/workflows/nuget-responses.yaml'
+      - 'nist/responses/**'
       
 jobs:
   publish:
+
     name: build, pack & publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v3
+      - name: Publish
+        run: | 
+          cd dotnet/responses
+          ls
+          export JOB_ID=$GITHUB_RUN_NUMBER
+          export BRANCH=$GITHUB_REF_NAME
 
-      - name: publish on version change
-        id: publish_nuget
-        uses: brandedoutcast/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: dotnet/responses/Nist.Responses.csproj
-          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+          echo $JOB_ID
+          echo $BRANCH
+
+          if [ "$BRANCH" = "main" ]; then
+            SUFFIX=""
+          else
+            BRANCH=${BRANCH//\//-}
+            SUFFIX="-$BRANCH"
+          fi
+
+          export VERSION=$(date +'%Y.1%m.1%d').$JOB_ID$SUFFIX
+          echo $VERSION
+          dotnet pack /p:Version=$VERSION -o ./
+          dotnet nuget push Nist.Responses.$VERSION.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
