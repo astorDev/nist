@@ -1,11 +1,7 @@
 name: Publish Nist.Responses
 
 on:
-  workflow_dispatch:
   push:
-    paths:
-      - '*/nuget-responses.yaml'
-      - 'dotnet/responses'
       
 jobs:
   publish:
