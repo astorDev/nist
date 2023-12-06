@@ -4,11 +4,11 @@
     <Version>2.2.2</Version>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <TargetFramework>net7.0</TargetFramework>
       <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
       <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TargetFrameworks>net7.0;net6.0;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
