@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <Version>3.0.9</Version>
-    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <TargetFrameworks>net7.0;net6.0;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
