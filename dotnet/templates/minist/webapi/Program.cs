@@ -1,12 +1,13 @@
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Configuration.SetNistLogLevels();
 builder.Logging.ClearProviders();
-builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 builder.Logging.AddStateJsonConsole();
+builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 
 var app = builder.Build();
 
@@ -20,8 +21,10 @@ app.UseErrorBody(ex => ex switch {
 
 app.MapGet($"/{Uris.About}", (IHostEnvironment env) => new About(
     Description: "Template",
-    Version: Assembly.GetEntryAssembly()!.GetName().Version!.ToString(),
+    Version: typeof(Program).Assembly!.GetName().Version!.ToString(),
     Environment: env.EnvironmentName
 ));
 
 app.Run();
+
+public partial class Program {}
