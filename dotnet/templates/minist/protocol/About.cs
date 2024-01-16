@@ -15,5 +15,5 @@ public partial class Client(HttpClient http, ILogger<Client> logger) : IClient {
 public record About(string Description, string Version, string Environment);
 
 public partial class Errors {
-    public static Nist.Errors.Error Unknown => new (HttpStatusCode.InternalServerError, "Unknown");
+    public static Error Unknown => new (HttpStatusCode.InternalServerError, "Unknown");
 }
