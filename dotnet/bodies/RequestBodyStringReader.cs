@@ -26,3 +26,11 @@ public static class RequestBodyStringReaderRegistration
         app.UseMiddleware<RequestBodyStringReader>();
     }
 }
+
+public static class RequestBodyStringReaderExtensions
+{
+    public static string GetRequestBodyString(this HttpContext context)
+    {
+        return context.Items[RequestBodyStringReader.Key] as string ?? throw new InvalidOperationException("Request body is not available. Make sure you've registered the required middleware with `UseRequestBodyStringReader()`");
+    }
+}
