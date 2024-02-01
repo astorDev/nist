@@ -6,6 +6,8 @@ public partial class Uris {
 
 public record Shot(bool Idle);
 
+public record Gun(int Size, int BulletIndex);
+
 public partial class Errors {
     public static readonly Error Killed = new(HttpStatusCode.BadRequest, "Killed");
 }

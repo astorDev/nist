@@ -3,18 +3,21 @@
   <ItemGroup>
     <ProjectReference Include="..\protocol\Nist.Example.Protocol.csproj" />
     <ProjectReference Include="..\..\logging\Nist.Logs.csproj" />
+    <ProjectReference Include="..\..\bodies\Nist.Bodies.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Using Include="Nist.Example" />
     <Using Include="Nist.Logs" />
     <Using Include="Astor.Logging" />
+    <Using Include="Nist.Bodies" />
   </ItemGroup>
 
   <ItemGroup>
