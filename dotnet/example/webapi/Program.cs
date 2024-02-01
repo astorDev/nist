@@ -4,7 +4,9 @@ builder.Logging.ClearProviders().AddSimpleConsole(c => c.SingleLine = true).AddS
 
 var app = builder.Build();
 
+app.UseRequestBodyStringReader();
 app.UseHttpIOLogging();
+app.UseResponseBodyStringReader();
 
 app.MapGet(Uris.About, (IHostEnvironment env) => new About(
     "Example Nist WebApi",
@@ -13,7 +15,13 @@ app.MapGet(Uris.About, (IHostEnvironment env) => new About(
 ));
 
 app.MapGet(Uris.RussianRouletteShot, () => {
-    var shot = new Shot(Idle: new Random(DateTime.Now.Millisecond).Next(0, 6) != 1);
+    var gun = new Gun(Size: 6, BulletIndex: 1);
+    var shot = new Shot(Idle: new Random(DateTime.Now.Millisecond).Next(0, gun.Size) != gun.BulletIndex);
+    return shot.Idle ? Results.Ok(shot) : Results.BadRequest(Errors.Killed);
+});
+
+app.MapPost(Uris.RussianRouletteShot, (Gun gun) => {
+    var shot = new Shot(Idle: new Random(DateTime.Now.Millisecond).Next(0, gun.Size) != gun.BulletIndex);
     return shot.Idle ? Results.Ok(shot) : Results.BadRequest(Errors.Killed);
 });
 

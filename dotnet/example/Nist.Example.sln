@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Example.Tests", "tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapi", "webapi\Nist.Example.WebApi.csproj", "{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "..\logging\Nist.Logs.csproj", "{E0D9BFD4-29E2-4A17-97EE-CAE52980AE0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Bodies", "..\bodies\Nist.Bodies.csproj", "{93E2B2AB-2A80-422E-B958-07637086AFCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D9BFD4-29E2-4A17-97EE-CAE52980AE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D9BFD4-29E2-4A17-97EE-CAE52980AE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D9BFD4-29E2-4A17-97EE-CAE52980AE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D9BFD4-29E2-4A17-97EE-CAE52980AE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93E2B2AB-2A80-422E-B958-07637086AFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93E2B2AB-2A80-422E-B958-07637086AFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93E2B2AB-2A80-422E-B958-07637086AFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93E2B2AB-2A80-422E-B958-07637086AFCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

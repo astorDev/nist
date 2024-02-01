@@ -1,0 +1,37 @@
+name: Publish Nist.Responses
+
+on:
+  push:
+    paths:
+      - '.github/workflows/nuget-bodies.yaml'
+      - 'dotnet/bodies/**'
+      
+jobs:
+  publish:
+
+    name: build, pack & publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v3
+      - name: Publish
+        run: | 
+          cd dotnet/bodies/lib
+          ls
+          export JOB_ID=$GITHUB_RUN_NUMBER
+          export BRANCH=$GITHUB_REF_NAME
+
+          echo $JOB_ID
+          echo $BRANCH
+
+          if [ "$BRANCH" = "main" ]; then
+            SUFFIX=""
+          else
+            BRANCH=${BRANCH//\//-}
+            SUFFIX="-$BRANCH"
+          fi
+
+          export VERSION=$(date +'%Y.1%m.1%d').$JOB_ID$SUFFIX
+          echo $VERSION
+          dotnet pack /p:Version=$VERSION -o ./
+          dotnet nuget push Nist.Bodies.$VERSION.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
