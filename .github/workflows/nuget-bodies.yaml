@@ -1,4 +1,4 @@
-name: Publish Nist.Responses
+name: Publish Nist.Bodies
 
 on:
   push:
