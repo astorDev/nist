@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-dotnet@v3
       - name: Publish
         run: | 
-          cd dotnet/bodies/lib
+          cd dotnet/bodies
           ls
           export JOB_ID=$GITHUB_RUN_NUMBER
           export BRANCH=$GITHUB_REF_NAME
