@@ -1,6 +1,9 @@
+DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddFluentEnvironmentVariables();
 
 builder.Logging.ClearProviders().AddSimpleConsole(c => c.SingleLine = true).AddStateJsonConsole();
+builder.Services.Configure<Shooter>(builder.Configuration.GetSection("Shooter"));
 
 var app = builder.Build();
 
@@ -20,16 +23,22 @@ app.MapGet(Uris.RussianRouletteShot, () => {
     return shot.Idle ? Results.Ok(shot) : Results.BadRequest(Errors.Killed);
 });
 
-app.MapPost(Uris.RussianRouletteShot, (Gun gun) => {
-    var shot = Shoot(gun, app.Logger);
+app.MapPost(Uris.RussianRouletteShot, (Gun gun, IOptions<Shooter> shooterOptions) => {
+    var shot = Shoot(gun, app.Logger, shooterOptions);
     return shot.Idle ? Results.Ok(shot) : Results.BadRequest(Errors.Killed);
 });
 
 app.Run();
 
-static Shot Shoot(Gun gun, ILogger logger) {
-    logger.LogWarning("Shooting gun with {size} bullets", gun.Size);
+static Shot Shoot(Gun gun, ILogger logger, IOptions<Shooter>? shooterOptions = null) {
+    logger.LogWarning("{shooter} shooting gun with {size} bullets", shooterOptions?.Value.Name ?? Shooter.DefaultName, gun.Size);
     return new Shot(Idle: new Random(DateTime.Now.Millisecond).Next(0, gun.Size) != gun.BulletIndex);
 }
 
-public partial class Program {}
+public class Shooter
+{
+    public const string DefaultName = "Unknown shooter";
+    public string Name { get; init; } = DefaultName;
+}
+
+public partial class Program;
