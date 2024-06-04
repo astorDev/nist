@@ -4,6 +4,7 @@ on:
     paths:
       - 'dotnet/logging/lib/**'
       - '.github/workflows/nuget-logs.yml'
+  workflow_dispatch:
 
 jobs:
   publish:
