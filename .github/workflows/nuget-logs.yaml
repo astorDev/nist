@@ -1,19 +1,17 @@
 name: Publish Nist.Logs
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'dotnet/logging/lib/**'
+      - '.github/workflows/nuget-logs.yaml'
+  workflow_dispatch:
 
 jobs:
   publish:
-    name: build, pack & publish
+    name: Pack & Publish nuget
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: publish on version change
-        id: publish_nuget
-        uses: brandedoutcast/publish-nuget@v2
+      - uses: astorDev/versy/calver/nuget@main
         with:
-          PROJECT_FILE_PATH: dotnet/logging/Nist.Logs.csproj
-          NUGET_KEY: ${{ secrets.NUGET_KEY }}
+          project: dotnet/logging/lib/Nist.Logs
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
