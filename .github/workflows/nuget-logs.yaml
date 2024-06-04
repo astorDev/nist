@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - 'dotnet/logging/lib/**'
-      - '.github/workflows/nuget-logs.yml'
+      - '.github/workflows/nuget-logs.yaml'
   workflow_dispatch:
 
 jobs:
