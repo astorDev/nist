@@ -1,0 +1,22 @@
+POST http://localhost:5244/parties/new-year/visitors?goodLooking=true
+
+{
+    "name": "John",
+    "passcode" : "mysupersecretpasscode"
+}
+
+###
+POST http://localhost:5244/parties/happy-bday/visitors?goodLooking=true
+
+{
+    "name": "John",
+    "passcode" : "mysupersecretpasscode"
+}
+
+###
+POST http://localhost:5244/parties/new-year/visitors?goodLooking=false
+
+{
+    "name": "Paul",
+    "passcode" : "paulsupersecretpasscode"
+}
