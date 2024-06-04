@@ -1,10 +1,12 @@
+DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddFluentEnvironmentVariables();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Logging.ClearProviders();
-builder.Logging.AddStateJsonConsole();
+builder.Logging.AddMiniJsonConsole();
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 
 var app = builder.Build();
@@ -25,4 +27,4 @@ app.MapGet($"/{Uris.About}", (IHostEnvironment env) => new About(
 
 app.Run();
 
-public partial class Program {}
+public partial class Program;

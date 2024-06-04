@@ -8,12 +8,8 @@ public partial interface IClient {
     Task<About> GetAbout();
 }
 
-public partial class Client(HttpClient http, ILogger<Client> logger) : IClient {
-    public async Task<About> GetAbout() => await http.GetAsync(Uris.About).Read<About>(logger);
+public partial class Client {
+    public async Task<About> GetAbout() => await Get<About>(Uris.About);
 }
 
 public record About(string Description, string Version, string Environment);
-
-public partial class Errors {
-    public static Error Unknown => new (HttpStatusCode.InternalServerError, "Unknown");
-}

@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
+﻿using System.Net.Http.Json;
+using Microsoft.Extensions.Logging;
 
 namespace Nist.Example;
 
@@ -16,6 +16,7 @@ public partial class Client : IClient
     public Client(HttpClient http, ILogger<Client> logger) { _http = http; _logger = logger; }
 
     public Task<T> Get<T>(string uri) => _http.GetAsync(uri).Read<T>(_logger);
+    public Task<T> Post<T>(string uri, object body) => _http.PostAsJsonAsync(uri, body).Read<T>(_logger);
 }
 
 public partial class Errors {

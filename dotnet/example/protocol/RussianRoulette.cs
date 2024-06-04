@@ -14,4 +14,5 @@ public partial class Errors {
 
 public partial class Client {
     public async Task<Shot> GetRussianRouletteShot() => await Get<Shot>(Uris.RussianRouletteShot);
+    public async Task<Shot> PostRussianRouletteShot(Gun gun) => await Post<Shot>(Uris.RussianRouletteShot, gun);
 }
