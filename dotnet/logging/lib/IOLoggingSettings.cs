@@ -4,35 +4,76 @@ using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Nist.Logs;
 
-public class IOLoggingSettings
+public partial class IOLoggingSettings
 {
-    public class Fields
+    public partial record MessageTemplate(string Message, string[] OrderedKeys)
     {
-        public const string Uri = "uri";
-        public const string Endpoint = "endpoint";
-        public const string RequestBody = "requestBody";
-        public const string ResponseBody = "responseBody";
-        public const string ResponseCode = "responseCode";
-        public const string Elapsed = "elapsed";
-        public const string Exception = "exception";
-        public const string Method = "method";
+        static readonly Regex TemplateKeyRegex = new(@"\{(\w+)\}");
+        
+        public static MessageTemplate Parse(string template)
+        {
+            var keys = new List<string>();
+            var matches = TemplateKeyRegex.Matches(template);
+            foreach (Match match in matches)
+            {
+                var value = match.Groups[1].Value;
+                if (!Fields.All.Contains(value))
+                {
+                    throw new ArgumentException($"Invalid template key: '{value}'. Valid keys are: {Environment.NewLine} {string.Join(Environment.NewLine, Fields.All)}");
+                }
+
+                keys.Add(value);
+            }
+
+            return new MessageTemplate(template, [.. keys]);
+        }
     }
 
-    public List<string> LoggedFields { get; } = new()
+    public class Fields
     {
-        Fields.Uri,
-        Fields.Endpoint,
-        Fields.RequestBody,
-        Fields.ResponseBody,
-        Fields.ResponseCode,
-        Fields.Elapsed,
-        Fields.Exception,
-        Fields.Method
-    };
+        public const string Uri = "Uri";
+        public const string Endpoint = "Endpoint";
+        public const string RequestBody = "RequestBody";
+        public const string ResponseBody = "ResponseBody";
+        public const string ResponseCode = "ResponseCode";
+        public const string Elapsed = "Elapsed";
+        public const string Exception = "Exception";
+        public const string Method = "Method";
+
+        public readonly static ISet<string> All = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            Uri,
+            Endpoint,
+            RequestBody,
+            ResponseBody,
+            ResponseCode,
+            Elapsed,
+            Exception,
+            Method
+        };
+
+        public static Dictionary<string, Func<HttpIOInformation, object?>> ValueExtractors = new(StringComparer.OrdinalIgnoreCase)
+        {
+            { Uri, info => info.HttpContext.Request.GetEncodedPathAndQuery() },
+            { Endpoint, info => info.HttpContext.GetEndpoint() },
+            { RequestBody, info => info.RequestBody },
+            { ResponseBody, info => info.ResponseBody },
+            { ResponseCode, info => info.HttpContext.Response.StatusCode },
+            { Elapsed, info => info.Elapsed },
+            { Exception, info => info.Exception },
+            { Method, info => info.HttpContext.Request.Method }
+        };
+    }
+
+    public MessageTemplate Template { get; set; } = MessageTemplate.Parse(@"{Method} {Uri} > {ResponseCode} in {Elapsed}ms 
+Endpoint: {Endpoint}
+RequestBody: {RequestBody}
+ResponseBody: {ResponseBody}
+Exception: {Exception}");
 
     public List<string> Ignored { get; } = new();
 
-    public readonly Dictionary<string, Func<object, object>> Formatters = new()
+    public readonly Dictionary<string, Func<object?, object?>> Formatters = new()
     {
         { Fields.Uri, AsIs },
         { Fields.Endpoint, ToLowerString },
@@ -44,43 +85,36 @@ public class IOLoggingSettings
         { Fields.Method,  AsIs }
     };
 
-    public static object GetMilliseconds(object source) => ((TimeSpan)source).TotalMilliseconds;
+    public static object? GetMilliseconds(object? source) => ((TimeSpan)source!).TotalMilliseconds;
 
-    public static object AsIs(object source) => source;
+    public static object? AsIs(object? source) => source;
 
-    public static object ToLowerString(object source) => source.ToString()!.ToLower();
+    public static object? ToLowerString(object? source) => source?.ToString()!.ToLower();
 
-    public static object ToSafeException(Exception source) => new { source.Message, source.StackTrace, InnerExceptionMessage = source.InnerException?.Message };
+    public static object? ToSafeException(Exception? source) => source == null ? null : new { source.Message, source.StackTrace, InnerExceptionMessage = source.InnerException?.Message };
 
-    public static object ToSafeException(object source) => ToSafeException((Exception)source);
+    public static object? ToSafeException(object? source) => ToSafeException(source == null ? (Exception?)null : (Exception?)source);
 
     public bool Ignores(HttpContext context) => 
         this.Ignored.Any(p => Regex.IsMatch(context.Request.Path.ToString(), p));
 
-    public Dictionary<string, object> GetLoggedParams(HttpIOInformation info)
+    public IEnumerable<object?> GetLoggedParams(HttpIOInformation info)
     {
-        var result = new Dictionary<string, object>();
-        
-        void MaybeAdd(string key, object? value)
+        foreach (var key in this.Template.OrderedKeys)
         {
-            if (!this.LoggedFields.Contains(key) || value == null) return;
+            if (!Fields.ValueExtractors.TryGetValue(key, out Func<HttpIOInformation, object?>? extractor))
+            {
+                throw new InvalidOperationException($"Extractor for key '{key}' not found");
+            }
 
-            var formatter = this.Formatters[key];
-            result.Add(key, formatter(value));
+            var value = extractor(info);
+
+            if (!Formatters.TryGetValue(key, out Func<object?, object?>? formatter))
+            {
+                throw new InvalidOperationException($"Formatter for key '{key}' not found");
+            }
+
+            yield return formatter(value);;
         }
-        
-        var uri = info.HttpContext.Request.GetEncodedPathAndQuery();
-        var endpoint = info.HttpContext.GetEndpoint();
-        
-        MaybeAdd(Fields.Uri, uri);
-        MaybeAdd(Fields.Endpoint, endpoint);
-        MaybeAdd(Fields.RequestBody, info.RequestBody);
-        MaybeAdd(Fields.ResponseBody, info.ResponseBody);
-        MaybeAdd(Fields.ResponseCode, info.HttpContext.Response.StatusCode);
-        MaybeAdd(Fields.Elapsed, info.Elapsed);
-        MaybeAdd(Fields.Exception, info.Exception);
-        MaybeAdd(Fields.Method, info.HttpContext.Request.Method);
-
-        return result;
     }
 }
