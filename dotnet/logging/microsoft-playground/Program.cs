@@ -17,11 +17,8 @@ builder.Services.AddHttpLogging(o =>
         | HttpLoggingFields.ResponseBody
         | HttpLoggingFields.Duration;
 
-    o.RequestHeaders.Clear();
-    o.ResponseHeaders.Clear();
-
     o.CombineLogs = true;
-}).AddHttpLoggingInterceptor<SecretsInterceptor>();
+});
 
 var app = builder.Build();
 
@@ -52,39 +49,3 @@ app.Run();
 public record Visitor(string Name, string Passcode);
 public record Invitation(string PartyId, string Receiver, string Code);
 public class BadLookException : Exception { };
-
-public class SecretsInterceptor : IHttpLoggingInterceptor
-{
-    public ValueTask OnRequestAsync(HttpLoggingInterceptorContext logContext)
-    {
-        return default;
-    }
-
-    public ValueTask OnResponseAsync(HttpLoggingInterceptorContext logContext)
-    {
-        logContext.Parameters.Remove(p => p.Value?.ToString() == "[Redacted]");
-        logContext.Parameters.Remove("PathBase");
-        logContext.Parameters.Remove("Protocol");
-        logContext.Parameters.Remove("Scheme");
-        logContext.Parameters.Remove("Content-Type");
-
-        return default;
-    }
-}
-
-public static class KeyValuePairList
-{
-    public static void Remove<TKey, TValue>(this IList<KeyValuePair<TKey, TValue>> list, Func<KeyValuePair<TKey, TValue>, bool> matcher)
-    {
-        var matching = list.Where(matcher).ToArray();
-        foreach (var item in matching)
-        {
-            list.Remove(item);
-        }
-    }
-
-    public static void Remove<TKey, TValue>(this IList<KeyValuePair<TKey, TValue>> list, TKey key)
-    {
-        list.Remove(p => p.Key!.Equals(key));
-    }
-}
