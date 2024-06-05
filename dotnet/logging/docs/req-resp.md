@@ -1,6 +1,6 @@
 # Request-Response Logging in ASP .NET Core
 
-Since .NET 6
+Logging ASP .NET Core http requests and responses is a common task almost every .NET developer faces sooner or later. For a long time, the most popular approach development teams chose seemed to be writing a custom middleware Since .NET 6. So, dear .NET beavers, let's check out the logs Microsoft gave us! ~~And find a better ones~~
 
 ![Our AI-generated Mascot with logs](req-resp-thumb.jpeg)
 
@@ -61,7 +61,7 @@ app.UseHttpLogging();
 ```
 
 1. Remove `appsettings.Development.json` since it's redundant for our scenario.
-2. Since by default log level is `Microsoft.AspNetCore` is 
+2. Since, by default, the log level of `Microsoft.AspNetCore` is `Warning` we'll need to set a specific log level for the logging middleware:
 
 ```json
 "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information"
@@ -69,7 +69,7 @@ app.UseHttpLogging();
 
 ### The complete file:
 
-Here's the compelete `Program.cs`
+Here's the complete `Program.cs`
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -196,7 +196,11 @@ app.UseHttpIOLogging(); // instead of app.UseHttpLogging();
 
 ## Recap
 
-![](nist-starter-200.png)
+To wrap things up, let's take a look at the best request-response logging we were able to get:
+
+![Best logs version](nist-starter-200.png)
+
+Although `Microsoft.AspNetCore` since .NET 6 provides an extensive http logging functionality out-of-the-box, there are still a few missing features. So instead we've used the `Nist.Logs` nuget package. Here's the table summarizing the feature list of the libraries:
 
 ```
 | Feature            | Microsoft.AspNetCore.HttpLogging     | Nist.Logs |
@@ -213,7 +217,7 @@ app.UseHttpIOLogging(); // instead of app.UseHttpLogging();
 | Request Duration   | ✅                                    | ✅         |
 ```
 
-And here's the final version of the `Program.cs`
+And for a quick reference here's the final `Program.cs`:
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -250,3 +254,5 @@ public record Guest(string Name, bool Vip);
 public record Ticket(string PartyId, string Receiver, bool LoungeAccess, string Code);
 public class NotEnoughLevelException : Exception;
 ```
+
+You can also find the full [project](https://github.com/astorDev/nist/tree/main/dotnet/logging/playground/nist-starter) on the github.
