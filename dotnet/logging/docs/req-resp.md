@@ -196,7 +196,7 @@ app.UseHttpIOLogging(); // instead of app.UseHttpLogging();
 
 ## Recap
 
-![](ms-configured-200.png)
+![](nist-starter-200.png)
 
 ```
 | Feature            | Microsoft.AspNetCore.HttpLogging     | Nist.Logs |
