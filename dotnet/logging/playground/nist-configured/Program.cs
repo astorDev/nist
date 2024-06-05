@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Nist.Logs;
+using Nist.Bodies;
 using Nist.Errors;
 using System.Net;
 
@@ -7,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
+app.UseRequestBodyStringReader();
 app.UseHttpIOLogging();
+app.UseResponseBodyStringReader();
 
 app.UseErrorBody<Error>(ex => ex switch {
     NotEnoughLevelException _ => new (HttpStatusCode.BadRequest, "NotEnoughLevel"),

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Nist.Errors;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,11 @@ builder.Services.AddHttpLogging(o => {});
 var app = builder.Build();
 
 app.UseHttpLogging();
+
+app.UseErrorBody<Error>(ex => ex switch {
+    NotEnoughLevelException _ => new (HttpStatusCode.BadRequest, "NotEnoughLevel"),
+    _ => new (HttpStatusCode.InternalServerError, "Unknown")
+}, showException: false);
 
 app.MapPost("/parties/{partyId}/guests", (string partyId, [FromQuery] bool? loungeAccess, Guest visitor) => {
     if (loungeAccess == true && !visitor.Vip) 

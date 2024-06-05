@@ -1,3 +1,5 @@
+using Nist.Bodies;
+
 namespace Nist.Logs;
 
 public class HttpIOLoggingMiddleware(
@@ -26,6 +28,17 @@ public static class RequestsLoggingRegistration
     {
         var settings = new IOLoggingSettings();
         configuration?.Invoke(settings);
+
+        if (settings.Template.OrderedKeys.Contains(IOLoggingSettings.Fields.RequestBody))
+        {
+            app.UseRequestBodyStringReader();
+        }
+
         app.UseMiddleware<HttpIOLoggingMiddleware>(settings);
+
+        if (settings.Template.OrderedKeys.Contains(IOLoggingSettings.Fields.ResponseBody))
+        {
+            app.UseResponseBodyStringReader();
+        }
     }
 }
