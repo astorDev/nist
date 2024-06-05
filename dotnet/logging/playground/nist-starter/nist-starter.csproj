@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Nist.Bodies" Version="2024.102.101.7" />
     <PackageReference Include="Nist.Errors" Version="2.2.2" />
-    <PackageReference Include="Nist.Logs" Version="2024.106.104.16" />
+    <PackageReference Include="Nist.Logs" Version="2024.106.105.18" />
   </ItemGroup>
 
 </Project>
