@@ -12,7 +12,7 @@ We'll start with the most minimal setup .NET provides to us, by running
 dotnet new web
 ```
 
-It's important to check logging of every part of an http request e.g. request body, query string, errors, and path parameters. So the default `Hello World` endpoint won't do. Let's instead create a party with ~blackjack~ query and route parameters:
+It's important to check the logging of every part of an http request e.g. request body, query string, errors, and path parameters. So the default `Hello World` endpoint won't do. Let's instead create a party with ~blackjack~ query and route parameters:
 
 ```csharp
 app.MapPost("/parties/{partyId}/guests", (string partyId, [FromQuery] bool? loungeAccess, Guest visitor) => {
@@ -34,13 +34,13 @@ public record Ticket(string PartyId, string Receiver, bool LoungeAccess, string 
 public class NotEnoughLevelException : Exception;
 ```
 
-By default for `NotEnoughLevelException` ASP .NET Core will roughly interrupt the request and return `InternalServerError`. Let's create a error object instead. Probably the easiest way to achieve it is by using `Nist.Errors` nuget package. To install it we'll use the following command
+By default for `NotEnoughLevelException` ASP .NET Core will roughly interrupt the request and return `InternalServerError`. Let's create an error object instead. Probably the easiest way to achieve it is by using the `Nist.Errors` nuget package. To install it we'll use the following command
 
 ```shell
 dotnet add package Nist.Errors
 ```
 
-And map our exception to the corresponsing errors:
+And map our exception to the corresponding errors:
 
 ```csharp
 app.UseErrorBody<Error>(ex => ex switch {
@@ -49,7 +49,7 @@ app.UseErrorBody<Error>(ex => ex switch {
 }, showException: false);
 ```
 
-Now, let's get to the request and response logging. The most minimalistic way to enable it consist of 4 steps:
+Now, let's get to the request and response logging. The most minimalistic way to enable it consists of 4 steps:
 
 1. Register http logging services
 
@@ -64,13 +64,13 @@ app.UseHttpLogging();
 ```
 
 3. Remove `appsettings.Development.json` to minimize our configuration overhead
-4. Since, by default, the log level of `Microsoft.AspNetCore` is `Warning` specify dedicated log level for the http logging middleware in `appsettings.json`:
+4. Since, by default, the log level of `Microsoft.AspNetCore` is `Warning` specify a dedicated log level for the http logging middleware in `appsettings.json`:
 
 ```json
 "Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware": "Information"
 ```
 
-After all those changes here's how our complete `Program.cs` will look like:
+After all those changes here's what our complete `Program.cs` will look like:
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -120,7 +120,7 @@ POST http://localhost:5244/parties/new-year/guests?loungeAccess=true
 }
 ```
 
-Here's the logs we get:
+Here are the logs we get:
 
 ![](ms-starter-200.png)
 
@@ -141,7 +141,7 @@ We'll get:
 
 ## Configuring the logging
 
-As you may see, although we have a lot of thing logged we can't really say much about the request. We may figure out which endpoint was hit and whether our response was successful (if we use http status codes), but that's about it. Plus, in a high-load environment matching request and response could be a challenge since they are logged separately. So let's `CombineLogs` and see what we __can__ get logged. Here's the code:
+As you may see, although we have a lot of things logged we can't really say much about the request. We may figure out which endpoint was hit and whether our response was successful (if we use http status codes), but that's about it. Plus, in a high-load environment matching requests and responses could be a challenge since they are logged separately. So let's `CombineLogs` and see what we __can__ get logged. Here's the code:
 
 ```csharp
 builder.Services.AddHttpLogging(o => {
@@ -183,13 +183,13 @@ Now, we'll get practically the same amount of useful information in a much more 
 
 ## Making it even better
 
-There are still some problems with what we got, however:
+There are still some problems with what we have, however:
 
-1. Note that because we have path variable `partyId` the value of `path` field is not the same for a single endpoint. That will prevent us from getting analytics by a specific endpoint.
-2. There's no connection between request response log and the log of an occurred exception. Which can make it complicated to find the exact exception for a unsuccessful responses. Especially, when the exception is unrecognized.
-3. The log still takes a lot of space due to a number of reasons. First, we have useless unremovable fields (`RequestBodyStatus`, `PathBase`). Secondly, we have a very "wide" format, using in total 4 rows for method, path and query string.
+1. Note that because we have the path variable `partyId` the value of the `path` field is not the same for a single endpoint. That will prevent us from getting analytics by a specific endpoint.
+2. There's no connection between the request-response log and the log of an occurred exception. Which can make it complicated to find the exact exception for an unsuccessful response. Especially, when the exception is unrecognized.
+3. The log still takes up a lot of space due to a number of reasons. First, we have useless unremovable fields (`RequestBodyStatus`, `PathBase`). Secondly, we have a very "wide" format, using in total of 4 rows for method, path, and query string.
 
-Fortunatelly, we have a nuget package that covers the blind spots in the built-in library. Let's check it out. First, we'll need to install it:
+Fortunately, we have a nuget package that covers the blind spots in the built-in library. Let's check it out. First, we'll need to install it:
 
 ```shell
 dotnet add package Nist.Logging
@@ -205,13 +205,13 @@ using Nist.Logs;
 app.UseHttpIOLogging(); // instead of app.UseHttpLogging();
 ```
 
-And we got a minimal, yet fully-functioning logs:
+And we got minimal, yet fully-functioning logs:
 
 ![](nist-starter-200.png)
 
 ![](nist-starter-400.png)
 
-> Although, `ExceptionHandlerMiddleware` still logs an occurred exception we no longer need to rely on it since we have exception logged in the logging middleware. You can even silence the `ExceptionHandlerMiddleware` with `"Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware": "None"` in the `appsettings.json`
+> Although, `ExceptionHandlerMiddleware` still logs an occurred exception we no longer need to rely on it since we have an exception logged in the logging middleware. You can even silence the `ExceptionHandlerMiddleware` with `"Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware": "None"` in the `appsettings.json`
 
 ## Recap
 
