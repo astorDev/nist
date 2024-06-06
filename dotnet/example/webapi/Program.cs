@@ -1,3 +1,6 @@
+using System.Net;
+using Nist.Errors;
+
 DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
@@ -11,6 +14,7 @@ builder.Services.Configure<Shooter>(builder.Configuration.GetSection("Shooter"))
 var app = builder.Build();
 
 app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.DefaultWithJsonBodies);
+app.UseErrorBody<Error>(ex => new Error(HttpStatusCode.InternalServerError, "Unknown"));
 
 app.MapGet(Uris.About, (IHostEnvironment env) => new About(
     "Example Nist WebApi",
@@ -25,6 +29,16 @@ app.MapGet(Uris.RussianRouletteShot, () => {
 });
 
 app.MapPost(Uris.RussianRouletteShot, (Gun gun, IOptions<Shooter> shooterOptions) => {
+    var shot = Shoot(gun, app.Logger, shooterOptions);
+    return shot.Idle ? Results.Ok(shot) : Results.BadRequest(Errors.Killed);
+});
+
+app.MapPost($"{Uris.RussianRouletteShot}/{{id}}", (string id, Gun gun, IOptions<Shooter> shooterOptions) => {
+    if (id == "deadly")
+    {
+        throw new InvalidOperationException("deadly shot");
+    }
+    
     var shot = Shoot(gun, app.Logger, shooterOptions);
     return shot.Idle ? Results.Ok(shot) : Results.BadRequest(Errors.Killed);
 });
