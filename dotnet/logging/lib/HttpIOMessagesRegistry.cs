@@ -1,8 +1,9 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Extensions;
 using Nist.Bodies;
 
-public class HttpIOMessagesRegistry
+public static class HttpIOMessagesRegistry
 {
     public const string Method = "Method";
     public const string Uri = "Uri";
@@ -12,31 +13,6 @@ public class HttpIOMessagesRegistry
     public const string ResponseCode = "ResponseCode";
     public const string Elapsed = "Elapsed";
     public const string Exception = "Exception";
-
-    public static readonly HttpIOLogMessageSetting Default = new(
-        template: LogMessageTemplate.Parse(@$"{{{Method}}} {{{Uri}}} > {{{ResponseCode}}} in {{{Elapsed}}}ms 
-Endpoint: {{{Endpoint}}}
-RequestBodyString: {{{RequestBody}}}
-ResponseBodyString: {{{ResponseBody}}}
-Exception: {{{Exception}}}"),
-        valueExtractors: DefaultExtractors,
-        beforeLoggingMiddleware: DefaultBeforeLoggingMiddleware,
-        afterLoggingMiddleware: DefaultAfterLoggingMiddleware);
-
-    public static readonly HttpIOLogMessageSetting Http =
-        Default.WithTemplateString(
-            @$"{{{Method}}} {{{Uri}}}
-
-{{{RequestBody}}}
-
->>> 
-
-{{{ResponseCode}}} {{{ResponseBody}}}
-
-Elapsed: {{{Elapsed}}}
-Endpoint: {{{Endpoint}}}
-Exception: {{{Exception}}}
-");
 
     public static readonly Dictionary<string, Func<HttpContext, object?>> DefaultExtractors = new()
     {
@@ -49,6 +25,39 @@ Exception: {{{Exception}}}
         { Elapsed, context => context.GetElapsed().TotalMilliseconds },
         { Exception, ExtractSafeException }
     };
+
+    public static readonly HttpIOLogMessageSetting Default = new(
+        template: LogMessageTemplate.Parse(@$"{{{Method}}} {{{Uri}}} > {{{ResponseCode}}} in {{{Elapsed}}}ms 
+Endpoint: {{{Endpoint}}}
+RequestBody: {{{RequestBody}}}
+ResponseBody: {{{ResponseBody}}}
+Exception: {{{Exception}}}"),
+        valueExtractors: DefaultExtractors,
+        beforeLoggingMiddleware: DefaultBeforeLoggingMiddleware,
+        afterLoggingMiddleware: DefaultAfterLoggingMiddleware);
+
+    public static readonly HttpIOLogMessageSetting Http =
+        Default.CopyWith(
+            logMessageTemplateString: @$"{{{Method}}} {{{Uri}}}
+
+{{{RequestBody}}}
+
+>>> 
+
+{{{ResponseCode}}} {{{ResponseBody}}}
+
+Elapsed: {{{Elapsed}}}
+Endpoint: {{{Endpoint}}}
+Exception: {{{Exception}}}
+");
+
+    public static readonly HttpIOLogMessageSetting DefaultWithJsonBodies = Default.CopyWith(
+        valueExtractorsOverrides: d =>
+        {
+            d[RequestBody] = context => context.GetRequestBodyString().AsJsonObject();
+            d[ResponseBody] = context => context.GetResponseBodyString().AsJsonObject();
+        }
+    );
 
     public static void DefaultBeforeLoggingMiddleware(IApplicationBuilder app)
     {
@@ -68,8 +77,16 @@ Exception: {{{Exception}}}
         return exception == null ? null : new { exception.Message, exception.StackTrace, InnerExceptionMessage = exception.InnerException?.Message };
     }
 
-    public static Endpoint? ExtractEndpoint(HttpContext context)
+    public static object? ExtractEndpoint(HttpContext context)
     {
-        return context.GetEndpoint() ?? context.Features.Get<IExceptionHandlerPathFeature>()?.Endpoint;
+        var endpoint = context.GetEndpoint() ?? context.Features.Get<IExceptionHandlerPathFeature>()?.Endpoint;
+        return endpoint?.ToString();
+    }
+
+    public static object? AsJsonObject(this string raw)
+    {
+        if (String.IsNullOrWhiteSpace(raw)) return null;
+        var jsonObject = JsonSerializer.Deserialize<JsonElement>(raw);
+        return jsonObject;
     }
 }

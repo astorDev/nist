@@ -2,14 +2,15 @@ DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
 
-builder.Logging.ClearProviders().AddSimpleConsole(c => c.SingleLine = true).AddStateJsonConsole();
+builder.Logging.ClearProviders()
+    .AddMiniJsonConsole()
+    .AddSimpleConsole(c => c.SingleLine = true);
+
 builder.Services.Configure<Shooter>(builder.Configuration.GetSection("Shooter"));
 
 var app = builder.Build();
 
-app.UseRequestBodyStringReader();
-app.UseHttpIOLogging();
-app.UseResponseBodyStringReader();
+app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.DefaultWithJsonBodies);
 
 app.MapGet(Uris.About, (IHostEnvironment env) => new About(
     "Example Nist WebApi",

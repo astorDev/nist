@@ -3,13 +3,13 @@ using System.Text.RegularExpressions;
 public record HttpIOLogMessageSetting
 {
     readonly LogMessageTemplate template;
-    readonly Dictionary<string, Func<HttpContext, object?>> valueExtractors;
+    readonly IReadOnlyDictionary<string, Func<HttpContext, object?>> valueExtractors;
     public readonly Action<IApplicationBuilder>? BeforeLoggingMiddleware;
     public readonly Action<IApplicationBuilder>? AfterLoggingMiddleware;
 
     public HttpIOLogMessageSetting(
         LogMessageTemplate template, 
-        Dictionary<string, Func<HttpContext, object?>> valueExtractors,
+        IReadOnlyDictionary<string, Func<HttpContext, object?>> valueExtractors,
         Action<IApplicationBuilder>? beforeLoggingMiddleware = null,
         Action<IApplicationBuilder>? afterLoggingMiddleware = null
     )
@@ -35,11 +35,14 @@ public record HttpIOLogMessageSetting
         logger.LogInformation(template.Message, logParameters.ToArray());
     }
 
-    public HttpIOLogMessageSetting WithTemplateString(string logMessageTemplateString)
+    public HttpIOLogMessageSetting CopyWith(string? logMessageTemplateString = null, Action<Dictionary<string, Func<HttpContext, object?>>>? valueExtractorsOverrides = null)
     {
+        var newValueExtractor = new Dictionary<string, Func<HttpContext, object?>>(valueExtractors);
+        valueExtractorsOverrides?.Invoke(newValueExtractor);
+
         return new(
-            LogMessageTemplate.Parse(logMessageTemplateString), 
-            valueExtractors,
+            logMessageTemplateString == null ? template : LogMessageTemplate.Parse(logMessageTemplateString),
+            newValueExtractor,
             BeforeLoggingMiddleware,
             AfterLoggingMiddleware
         );

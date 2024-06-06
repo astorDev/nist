@@ -13,6 +13,8 @@ if (httpIOLoggingSetting == "default")
     app.UseHttpIOLogging();
 else if (httpIOLoggingSetting == "http")
     app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.Http);
+else if (httpIOLoggingSetting == "json")
+    app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.DefaulWithJsonBodies);
 else
     throw new InvalidOperationException("Invalid HttpIOLogging setting");
 
