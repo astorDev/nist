@@ -13,11 +13,30 @@ public class HttpIOMessagesRegistry
     public const string Elapsed = "Elapsed";
     public const string Exception = "Exception";
 
-    public static readonly LogMessageTemplate DefaultTemplate = LogMessageTemplate.Parse(@$"{{{Method}}} {{{Uri}}} > {{{ResponseCode}}} in {{{Elapsed}}}ms 
+    public static readonly HttpIOLogMessageSetting Default = new(
+        template: LogMessageTemplate.Parse(@$"{{{Method}}} {{{Uri}}} > {{{ResponseCode}}} in {{{Elapsed}}}ms 
 Endpoint: {{{Endpoint}}}
 RequestBodyString: {{{RequestBody}}}
 ResponseBodyString: {{{ResponseBody}}}
-Exception: {{{Exception}}}");
+Exception: {{{Exception}}}"),
+        valueExtractors: DefaultExtractors,
+        beforeLoggingMiddleware: DefaultBeforeLoggingMiddleware,
+        afterLoggingMiddleware: DefaultAfterLoggingMiddleware);
+
+    public static readonly HttpIOLogMessageSetting Http =
+        Default.WithTemplateString(
+            @$"{{{Method}}} {{{Uri}}}
+
+{{{RequestBody}}}
+
+>>> 
+
+{{{ResponseCode}}} {{{ResponseBody}}}
+
+Elapsed: {{{Elapsed}}}
+Endpoint: {{{Endpoint}}}
+Exception: {{{Exception}}}
+");
 
     public static readonly Dictionary<string, Func<HttpContext, object?>> DefaultExtractors = new()
     {
@@ -53,26 +72,4 @@ Exception: {{{Exception}}}");
     {
         return context.GetEndpoint() ?? context.Features.Get<IExceptionHandlerPathFeature>()?.Endpoint;
     }
-
-    public static readonly HttpIOLogMessageSetting Default = new(
-        template: DefaultTemplate,
-        valueExtractors: DefaultExtractors,
-        beforeLoggingMiddleware: DefaultBeforeLoggingMiddleware,
-        afterLoggingMiddleware: DefaultAfterLoggingMiddleware);
-    
-    public static readonly HttpIOLogMessageSetting Http = 
-        Default.WithTemplateString(
-            @$"{{{Method}}} {{{Uri}}}
-
-{{{RequestBody}}}
-
->>> 
-
-{{{ResponseCode}}} {{{ResponseBody}}}
-
-Elapsed: {{{Elapsed}}}
-Endpoint: {{{Endpoint}}}
-Exception: {{{Exception}}}
-"
-        );
 }
