@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nist.Bodies" Version="2024.102.101.7" />
+    <PackageReference Include="Nist.Errors" Version="2.2.2" />
+    <PackageReference Include="Nist.Logs" Version="2024.106.105.18" />
+  </ItemGroup>
+
+</Project>
