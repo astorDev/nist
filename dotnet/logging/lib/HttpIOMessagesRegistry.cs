@@ -7,16 +7,16 @@ public class HttpIOMessagesRegistry
     public const string Method = "Method";
     public const string Uri = "Uri";
     public const string Endpoint = "Endpoint";
-    public const string RequestBodyString = "RequestBodyString";
-    public const string ResponseBodyString = "ResponseBodyString";
+    public const string RequestBody = "RequestBody";
+    public const string ResponseBody = "ResponseBody";
     public const string ResponseCode = "ResponseCode";
     public const string Elapsed = "Elapsed";
     public const string Exception = "Exception";
 
     public static readonly LogMessageTemplate DefaultTemplate = LogMessageTemplate.Parse(@$"{{{Method}}} {{{Uri}}} > {{{ResponseCode}}} in {{{Elapsed}}}ms 
 Endpoint: {{{Endpoint}}}
-RequestBodyString: {{{RequestBodyString}}}
-ResponseBodyString: {{{ResponseBodyString}}}
+RequestBodyString: {{{RequestBody}}}
+ResponseBodyString: {{{ResponseBody}}}
 Exception: {{{Exception}}}");
 
     public static readonly Dictionary<string, Func<HttpContext, object?>> DefaultExtractors = new()
@@ -24,8 +24,8 @@ Exception: {{{Exception}}}");
         { Method, context => context.Request.Method },
         { Uri, context => context.Request.GetEncodedPathAndQuery() },
         { Endpoint, ExtractEndpoint },
-        { RequestBodyString, context => context.GetRequestBodyString() },
-        { ResponseBodyString, context => context.GetResponseBodyString() },
+        { RequestBody, context => context.GetRequestBodyString() },
+        { ResponseBody, context => context.GetResponseBodyString() },
         { ResponseCode, context => context.Response.StatusCode },
         { Elapsed, context => context.GetElapsed().TotalMilliseconds },
         { Exception, ExtractSafeException }
@@ -58,21 +58,17 @@ Exception: {{{Exception}}}");
         template: DefaultTemplate,
         valueExtractors: DefaultExtractors,
         beforeLoggingMiddleware: DefaultBeforeLoggingMiddleware,
-        afterLoggingMiddleware: app =>
-        {
-            app.UseElapsed();
-            app.UseResponseBodyStringReader();
-        });
+        afterLoggingMiddleware: DefaultAfterLoggingMiddleware);
     
     public static readonly HttpIOLogMessageSetting Http = 
         Default.WithTemplateString(
             @$"{{{Method}}} {{{Uri}}}
 
-{{{RequestBodyString}}}
+{{{RequestBody}}}
 
 >>> 
 
-{{{ResponseCode}}} {{{ResponseBodyString}}}
+{{{ResponseCode}}} {{{ResponseBody}}}
 
 Elapsed: {{{Elapsed}}}
 Endpoint: {{{Endpoint}}}
