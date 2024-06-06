@@ -1,44 +1,30 @@
-using Nist.Bodies;
-
 namespace Nist.Logs;
 
 public class HttpIOLoggingMiddleware(
     RequestDelegate next,
-    IOLoggingSettings settings,
+    HttpIOLoggingSettings settings,
     ILogger<HttpIOLoggingMiddleware> logger)
 {
     public async Task Invoke(HttpContext context)
     {
-        if (settings.Ignores(context))
+        await next(context);
+        
+        if (!settings.Ignores(context))
         {
-            await next(context);
-            return;
+            settings.Message.Log(context, logger);    
         }
-
-        var information = await HttpIOReader.ExecuteAndGetInformation(context, next);
-        var loggedParams = settings.GetLoggedParams(information);
-
-        logger.LogInformation(settings.Template.Message, loggedParams.ToArray());
     }
 }
 
 public static class RequestsLoggingRegistration
 {
-    public static void UseHttpIOLogging(this IApplicationBuilder app, Action<IOLoggingSettings>? configuration = null)
+    public static void UseHttpIOLogging(this IApplicationBuilder app, Action<HttpIOLoggingSettings>? configuration = null)
     {
-        var settings = new IOLoggingSettings();
+        var settings = new HttpIOLoggingSettings();
         configuration?.Invoke(settings);
 
-        if (settings.Template.OrderedKeys.Contains(IOLoggingSettings.Fields.RequestBody))
-        {
-            app.UseRequestBodyStringReader();
-        }
-
+        settings.Message.BeforeLoggingMiddleware?.Invoke(app);
         app.UseMiddleware<HttpIOLoggingMiddleware>(settings);
-
-        if (settings.Template.OrderedKeys.Contains(IOLoggingSettings.Fields.ResponseBody))
-        {
-            app.UseResponseBodyStringReader();
-        }
+        settings.Message.AfterLoggingMiddleware?.Invoke(app);
     }
 }

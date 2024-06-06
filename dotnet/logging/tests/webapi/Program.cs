@@ -7,7 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-app.UseHttpIOLogging();
+var httpIOLoggingSetting = app.Services.GetRequiredService<IConfiguration>()["Mode"] ?? "default";
+
+if (httpIOLoggingSetting == "default")
+    app.UseHttpIOLogging();
+else if (httpIOLoggingSetting == "http")
+    app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.Http);
+else
+    throw new InvalidOperationException("Invalid HttpIOLogging setting");
 
 app.UseErrorBody<Error>(ex => ex switch {
     NotEnoughLevelException _ => new (HttpStatusCode.BadRequest, "NotEnoughLevel"),

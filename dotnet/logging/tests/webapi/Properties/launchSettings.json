@@ -4,6 +4,11 @@
     "Local": {
       "commandName": "Project",
       "applicationUrl": "http://localhost:5244"
+    },
+    "Local HttpLog" : {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:5244",
+      "commandLineArgs": "--mode=http"
     }
   }
 }
