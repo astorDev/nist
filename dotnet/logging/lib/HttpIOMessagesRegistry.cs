@@ -77,7 +77,7 @@ Exception: {{{Exception}}}
         return exception == null ? null : new { exception.Message, exception.StackTrace, InnerExceptionMessage = exception.InnerException?.Message };
     }
 
-    public static object? ExtractEndpoint(HttpContext context)
+    public static string? ExtractEndpoint(HttpContext context)
     {
         var endpoint = context.GetEndpoint() ?? context.Features.Get<IExceptionHandlerPathFeature>()?.Endpoint;
         return endpoint?.ToString();

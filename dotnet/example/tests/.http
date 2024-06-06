@@ -7,3 +7,11 @@ POST http://localhost:5215/russian-roulette-shot
     "size" : 3,
     "bulletIndex" : 1
 }
+
+###
+POST http://localhost:5215/russian-roulette-shot/deadly
+
+{
+    "size" : 3,
+    "bulletIndex" : 1
+}

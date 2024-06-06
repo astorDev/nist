@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "..\logging\lib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Bodies", "..\bodies\lib\Nist.Bodies.csproj", "{93E2B2AB-2A80-422E-B958-07637086AFCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Errors", "..\errors\Nist.Errors.csproj", "{153D9785-2F1D-42C3-ABDB-1DAE1ECC7CB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{93E2B2AB-2A80-422E-B958-07637086AFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93E2B2AB-2A80-422E-B958-07637086AFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93E2B2AB-2A80-422E-B958-07637086AFCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{153D9785-2F1D-42C3-ABDB-1DAE1ECC7CB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{153D9785-2F1D-42C3-ABDB-1DAE1ECC7CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{153D9785-2F1D-42C3-ABDB-1DAE1ECC7CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{153D9785-2F1D-42C3-ABDB-1DAE1ECC7CB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
