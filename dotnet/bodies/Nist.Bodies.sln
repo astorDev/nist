@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Bodies", "lib\Nist.Bodies.csproj", "{3BFB332A-13B5-41F2-A298-DF4452F521FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "playground", "playground", "{775ED7E0-039D-42A6-A7DB-2E3F094C900C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "action-filter", "playground\action-filter\action-filter.csproj", "{9C053758-DB5C-48BD-96CE-CEBB689613DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3BFB332A-13B5-41F2-A298-DF4452F521FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BFB332A-13B5-41F2-A298-DF4452F521FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BFB332A-13B5-41F2-A298-DF4452F521FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BFB332A-13B5-41F2-A298-DF4452F521FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C053758-DB5C-48BD-96CE-CEBB689613DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C053758-DB5C-48BD-96CE-CEBB689613DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C053758-DB5C-48BD-96CE-CEBB689613DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C053758-DB5C-48BD-96CE-CEBB689613DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9C053758-DB5C-48BD-96CE-CEBB689613DB} = {775ED7E0-039D-42A6-A7DB-2E3F094C900C}
+	EndGlobalSection
+EndGlobal
