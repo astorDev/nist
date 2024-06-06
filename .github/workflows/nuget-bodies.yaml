@@ -1,4 +1,4 @@
-name: Publish Nist.Logs
+name: Publish Nist.Bodies
 on:
   push:
     paths:
