@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Example.Tests", "tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webapi", "webapi\Nist.Example.WebApi.csproj", "{C81F5C62-6D49-4DED-961B-F99FADC1E7CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "..\logging\Nist.Logs.csproj", "{E0D9BFD4-29E2-4A17-97EE-CAE52980AE0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "..\logging\lib\Nist.Logs.csproj", "{E0D9BFD4-29E2-4A17-97EE-CAE52980AE0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Bodies", "..\bodies\Nist.Bodies.csproj", "{93E2B2AB-2A80-422E-B958-07637086AFCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Bodies", "..\bodies\lib\Nist.Bodies.csproj", "{93E2B2AB-2A80-422E-B958-07637086AFCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

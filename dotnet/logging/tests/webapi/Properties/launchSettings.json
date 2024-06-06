@@ -9,6 +9,11 @@
       "commandName": "Project",
       "applicationUrl": "http://localhost:5244",
       "commandLineArgs": "--mode=http"
+    },
+    "Local Json" : {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:5244",
+      "commandLineArgs": "--mode=json"
     }
   }
 }
