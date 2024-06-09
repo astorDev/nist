@@ -77,10 +77,10 @@ Exception: {{{Exception}}}
         return exception == null ? null : new { exception.Message, exception.StackTrace, InnerExceptionMessage = exception.InnerException?.Message };
     }
 
-    public static string? ExtractEndpoint(HttpContext context)
+    public static object? ExtractEndpoint(HttpContext context)
     {
         var endpoint = context.GetEndpoint() ?? context.Features.Get<IExceptionHandlerPathFeature>()?.Endpoint;
-        return endpoint?.ToString();
+        return endpoint;
     }
 
     public static object? AsJsonObject(this string raw)
