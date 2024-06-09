@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
 
 builder.Logging.ClearProviders()
-    .AddMiniJsonConsole()
+    .AddMiniJsonConsole(x => x.Indent())
     .AddSimpleConsole(c => c.SingleLine = true);
 
 builder.Services.Configure<Shooter>(builder.Configuration.GetSection("Shooter"));
