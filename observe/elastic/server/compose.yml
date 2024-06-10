@@ -20,7 +20,7 @@ services:
       resources:
         limits:
           cpus: '1'
-          memory: '500M'
+          memory: '1000M'
 
   kibana:
     restart: always
