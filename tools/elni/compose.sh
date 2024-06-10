@@ -13,5 +13,8 @@ while true; do
     sleep 2
 done
 
-docker compose -f filebeat-compose.yml up -d
+cd ../../observability/elastic/shipper
+docker compose up -d
+cd ../../../tools/elni
+
 docker compose -f elnik-compose.yml up -d
