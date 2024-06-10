@@ -13,7 +13,7 @@ processors:
     overwrite_keys: true
 
 output.elasticsearch:
-  hosts: ["elasticsearch:9200"]
+  hosts: ${ES_HOSTS}
   indices:
     - index: "logs-%{[container.labels.family]}-%{[container.name]}-%{+yyyy.MM.dd}"
     - index: "logs-nofamily-%{[container.name]}-%{+yyyy.MM.dd}"
