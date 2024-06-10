@@ -1,3 +1,5 @@
+@host = http://localhost:5610
+
 @pendingDashboard = {{GET_dashboards.response.body.$.pending[0]}}
 
 @existingDashboard = {{GET_dashboards.response.body.$.existing[0]}}
@@ -7,20 +9,23 @@
 @existingIndexes = {{GET_indexes.response.body.$.existing[0]}}
 
 ###
+# @name indexes
+GET /indexes
+
+###
+# @ref indexes
+POST /indexes
+
+"{{indexes.pending[0]}}"
+
+###
 # @name GET_dashboards
 GET http://localhost:5610/dashboards
 
 ###
 PUT http://localhost:5610/dashboards/{{pendingDashboard}}
 
-###
-# @name GET_indexes
-GET http://localhost:5610/indexes
 
-###
-POST http://localhost:5610/indexes
-
-"{{pendingIndexes}}"
 
 ### Just in case delete methods
 ###

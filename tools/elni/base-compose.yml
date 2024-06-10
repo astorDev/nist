@@ -1,0 +1,38 @@
+name: elni
+
+volumes:
+  elastic-data:
+
+services:
+  elasticsearch:
+    labels:
+      - family=infrastructure
+    image: elasticsearch:7.17.3 # the highest version that just works
+    restart: always
+    environment:
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '500M'
+
+  kibana:
+    restart: always
+    labels:
+      - family=infrastructure
+    image: kibana:7.17.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '500M'
