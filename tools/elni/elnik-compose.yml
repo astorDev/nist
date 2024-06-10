@@ -1,0 +1,26 @@
+name: elni
+
+services:
+  elnik-webapi:
+    restart: always
+    image: vosarat/elnik-webapi:1.0
+    labels:
+      - family=nist
+    build:
+      context: .
+      dockerfile: Elnik.WebApi/Dockerfile
+    environment:
+      - KIBANA_URL=http://kibana:5601
+    ports:
+      - "5610:80"
+  
+  elnik-service:
+    restart: always
+    image: vosarat/elnik-service:1.0
+    labels:
+      - family=background
+    build:
+      context: .
+      dockerfile: Elnik.Background.Service/Dockerfile
+    environment:
+      - ELNIK_URL=http://elnik-webapi

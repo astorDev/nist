@@ -1,7 +1,7 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Elnik.Background.Service/Elnik.Background.Service.csproj", "Elnik.Background.Service/"]
 RUN dotnet restore "Elnik.Background.Service/Elnik.Background.Service.csproj"

@@ -1,0 +1,20 @@
+name: elni
+
+services:
+  filebeat:
+    restart: always
+    labels:
+      - family=infrastructure
+    build:
+      dockerfile: filebeat.Dockerfile
+      context: .
+    image: vosarat/elni-filebeat:1.0
+    user: root
+    volumes:
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: '500M'
