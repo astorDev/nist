@@ -1,4 +1,6 @@
-docker compose -f base-compose.yml up -d
+cd server
+docker compose up -d
+cd ..
 
 while true; do
     status_code=$(curl -o /dev/null -s -w "%{http_code}\n" -I http://localhost:5601)
@@ -13,8 +15,10 @@ while true; do
     sleep 2
 done
 
-cd ../../observability/elastic/shipper
+cd shipper
 docker compose up -d
-cd ../../../tools/elni
+cd ..
 
+cd ../../tools/elni
 docker compose -f elnik-compose.yml up -d
+cd ../../observe/elastic

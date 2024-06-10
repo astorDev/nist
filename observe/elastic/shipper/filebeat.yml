@@ -12,6 +12,17 @@ processors:
     target: "" # means set to root doc
     overwrite_keys: true
 
+- drop_fields:
+    fields:
+      - "/container.labels.com_docker_compose_*/"
+      - "/agent.*/"
+      - "/log.*/"
+      - "stream"
+      - "input.type"
+      - "ecs.version"
+      - "data_stream.type"
+    ignore_missing: true
+
 output.elasticsearch:
   hosts: ${ES_HOSTS}
   indices:
