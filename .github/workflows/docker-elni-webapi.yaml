@@ -1,0 +1,18 @@
+on:
+  push:
+    paths: 
+      - 'tools/elni/Elnik.WebApi/**'
+      - '.github/workflows/docker-elni-webapi.yml'
+  workflow_dispatch:
+
+jobs:
+  push-image:
+    name: Build & Push image
+    runs-on: ubuntu 
+    steps:
+      - uses: astorDev/versy/calver/docker@main
+        with:
+          image: 'vosarat/elni-webapi'
+          dockerfile-path: 'tools/elni/Elnik.WebApi'
+          docker-login: 'vosarat'
+          docker-password: ${{ secrets.DOCKER_PASSWORD }}
