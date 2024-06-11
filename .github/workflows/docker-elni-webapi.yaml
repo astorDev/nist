@@ -1,8 +1,10 @@
+name: Build & Push Elni WebApi
+
 on:
   push:
-    paths: 
+    paths:
       - 'tools/elni/Elnik.WebApi/**'
-      - '.github/workflows/docker-elni-webapi.yml'
+      - '.github/workflows/docker-elni-webapi.yaml'
   workflow_dispatch:
 
 jobs:
