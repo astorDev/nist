@@ -10,7 +10,7 @@ And even if an API breaks a rule a few times - that's okay, it's still NIST.
 
 ## We also have packages!
 
-Beyond being a software architectural style NIST provides a handful of packages, aiming to help you create and consume HTTP APIs, especially the NIST ones:
+NIST is a software architectural style. But the project also provides a handful of packages, aiming to help you create and consume HTTP APIs, especially the NIST ones:
 
 - [C# Nist.Logs](/dotnet/logging) - Request and response logs.
 - [C# Nist.Error](/dotnet/errors/) - Exceptions to responses mapping.
