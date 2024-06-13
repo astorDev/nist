@@ -19,7 +19,7 @@ If you wonder why I say that I was looking for an alternative to elastic, that's
 
 ![](docker-ram-3gb.gif)
 
-The next problem is that it is ridiculously complicated to create a **simple** setup. First of all, by default, it tries to set up a cluster, which is unnecessary for a local trial so we'll have to set `discovery.type=single-node`. Secondly, the newest version has additional overhead with some authentication token, which is so twisted I wasn't able to succeed with that even after numerous attempts. So I'll stick with the latest version that doesn't do it (7.17.3). Anyway, here's a working `docker-compose.yaml`:
+The next problem is that it is ridiculously complicated to create a **simple** setup. First of all, by default, it tries to set up a cluster, which is unnecessary for a local trial so we'll have to set `discovery.type=single-node`. Secondly, the newest version has additional overhead with an authentication token, which is so twisted I wasn't able to deploy the version even after numerous attempts. So I'll stick with the latest version that doesn't do it (7.17.3). Anyway, here's a working `docker-compose.yaml`:
 
 > To make it worse the small stack takes about 30 seconds to start up (become functional). So, if you are unable to reach Kibana after starting up, most likely you just need to wait.
 
