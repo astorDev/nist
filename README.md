@@ -3,7 +3,7 @@
 NIST is a non-arrogant brother of REST. Tired of hearing what your HTTP API [must](https://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven) do to become REST? To be NIST an HTTP API needs to do only 3 things:
 
 1. Use different URIs for different operations/requests 
-2. Utilize GET for read and others verb for write.
+2. Utilize GET for read and other verbs for write.
 3. Use 2xx codes for success and other codes for errors.
 
 And even if an API breaks a rule a few times - that's okay, it's still NIST.
