@@ -10,7 +10,7 @@ on:
 jobs:
   push-image:
     name: Build & Push image
-    runs-on: ubuntu 
+    runs-on: ubuntu-latest
     steps:
       - uses: astorDev/versy/calver/docker@main
         with:
