@@ -10,4 +10,4 @@ processors:
 output.elasticsearch:
   hosts: elasticsearch:9200
   indices:
-    - index: "%{[container.name]}-%{+yyyy.MM.dd}"
+    - index: "docker-logs"
