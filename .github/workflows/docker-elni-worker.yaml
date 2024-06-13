@@ -1,0 +1,20 @@
+name: Build & Push Elni Worker Image
+
+on:
+  push:
+    paths:
+      - 'tools/elni/Elnik.Background.Service/**'
+      - '.github/workflows/docker-elni-worker.yaml'
+  workflow_dispatch:
+
+jobs:
+  push-image:
+    name: Build & Push image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/docker@main
+        with:
+          image: 'vosarat/elni-worker'
+          dockerfile-path: 'tools/elni/Elnik.Background.Service'
+          docker-login: 'vosarat'
+          docker-password: ${{ secrets.DOCKER_PASSWORD }}
