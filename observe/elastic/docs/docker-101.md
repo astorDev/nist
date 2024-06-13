@@ -5,7 +5,7 @@ status: draft
 
 # Elastic Stack with Docker getting started. Elasticsearch, Kibana, and Filebeat.
 
-Elastic Stack is one the most popular observability stacks out there. With it's self-hosted solution, extensive tooling, and a wide range of integrations it just doesn't seem to have a good alternative when it comes to structured logs. Trust me, I've spent a lot of time looking for one.
+Elastic Stack is one the most popular observability stacks out there. With its self-hosted solution, extensive tooling, and a wide range of integrations it just doesn't seem to have a good alternative when it comes to structured logs. Trust me, I've spent a lot of time looking for one.
 
 > Well, there's one valid alternative: OpenSearch. But it is a fork, so I'm not sure if it counts. And it seems to have all the same problem Elastic have with a few on top.
 
@@ -44,7 +44,7 @@ So now after running `docker compose up -d`, waiting for about half a minute, an
 
 ## Shipping logs
 
-By default, docker containers write their logs in JSON files, following this pattern `/var/lib/docker/containers/*/*.log`. That's perfect for us, since Elastic provides a utility to ship logs from files, called `filebeat`. Here's the simplest configuration of the service in file, called `filebeat.yml`:
+By default, docker containers write their logs in JSON files, following this pattern `/var/lib/docker/containers/*/*.log`. That's perfect for us, since Elastic provides a utility to ship logs from files, called `filebeat`. Here's the simplest configuration of the service in a file, called `filebeat.yml`:
 
 ```yaml
 filebeat.inputs:
@@ -93,7 +93,7 @@ And, of course, we'll also need to map our host socket file to the container soc
 
 ## Wrapping up
 
-This finilizes our introduction. During the article, we've deployed `elasticsearch` and `Kibana`. Deployed `filebeat`, configured to export logs from docker to the `elasticsearch`. Set up the most basic index pattern, allowing us to see the exported logs in Kibana. Finally, we've enriched the logs with docker metadata allowing us to make much more sense from the logs. This all required just two files:
+This finalizes our introduction. During the article, we deployed `elasticsearch` and `Kibana`. Deployed `filebeat`, configured to export logs from docker to the `elasticsearch`. Set up the most basic index pattern, allowing us to see the exported logs in Kibana. Finally, we've enriched the logs with docker metadata allowing us to make much more sense from the logs. This all required just two files:
 
 > Well, and some manual configuration in Kibana, but 🤫
 
@@ -140,6 +140,6 @@ output.elasticsearch:
     - index: "docker-logs"
 ```
 
-Starting from here, we can build an advanced observability solutions. But that's a story for another article.
+Starting from here, we can build advanced observability solutions. But that's a story for another article.
  
 Thank you for reading! By the way... claps are appreciated 👉👈
