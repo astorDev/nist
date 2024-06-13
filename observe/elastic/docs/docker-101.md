@@ -69,7 +69,7 @@ The configuration reads container log files and ships them to the Elasticsearch 
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
 ```
 
-Now, if we'll `docker compose up -d` again filebeat will start shipping logs to Elastic. To see the logs in Kibana we will need to create an index pattern. For now, let's grab all data we have using `*` as our index pattern by `Management > Stack Management > Kibana > Index Patterns > Create index pattern > name: *, Timestamp field: @timestampt > Create index pattern`. Now, opening `Analytics > Discover > *` will list all the logs we got from filebeat.
+Now, if we'll `docker compose up -d` filebeat will start shipping logs to Elastic. To see the logs in Kibana we will need to create an index pattern. For now, let's grab all data we have using `*` as our index pattern by `Management > Stack Management > Kibana > Index Patterns > Create index pattern > name: *, Timestamp field: @timestampt > Create index pattern`. Now, opening `Analytics > Discover > *` will list all the logs we got from filebeat.
 
 ![Firing up Filebeat and logging pattern](filebeat-start.gif)
 
@@ -79,7 +79,7 @@ Let's study the log we got:
 
 ![An example log we got](starter-filebeat-log.png)
 
-The first problem you may notice is that now we are unable to tell which container produced the log. Fortunately, filebeat allows us to enhance exported logs using processors. In particular, we'll need a processor, called `add_docker_metadata` which reads the required metadata from the docker socket file:
+The first problem you may notice is that now we are unable to tell which container produced the log. Fortunately, filebeat allows us to enhance exported logs using processors. In particular, `add_docker_metadata` processor, which reads the required metadata using the docker socket file:
 
 ```yaml
 processors:
@@ -90,6 +90,8 @@ processors:
 And, of course, we'll also need to map our host socket file to the container socket file, like this: `/var/run/docker.sock:/var/run/docker.sock`. Now, after `docker compose up -d` we'll get a much more detailed log looking like this:
 
 ![detailed log](log-with-docker-meta.png)
+
+Now we'll be able to tell which container produced a log and much more.
 
 ## Wrapping up
 
