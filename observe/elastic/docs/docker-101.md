@@ -44,7 +44,7 @@ So now after running `docker compose up -d`, waiting for about half a minute, an
 
 ## Shipping logs
 
-By default, docker containers write their logs in JSON files, following this pattern `/var/lib/docker/containers/*/*.log`. That's perfect for us, since Elastic provides a utility to ship logs from files, called `filebeat`. Here's the simplest configuration of the service in a file, called `filebeat.yml`:
+By default, docker containers write their logs in JSON files, following this pattern `/var/lib/docker/containers/*/*.log`. That's perfect for us since Elastic provides a utility to ship logs from files, called `filebeat`. Here's the simplest configuration of the service in a file, called `filebeat.yml`:
 
 ```yaml
 filebeat.inputs:
