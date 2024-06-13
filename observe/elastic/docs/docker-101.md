@@ -11,7 +11,7 @@ Elastic Stack is one the most popular observability stacks out there. With its s
 
 Docker in it's turn is probably the most popular process management solution out there. Not only is it likely to be used to deploy elastic stack, it's also probably the most fruitful source of logs. So in this article, we will fire up an elastic stack and ship logs from docker there. So, get on board!
 
-![An AI-generated ship with logs](docker-export-thumb.png)
+![An AI-generated ship with logs](docker-101-thumb.png)
 
 ## Firing Elastic Stack up
 
