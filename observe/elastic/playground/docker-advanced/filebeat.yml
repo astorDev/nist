@@ -7,7 +7,20 @@ processors:
 - add_docker_metadata:
     host: "unix:///var/run/docker.sock"
 
+- decode_json_fields:
+    fields: ["message"]
+    target: "x"
+
+- drop_fields:
+    fields:
+      - "/container\\.labels\\..*_.*/"
+      - "/agent.*/"
+      - "stream"
+    ignore_missing: true
+
+
 output.elasticsearch:
   hosts: elasticsearch:9200
   indices:
-    - index: "docker-logs"
+    - index: "docker-logs-%{[container.labels.family]}-%{[container.name]}-%{+yyyy.MM.dd}"
+    - index: "docker-logs-nofamily-%{[container.name]}-%{+yyyy.MM.dd}"

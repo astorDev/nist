@@ -6,6 +6,8 @@ services:
   
   kibana:
     image: kibana:7.17.3
+    labels:
+      - family=ui
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
