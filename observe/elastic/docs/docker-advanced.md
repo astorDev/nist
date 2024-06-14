@@ -5,7 +5,7 @@ status: draft
 
 # Filebeat and Elasticsearch for advanced Docker logs.
 
-Elastic stack is one of the most robust observability systems out there. Application logs are most likely to be handled by docker. The most intuitive way to connect them I've found is Filebeat. So in this article, we will try to fire up a complete stack, that allows to export logs from docker to elasticsearch in a manner that will lay a simple yet powerful foundation of an observability solution. So, start the beat!
+Elastic stack is one of the most robust observability systems out there. Application logs are most likely to be handled by docker. The most intuitive way to connect them I've found is Filebeat. So in this article, we will try to fire up a complete stack, that allows the export of logs from docker to elasticsearch in a manner that will lay a simple yet powerful foundation of an observability solution. So, start the beat!
 
 ![AI-generated log-lover ready to play a beat](docker-advanced-thumb.png)
 
@@ -56,7 +56,7 @@ output.elasticsearch:
     - index: "docker-logs"
 ```
 
-Which produce a log looking something like that:
+Which produce logs looking something like this:
 
 ```json
 {
@@ -153,6 +153,6 @@ Which produce a log looking something like that:
 
 ## Recap
 
-We've created a complete system for exporting docker logs to Elasticsearch. The system forms advanced index names, enabling separating logs by various index patterns. And perhaps even more importantly, the system exports not just raw log messages, but also JSON structured log as a separate fields. The export structure allows versatile filtering and dashboard building from the logs.
+We've created a complete system for exporting docker logs to Elasticsearch. The system forms advanced index names, enabling separating logs by various index patterns. And perhaps even more importantly, the system exports not just raw log messages, but also fields of JSON logs. The export structure allows versatile filtering and dashboard building from the logs.
 
 Thank you for reading! By the way... claps are appreciated 👉👈
