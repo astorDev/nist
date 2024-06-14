@@ -1,6 +1,6 @@
 ---
 type: article
-status: draft
+status: complete
 ---
 
 # Elastic Stack with Docker getting started. Elasticsearch, Kibana, and Filebeat.
@@ -73,7 +73,7 @@ Now, if we'll `docker compose up -d` filebeat will start shipping logs to Elasti
 
 ![Firing up Filebeat and logging pattern](filebeat-start.gif)
 
-## Organizing our logs
+## Enriching the logs
 
 Let's study the log we got:
 
