@@ -56,7 +56,7 @@ output.elasticsearch:
     - index: "docker-logs"
 ```
 
-Which produce logs looking something like this:
+Which produces logs looking something like this:
 
 ```json
 {
@@ -151,19 +151,19 @@ Which produce logs looking something like this:
 
 ## Indexing the logs right
 
-There's a few unsatisfying things about current log. First of all, logs from all containers end up in a single elasticsearch "index" - which is roughly analogous to a table in relational database. This prevents us from using index pattern for really anything useful. Let's fix this! Here are some ideas of what we may want to know from the index names:
+There are a few unsatisfying things about the current log. First of all, logs from all containers end up in a single elasticsearch "index" - which is roughly analogous to a table in a relational database. This prevents us from using an index pattern for really anything useful. Let's fix this! Here are some ideas of what we may want to know from the index names:
 
-- **Service that produced the log**. So that we can see logs produced by a particular service. `container.name` seems to suit the purpose the best. It does append instance index, but we just need to keep that in mind when creating an index pattern.
-- **Type/Family of service that produced the log**. Let's say we have a few services that produce similar logs e.g. HTTP API services. If we want to get holistic view on their performance we would need to be able to filter them by some common index pattern. We can use docker labels to identify such services. Let's call the label `family`
-- **Date when the logs was produced**. Logs take a lot of space and after some time are likely to become obsolete. Providing the date in index names will significantly simplify an index lifecycle management, including deleting old indexes.
+- **Service that produced the log**. So that we can see logs produced by a particular service. `container.name` seems to suit the purpose the best. It does append an instance index (`-1`), but we just need to keep that in mind when creating an index pattern.
+- **Type/Family of service that produced the log**. Let's say we have a few services that produce similar logs e.g. HTTP API services. If we want to get a holistic view of their performance we would need to be able to filter them by some common index pattern. We can use docker labels to identify such services. Let's call the label `family`
+- **Date when the logs were produced**. Logs take a lot of space and after some time are likely to become obsolete. Providing dates in index names will significantly simplify index lifecycle management, including deleting old indexes.
 
-Fortunately, filebeat allows versatile dynamic configuration of index names based on the log fields with patterns, like `%{[field-name]}`. And there is also a special pattern for current date: `%{+yyyy.MM.dd}`. Here's the index template with parts we just discussed:
+Fortunately, filebeat allows versatile dynamic configuration of index names based on the log fields with patterns, like `%{[field-name]}`. And there is also a special pattern for the current date: `%{+yyyy.MM.dd}`. Here's the index template with parts we just discussed:
 
 ```
 docker-logs-%{[container.labels.family]}-%{[container.name]}-%{+yyyy.MM.dd}
 ```
 
-However, you may notice that our logs don't have a field `container.labels.family`. Therefore the template will "fail" for the logs we have. How do we fix that? Well, the way `indices` work is by trying to apply `index`es one by one. So we can easily provide a fallback template. This what the resulting configuration will look like:
+However, you may notice that our logs don't have a field `container.labels.family`. Therefore the template will "fail" for the logs we have. How do we fix that? Well, the way `indices` work is by trying to apply `index`es one by one. So we can easily provide a fallback template. This is what the resulting configuration will look like:
 
 ```yaml
 output.elasticsearch:
@@ -186,11 +186,11 @@ Let's also give a family to just one of our containers. Let's for example give `
       - 5601:5601
 ```
 
-With that we'll be able to see all `ui` family logs using `docker-logs-ui-*` pattern, all `elasticsearch` service logs using `*-elasticsearch-*`, and so on.
+With that, we'll be able to see all `ui` family logs using `docker-logs-ui-*` pattern, all `elasticsearch` service logs using `*-elasticsearch-*`, and so on.
 
 ## Getting the important stuff
 
-You may notice, that all our deployed service produce not just text logs, but JSON. This is probably the most powerful ability of our stack - structured logging. What that means is that we can extract fields from the message JSON and use them for almost any analytics we can think of. This is enabled by processor, called [decode_json_fields](https://www.elastic.co/guide/en/beats/filebeat/current/decode-json-fields.html). We'll decode JSON from the `message` field into the field called `x` for simplicity sake. Here's the configuration snippet:
+You may notice, that all our deployed services produce not just text logs, but JSON. This is probably the most powerful ability of our stack: structured logging. What that means is that we can extract fields from the message JSON and use them for almost any analytics we can think of. This is enabled by the processor, called `decode_json_fields`. We'll decode JSON from the `message` field into the field called `x` for simplicity's sake. Here's the configuration snippet:
 
 ```yaml
 - decode_json_fields:
@@ -198,11 +198,11 @@ You may notice, that all our deployed service produce not just text logs, but JS
     target: "x"
 ```
 
-So, now we have a lot more useful fields in our records. But we have a ton of fields in general, too. Frankly, most of them doesn't seem useful. Fortunately, filebeat provides yet another useful processor called `drop_fields`. Using it we can specify both precise fields and using the syntax like `/regex/` regular expression. Probably the most cluttering component of our logs is container labels. Let's drop them all, except the `family` label, we actually use. 
+So, now we have a lot more useful fields in our records. But we have a ton of fields in general, too. Frankly, most of them don't seem useful. Fortunately, filebeat provides yet another useful processor called `drop_fields`. Using it we can specify both precise fields and field patterns with `/regex/` syntax. Probably the most cluttering component of our logs is container labels. Let's drop them all, except the `family` label, we actually use. 
 
-> Here's the catch! Filebeat is written in go. And go regexes are very limited. They only comply with RE2 standards, instead of PCRE. This prevents us from doing a negative lookahead in regex. So instead we will exclude fields having at least one underscore after label.
+> Here's the catch! Filebeat is written in go. And go regexes are very limited. They only comply with RE2 standards, instead of PCRE. This prevents us from doing a negative lookahead in regex. So instead we will exclude fields having at least one underscore after the label.
 
-Regular expression for that will be `container\.labels\..*_.*`. Agent information doesn't seem to be useful, too. Here's the regex for that: `agent.*`. This cleanup is probably sufficient. Let's just drop a single useless field without using a regular expression: `stream` fields seems redundant enough. We, probably, also don't want a error in case a field is already not in the document, so we'll set `ignore_missing` to `true`. And this is the configuration we got:
+The regular expression for that will be `container\.labels\..*_.*`. Agent information doesn't seem to be useful, too. Here's the regex for that: `agent.*`. This cleanup is probably sufficient. Let's just drop a single useless field without using a regular expression: `stream` fields seem redundant enough. We, probably, also don't want an error in case a field is already not in the document, so we'll set `ignore_missing` to `true`. And this is the configuration we got:
 
 ```yaml
 - drop_fields:
@@ -215,7 +215,7 @@ Regular expression for that will be `container\.labels\..*_.*`. Agent informatio
 
 ## Let's wrap it up!
 
-Here's an example of log we get now:
+Here's an example of the log we get now:
 
 ```json
 {
@@ -321,6 +321,6 @@ output.elasticsearch:
     - index: "docker-logs-nofamily-%{[container.name]}-%{+yyyy.MM.dd}"
 ```
 
-With that setup we export structured logs to Elasticsearch, allowing creation of any metric we could possibly imagine from the supplied logs. Beyond that, we can now create various index patterns for bunch of possible use cases. As the cherry on top, we cleaned up our logs from useless metadata.
+With that setup we export structured logs to Elasticsearch, allowing the creation of any metric we could possibly imagine from the supplied logs. Beyond that, we can now create various index patterns for a bunch of possible use cases. As the cherry on top, we cleaned up our logs from useless metadata.
 
 Thank you for reading! By the way... claps are appreciated 👉👈
