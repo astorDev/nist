@@ -15,6 +15,7 @@ jobs:
       - uses: astorDev/versy/calver/docker@main
         with:
           image: 'vosarat/elni-worker'
-          dockerfile-path: 'tools/elni/Elnik.Background.Service'
+          build-context-path: 'tools/elni'
+          dockerfile-path: 'tools/elni/Elnik.Background.Service/Dockerfile'
           docker-login: 'vosarat'
           docker-password: ${{ secrets.DOCKER_PASSWORD }}
