@@ -16,6 +16,6 @@ jobs:
         with:
           image: 'vosarat/elni-worker'
           build-context-path: 'tools/elni'
-          dockerfile-path: 'tools/elni/Elnik.BackgroundService/Dockerfile'
+          dockerfile-path: 'tools/elni/Elnik.Background.Service/Dockerfile'
           docker-login: 'vosarat'
           docker-password: ${{ secrets.DOCKER_PASSWORD }}
