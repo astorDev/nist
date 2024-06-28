@@ -11,6 +11,104 @@ Today we'll discuss a simple, yet powerful way to enhance the observability of a
 
 ## The ASP .NET Core app
 
+```sh
+dotnet new web
+```
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.MapPost("/beavers", (BeaverCandidate candidate) => {
+    if (candidate.Name == "Fever") return Results.BadRequest("Beavers cannot be named Fever");
+    var beaver = new Beaver(candidate.Name, Guid.NewGuid());
+    return Results.Created($"/beavers/{beaver.Id}", beaver);
+});
+
+app.Run();
+
+record BeaverCandidate(string Name);
+record Beaver(string Name, Guid Id);
+```
+
+```sh
+dotnet add package Nist.Logs;
+```
+
+```csharp
+// using Nist.Logs;
+
+app.UseHttpIOLogging();
+```
+
+> In my case the auto-generated port was `5023` it most likely will be different in your case, so you'll have to update the request accordingly.
+
+```http
+POST http://localhost:5023/beavers
+
+{
+    "name" : "Bucky"
+}
+
+POST http://localhost:5023/beavers
+
+{
+    "name" : "Fever"
+}
+```
+
+
+![](initial-logs.png)
+
+## JSON logs
+
+```csharp
+builder.Logging.AddSimpleConsole(l => l.SingleLine = true);
+```
+
+```sh
+dotnet add package Astor.Logging;
+```
+
+```csharp
+// using Astor.Logging;
+
+builder.Logging.AddMiniJsonConsole();
+```
+
+```csharp
+builder.Logging.AddSimpleConsole(l => l.SingleLine = true).AddMiniJsonConsole();
+```
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Nist.Logs": "None"
+    },
+    "MiniJsonConsole" : {
+      "LogLevel": {
+        "Default": "None",
+        "Nist.Logs": "Information"
+      }
+    }
+  },
+  "AllowedHosts": "*"
+}
+```
+
+![](complete-logs-escaped.png)
+
+```csharp
+app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.DefaultWithJsonBodies);
+```
+
+![](complete-logs.png)
+
+[Here](https://github.com/astorDev/nist/tree/main/observe/_joined/dotnet-elastic/Program.cs) you can find the full `Program.cs` file for reference.
+
 ## Logs Export
 
 ## Kibana Dashboards
