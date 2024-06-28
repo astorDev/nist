@@ -1,0 +1,11 @@
+POST http://localhost:5023/beavers
+
+{
+    "name" : "Bucky"
+}
+
+POST http://localhost:5023/beavers
+
+{
+    "name" : "Fever"
+}
