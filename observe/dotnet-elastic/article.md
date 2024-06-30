@@ -109,7 +109,53 @@ app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.DefaultWithJsonBodi
 
 [Here](https://github.com/astorDev/nist/tree/main/observe/_joined/dotnet-elastic/Program.cs) you can find the full `Program.cs` file for reference.
 
+## The Containers
+
+> `dotnet-elastic` is the name of the csproj.
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+WORKDIR /app
+
+COPY . ./
+RUN dotnet restore
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "dotnet-elastic.dll"]
+```
+
+> Port `8080` is used as default for docker containers since .NET 8. I map this port to the same host port as used with `dotnet run` (5023).
+
+```yaml
+services:
+  webapi:
+    build: .
+    ports:
+      - "5023:8080"
+```
+
+Just note that everything, including version `7.17.3`, is used intentionally here. Refer to the [dedicated article]() for more details:
+
+```yaml
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    environment:
+      - discovery.type=single-node
+
+  kibana:
+    image: kibana:7.17.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+```
+
 ## Logs Export
+
+
 
 ## Kibana Dashboards
 

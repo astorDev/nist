@@ -1,0 +1,17 @@
+services:
+  webapi:
+    build: .
+    ports:
+      - "5023:8080"
+
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    environment:
+      - discovery.type=single-node
+
+  kibana:
+    image: kibana:7.17.3
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
