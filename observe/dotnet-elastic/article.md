@@ -3,7 +3,7 @@ type: article
 status: draft
 ---
 
-# ASP .NET Core Observability Solution With Elastic Stack
+# ASP .NET Core Observability with Elastic Stack
 
 Today we'll discuss a simple, yet powerful way to enhance the observability of any ASP .NET Core app. Earlier I wrote articles about [Request-Response Logging]() in ASP .NET Core, [JSON Logging]() in .NET, and [Exporting Logs]() from Docker to Elastic Stack. This time, I'll combine those articles and set up Kibana, as a cherry on top. Don't worry, I'll start from scratch and show you all the necessary steps, so you don't **have** to read the previous texts. But feel free to check out those articles, as they go in-depth on the topic and shed light on how architectural choices are being made.
 
