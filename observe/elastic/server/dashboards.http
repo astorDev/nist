@@ -1,0 +1,302 @@
+###
+GET /api/kibana/dashboards/export?dashboard=nisters
+
+###
+# @name one
+POST /api/kibana/dashboards/import?force=true
+kbn-xsrf: true
+
+{
+  "version": "7.17.3",
+  "objects": [
+    {
+      "id": "{{ api }}",
+      "type": "dashboard",
+      "namespaces": [
+        "default"
+      ],
+      "updated_at": "2024-06-17T08:36:32.647Z",
+      "version": "WzEwODY0LDFd",
+      "attributes": {
+        "title": "{{ api }}",
+        "hits": 0,
+        "description": "",
+        "panelsJSON": "[{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":0,\"y\":0,\"w\":11,\"h\":15,\"i\":\"f5beae66-5731-47ec-bda0-3213ce1f3ce7\"},\"panelIndex\":\"f5beae66-5731-47ec-bda0-3213ce1f3ce7\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-6917203d-3121-4504-9336-0e4e638cb31d\"}],\"state\":{\"visualization\":{\"layerId\":\"6917203d-3121-4504-9336-0e4e638cb31d\",\"accessor\":\"e905d9c6-2aeb-4ce8-89be-c3a5accd5cca\",\"layerType\":\"data\"},\"query\":{\"query\":\"uri: * \",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"6917203d-3121-4504-9336-0e4e638cb31d\":{\"columns\":{\"e905d9c6-2aeb-4ce8-89be-c3a5accd5cca\":{\"label\":\"Requests\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true}},\"columnOrder\":[\"e905d9c6-2aeb-4ce8-89be-c3a5accd5cca\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":11,\"y\":0,\"w\":5,\"h\":7,\"i\":\"23cb8fb2-0956-418e-8a79-81039d0f9d4c\"},\"panelIndex\":\"23cb8fb2-0956-418e-8a79-81039d0f9d4c\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-7a43c2f4-5aee-4fb9-9543-4ee6569460d5\"}],\"state\":{\"visualization\":{\"layerId\":\"7a43c2f4-5aee-4fb9-9543-4ee6569460d5\",\"accessor\":\"3f1581f8-d1e6-4763-8166-62258cd706d4\",\"layerType\":\"data\"},\"query\":{\"query\":\"responseCode: * and responseCode > 300\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"7a43c2f4-5aee-4fb9-9543-4ee6569460d5\":{\"columns\":{\"3f1581f8-d1e6-4763-8166-62258cd706d4\":{\"label\":\"Fails\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true}},\"columnOrder\":[\"3f1581f8-d1e6-4763-8166-62258cd706d4\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":16,\"y\":0,\"w\":5,\"h\":7,\"i\":\"fd8d0b86-d167-45e1-b295-2e843f945d31\"},\"panelIndex\":\"fd8d0b86-d167-45e1-b295-2e843f945d31\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-6938ca32-4736-4968-a46e-3e1aa61d6007\"}],\"state\":{\"visualization\":{\"layerId\":\"6938ca32-4736-4968-a46e-3e1aa61d6007\",\"accessor\":\"c94f0760-1ef7-4ef6-bf5e-849ebfaa67a7\",\"layerType\":\"data\"},\"query\":{\"query\":\"responseCode: * and responseCode < 300\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"6938ca32-4736-4968-a46e-3e1aa61d6007\":{\"columns\":{\"c94f0760-1ef7-4ef6-bf5e-849ebfaa67a7\":{\"label\":\"Successes\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true}},\"columnOrder\":[\"c94f0760-1ef7-4ef6-bf5e-849ebfaa67a7\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":21,\"y\":0,\"w\":27,\"h\":15,\"i\":\"988c5625-9bbf-4301-b60d-ddaa26f3aaa0\"},\"panelIndex\":\"988c5625-9bbf-4301-b60d-ddaa26f3aaa0\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsXY\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-175a062c-e517-443a-a066-49b3727ac334\"}],\"state\":{\"visualization\":{\"title\":\"Empty XY chart\",\"legend\":{\"isVisible\":true,\"position\":\"right\"},\"valueLabels\":\"hide\",\"preferredSeriesType\":\"area\",\"layers\":[{\"layerId\":\"175a062c-e517-443a-a066-49b3727ac334\",\"accessors\":[\"501562f4-c720-48ae-9941-9eb74db7b5cd\",\"658002a3-2731-422d-9217-7385a186e10b\"],\"position\":\"top\",\"seriesType\":\"area\",\"showGridlines\":false,\"layerType\":\"data\",\"xAccessor\":\"996b75e5-feb3-473a-bfa7-0ce15b455bba\",\"yConfig\":[{\"forAccessor\":\"501562f4-c720-48ae-9941-9eb74db7b5cd\",\"color\":\"#19ec44\"},{\"forAccessor\":\"658002a3-2731-422d-9217-7385a186e10b\",\"color\":\"#ff0000\"}]}],\"yRightExtent\":{\"mode\":\"full\"},\"yLeftExtent\":{\"mode\":\"full\"}},\"query\":{\"query\":\"responseCode :*\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"175a062c-e517-443a-a066-49b3727ac334\":{\"columns\":{\"501562f4-c720-48ae-9941-9eb74db7b5cd\":{\"label\":\"Requests\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true},\"996b75e5-feb3-473a-bfa7-0ce15b455bba\":{\"label\":\"@timestamp\",\"dataType\":\"date\",\"operationType\":\"date_histogram\",\"sourceField\":\"@timestamp\",\"isBucketed\":true,\"scale\":\"interval\",\"params\":{\"interval\":\"1m\"}},\"658002a3-2731-422d-9217-7385a186e10b\":{\"label\":\"Fails\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"filter\":{\"query\":\"responseCode > 300\",\"language\":\"kuery\"},\"customLabel\":true}},\"columnOrder\":[\"996b75e5-feb3-473a-bfa7-0ce15b455bba\",\"501562f4-c720-48ae-9941-9eb74db7b5cd\",\"658002a3-2731-422d-9217-7385a186e10b\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":11,\"y\":7,\"w\":10,\"h\":8,\"i\":\"a4b41dc0-8398-40c7-8f33-65fe63dfc362\"},\"panelIndex\":\"a4b41dc0-8398-40c7-8f33-65fe63dfc362\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsPie\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-1b4430a4-618a-45d8-8a5b-a8c74c3b10fc\"}],\"state\":{\"visualization\":{\"shape\":\"donut\",\"palette\":{\"type\":\"palette\",\"name\":\"warm\"},\"layers\":[{\"layerId\":\"1b4430a4-618a-45d8-8a5b-a8c74c3b10fc\",\"groups\":[\"f9bc25c3-91d4-4066-b2b6-7c704e7026a2\"],\"metric\":\"e3e4a0d4-ce3b-4783-a780-69c8a3cab8e0\",\"numberDisplay\":\"percent\",\"categoryDisplay\":\"default\",\"legendDisplay\":\"show\",\"nestedLegend\":false,\"layerType\":\"data\"}]},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"1b4430a4-618a-45d8-8a5b-a8c74c3b10fc\":{\"columns\":{\"f9bc25c3-91d4-4066-b2b6-7c704e7026a2\":{\"label\":\"Top values of responseCode\",\"dataType\":\"string\",\"operationType\":\"terms\",\"scale\":\"ordinal\",\"sourceField\":\"responseCode\",\"isBucketed\":true,\"params\":{\"size\":5,\"orderBy\":{\"type\":\"column\",\"columnId\":\"e3e4a0d4-ce3b-4783-a780-69c8a3cab8e0\"},\"orderDirection\":\"desc\",\"otherBucket\":true,\"missingBucket\":false}},\"e3e4a0d4-ce3b-4783-a780-69c8a3cab8e0\":{\"label\":\"Count of records\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\"}},\"columnOrder\":[\"f9bc25c3-91d4-4066-b2b6-7c704e7026a2\",\"e3e4a0d4-ce3b-4783-a780-69c8a3cab8e0\"],\"incompleteColumns\":{}}}}}}},\"hidePanelTitles\":false,\"enhancements\":{}},\"title\":\"Response codes\"},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":0,\"y\":15,\"w\":13,\"h\":14,\"i\":\"bf14236b-54b1-48cb-ab5e-0ae8e03d9629\"},\"panelIndex\":\"bf14236b-54b1-48cb-ab5e-0ae8e03d9629\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsXY\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-744bcdb8-289f-48c8-9f39-fcd581aae3a3\"}],\"state\":{\"visualization\":{\"legend\":{\"isVisible\":true,\"position\":\"right\"},\"valueLabels\":\"hide\",\"fittingFunction\":\"None\",\"yLeftExtent\":{\"mode\":\"full\"},\"yRightExtent\":{\"mode\":\"full\"},\"axisTitlesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"tickLabelsVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"labelsOrientation\":{\"x\":0,\"yLeft\":0,\"yRight\":0},\"gridlinesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"preferredSeriesType\":\"bar\",\"layers\":[{\"layerId\":\"744bcdb8-289f-48c8-9f39-fcd581aae3a3\",\"seriesType\":\"bar\",\"splitAccessor\":\"3d2abb6b-ab0b-4bf7-894d-9b316796ea8c\",\"accessors\":[\"ae8ddc69-9fa0-4ab0-bf7e-ae87b60044f3\"],\"layerType\":\"data\",\"xAccessor\":\"260047b0-6076-4325-b5ec-5a7ae69d53b5\",\"palette\":{\"type\":\"palette\",\"name\":\"warm\"}}]},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"744bcdb8-289f-48c8-9f39-fcd581aae3a3\":{\"columns\":{\"3d2abb6b-ab0b-4bf7-894d-9b316796ea8c\":{\"label\":\"Filters\",\"dataType\":\"string\",\"operationType\":\"filters\",\"scale\":\"ordinal\",\"isBucketed\":true,\"params\":{\"filters\":[{\"label\":\"successes\",\"input\":{\"query\":\"responseCode < 300\",\"language\":\"kuery\"}},{\"input\":{\"query\":\"responseCode > 300\",\"language\":\"kuery\"},\"label\":\"fails\"}]}},\"260047b0-6076-4325-b5ec-5a7ae69d53b5\":{\"label\":\"Endpoints\",\"dataType\":\"string\",\"operationType\":\"terms\",\"scale\":\"ordinal\",\"sourceField\":\"endpoint.keyword\",\"isBucketed\":true,\"params\":{\"size\":3,\"orderBy\":{\"type\":\"column\",\"columnId\":\"ae8ddc69-9fa0-4ab0-bf7e-ae87b60044f3\"},\"orderDirection\":\"desc\",\"otherBucket\":true,\"missingBucket\":false},\"customLabel\":true},\"ae8ddc69-9fa0-4ab0-bf7e-ae87b60044f3\":{\"label\":\"Requests\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true}},\"columnOrder\":[\"3d2abb6b-ab0b-4bf7-894d-9b316796ea8c\",\"260047b0-6076-4325-b5ec-5a7ae69d53b5\",\"ae8ddc69-9fa0-4ab0-bf7e-ae87b60044f3\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":13,\"y\":15,\"w\":8,\"h\":7,\"i\":\"5f1cec90-9fdb-460c-bfbe-d8981de76b45\"},\"panelIndex\":\"5f1cec90-9fdb-460c-bfbe-d8981de76b45\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-1506e5f5-46a6-48e8-948c-7a1a91dcd987\"}],\"state\":{\"visualization\":{\"layerId\":\"1506e5f5-46a6-48e8-948c-7a1a91dcd987\",\"accessor\":\"fabab430-e44b-45fe-942b-de48fbf43717\",\"layerType\":\"data\"},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"1506e5f5-46a6-48e8-948c-7a1a91dcd987\":{\"columns\":{\"fabab430-e44b-45fe-942b-de48fbf43717\":{\"label\":\"Milliseconds Elapsed Avarage\",\"dataType\":\"number\",\"operationType\":\"average\",\"sourceField\":\"elapsed\",\"isBucketed\":false,\"scale\":\"ratio\",\"customLabel\":true}},\"columnOrder\":[\"fabab430-e44b-45fe-942b-de48fbf43717\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":21,\"y\":15,\"w\":27,\"h\":14,\"i\":\"c6c052c8-dd6e-4cd4-9005-6b80190e1924\"},\"panelIndex\":\"c6c052c8-dd6e-4cd4-9005-6b80190e1924\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsXY\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-c304402a-6ced-44bf-b122-589525034470\"}],\"state\":{\"visualization\":{\"title\":\"Empty XY chart\",\"legend\":{\"isVisible\":true,\"position\":\"right\"},\"valueLabels\":\"hide\",\"preferredSeriesType\":\"area\",\"layers\":[{\"layerId\":\"c304402a-6ced-44bf-b122-589525034470\",\"accessors\":[\"12ce523b-d0bb-45a9-872d-f81c59fbe0c6\"],\"position\":\"top\",\"seriesType\":\"area\",\"showGridlines\":false,\"layerType\":\"data\",\"xAccessor\":\"336cc403-53ee-4ffa-b2a1-7a9ef5a6ab0c\",\"yConfig\":[{\"forAccessor\":\"12ce523b-d0bb-45a9-872d-f81c59fbe0c6\",\"color\":\"#9170b8\"}]}],\"yRightExtent\":{\"mode\":\"full\"},\"yLeftExtent\":{\"mode\":\"full\"}},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"c304402a-6ced-44bf-b122-589525034470\":{\"columns\":{\"336cc403-53ee-4ffa-b2a1-7a9ef5a6ab0c\":{\"label\":\"@timestamp\",\"dataType\":\"date\",\"operationType\":\"date_histogram\",\"sourceField\":\"@timestamp\",\"isBucketed\":true,\"scale\":\"interval\",\"params\":{\"interval\":\"1m\"}},\"12ce523b-d0bb-45a9-872d-f81c59fbe0c6\":{\"label\":\"Average of elapsed\",\"dataType\":\"number\",\"operationType\":\"average\",\"sourceField\":\"elapsed\",\"isBucketed\":false,\"scale\":\"ratio\"}},\"columnOrder\":[\"336cc403-53ee-4ffa-b2a1-7a9ef5a6ab0c\",\"12ce523b-d0bb-45a9-872d-f81c59fbe0c6\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":13,\"y\":22,\"w\":8,\"h\":7,\"i\":\"1a4d6136-fb94-4764-966e-70d01c7ef380\"},\"panelIndex\":\"1a4d6136-fb94-4764-966e-70d01c7ef380\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsDatatable\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-{{ api }}\",\"name\":\"indexpattern-datasource-layer-aed51dd4-dab0-4664-b662-bc121e29449b\"}],\"state\":{\"visualization\":{\"columns\":[{\"columnId\":\"58d23fd1-c61e-4464-b157-18bde2728f76\",\"isTransposed\":false},{\"columnId\":\"e05ff1a2-8393-484b-aa29-a2e6922e8dd9\",\"isTransposed\":false}],\"layerId\":\"aed51dd4-dab0-4664-b662-bc121e29449b\",\"layerType\":\"data\"},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"aed51dd4-dab0-4664-b662-bc121e29449b\":{\"columns\":{\"58d23fd1-c61e-4464-b157-18bde2728f76\":{\"label\":\"Endpoint\",\"dataType\":\"string\",\"operationType\":\"terms\",\"scale\":\"ordinal\",\"sourceField\":\"endpoint.keyword\",\"isBucketed\":true,\"params\":{\"size\":5,\"orderBy\":{\"type\":\"column\",\"columnId\":\"e05ff1a2-8393-484b-aa29-a2e6922e8dd9\"},\"orderDirection\":\"desc\",\"otherBucket\":true,\"missingBucket\":false},\"customLabel\":true},\"e05ff1a2-8393-484b-aa29-a2e6922e8dd9\":{\"label\":\"Average of elapsed\",\"dataType\":\"number\",\"operationType\":\"average\",\"sourceField\":\"elapsed\",\"isBucketed\":false,\"scale\":\"ratio\"}},\"columnOrder\":[\"58d23fd1-c61e-4464-b157-18bde2728f76\",\"e05ff1a2-8393-484b-aa29-a2e6922e8dd9\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}}]",
+        "optionsJSON": "{\"useMargins\":true,\"syncColors\":false,\"hidePanelTitles\":false}",
+        "version": 1,
+        "timeRestore": false,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "references": [
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "f5beae66-5731-47ec-bda0-3213ce1f3ce7:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "f5beae66-5731-47ec-bda0-3213ce1f3ce7:indexpattern-datasource-layer-6917203d-3121-4504-9336-0e4e638cb31d"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "23cb8fb2-0956-418e-8a79-81039d0f9d4c:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "23cb8fb2-0956-418e-8a79-81039d0f9d4c:indexpattern-datasource-layer-7a43c2f4-5aee-4fb9-9543-4ee6569460d5"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "fd8d0b86-d167-45e1-b295-2e843f945d31:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "fd8d0b86-d167-45e1-b295-2e843f945d31:indexpattern-datasource-layer-6938ca32-4736-4968-a46e-3e1aa61d6007"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "988c5625-9bbf-4301-b60d-ddaa26f3aaa0:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "988c5625-9bbf-4301-b60d-ddaa26f3aaa0:indexpattern-datasource-layer-175a062c-e517-443a-a066-49b3727ac334"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "a4b41dc0-8398-40c7-8f33-65fe63dfc362:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "a4b41dc0-8398-40c7-8f33-65fe63dfc362:indexpattern-datasource-layer-1b4430a4-618a-45d8-8a5b-a8c74c3b10fc"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "bf14236b-54b1-48cb-ab5e-0ae8e03d9629:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "bf14236b-54b1-48cb-ab5e-0ae8e03d9629:indexpattern-datasource-layer-744bcdb8-289f-48c8-9f39-fcd581aae3a3"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "5f1cec90-9fdb-460c-bfbe-d8981de76b45:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "5f1cec90-9fdb-460c-bfbe-d8981de76b45:indexpattern-datasource-layer-1506e5f5-46a6-48e8-948c-7a1a91dcd987"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "c6c052c8-dd6e-4cd4-9005-6b80190e1924:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "c6c052c8-dd6e-4cd4-9005-6b80190e1924:indexpattern-datasource-layer-c304402a-6ced-44bf-b122-589525034470"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "1a4d6136-fb94-4764-966e-70d01c7ef380:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-{{ api }}",
+          "name": "1a4d6136-fb94-4764-966e-70d01c7ef380:indexpattern-datasource-layer-aed51dd4-dab0-4664-b662-bc121e29449b"
+        }
+      ],
+      "migrationVersion": {
+        "dashboard": "7.17.3"
+      },
+      "coreMigrationVersion": "7.17.3"
+    },
+    {
+      "id": "docker-logs-nist-{{ api }}",
+      "type": "index-pattern",
+      "namespaces": [
+        "default"
+      ],
+      "updated_at": "2024-06-17T08:36:32.647Z",
+      "version": "WzEwODY1LDFd",
+      "attributes": {
+        "fieldAttrs": "{\"message\":{\"count\":3},\"container.labels.com_docker_compose_service\":{\"count\":1},\"responseCode\":{\"count\":2},\"endpoint.keyword\":{\"count\":1}}",
+        "title": "docker-logs-nist-{{ api }}-*",
+        "timeFieldName": "@timestamp",
+        "fields": "[]",
+        "typeMeta": "{}",
+        "runtimeFieldMap": "{}"
+      },
+      "references": [],
+      "migrationVersion": {
+        "index-pattern": "7.11.0"
+      },
+      "coreMigrationVersion": "7.17.3"
+    }
+  ]
+}
+
+###
+# @name all
+POST /api/kibana/dashboards/import?force=true
+kbn-xsrf: true
+
+{
+  "version": "7.17.3",
+  "objects": [
+    {
+      "id": "nisters",
+      "type": "dashboard",
+      "namespaces": [
+        "default"
+      ],
+      "updated_at": "2024-06-17T08:36:44.864Z",
+      "version": "WzEwODk2LDFd",
+      "attributes": {
+        "title": "nisters",
+        "hits": 0,
+        "description": "",
+        "panelsJSON": "[{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":0,\"y\":0,\"w\":12,\"h\":17,\"i\":\"46af559e-e1c8-4b69-bc96-11c397475a17\"},\"panelIndex\":\"46af559e-e1c8-4b69-bc96-11c397475a17\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-a39f3084-5b45-4ae7-b48f-62d4da8ff92b\"}],\"state\":{\"visualization\":{\"layerId\":\"a39f3084-5b45-4ae7-b48f-62d4da8ff92b\",\"accessor\":\"9c12cace-37e4-4b0a-a088-aa7e9b31ce3d\",\"layerType\":\"data\"},\"query\":{\"query\":\"uri :*\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"a39f3084-5b45-4ae7-b48f-62d4da8ff92b\":{\"columns\":{\"9c12cace-37e4-4b0a-a088-aa7e9b31ce3d\":{\"label\":\"Requests\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true}},\"columnOrder\":[\"9c12cace-37e4-4b0a-a088-aa7e9b31ce3d\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":12,\"y\":0,\"w\":6,\"h\":8,\"i\":\"37b12b18-0819-45a6-b728-3801a02794fa\"},\"panelIndex\":\"37b12b18-0819-45a6-b728-3801a02794fa\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-5f4e666b-3440-4cac-aa8d-d030e194a690\"}],\"state\":{\"visualization\":{\"layerId\":\"5f4e666b-3440-4cac-aa8d-d030e194a690\",\"accessor\":\"26d2e784-f95f-44d8-8f30-459a1a513f4b\",\"layerType\":\"data\"},\"query\":{\"query\":\"responseCode: * and responseCode >= 300\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"5f4e666b-3440-4cac-aa8d-d030e194a690\":{\"columns\":{\"26d2e784-f95f-44d8-8f30-459a1a513f4b\":{\"label\":\"fails\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true}},\"columnOrder\":[\"26d2e784-f95f-44d8-8f30-459a1a513f4b\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":18,\"y\":0,\"w\":6,\"h\":8,\"i\":\"0dee1a5e-21ed-4d2d-b430-f42788645438\"},\"panelIndex\":\"0dee1a5e-21ed-4d2d-b430-f42788645438\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-cf40f98c-4f02-48c2-96a0-eac0b7195cce\"}],\"state\":{\"visualization\":{\"layerId\":\"cf40f98c-4f02-48c2-96a0-eac0b7195cce\",\"accessor\":\"dab648e6-39db-4e00-8f96-9afd3afe1cc6\",\"layerType\":\"data\"},\"query\":{\"query\":\"uri :* and responseCode : 200\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"cf40f98c-4f02-48c2-96a0-eac0b7195cce\":{\"columns\":{\"dab648e6-39db-4e00-8f96-9afd3afe1cc6\":{\"label\":\"successes\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"customLabel\":true}},\"columnOrder\":[\"dab648e6-39db-4e00-8f96-9afd3afe1cc6\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":17,\"i\":\"d553de78-a36f-46fd-bfab-7bca94c3320c\"},\"panelIndex\":\"d553de78-a36f-46fd-bfab-7bca94c3320c\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsXY\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-8a8967f0-0f47-4f11-b915-e82306124da3\"}],\"state\":{\"visualization\":{\"legend\":{\"isVisible\":true,\"position\":\"right\"},\"valueLabels\":\"hide\",\"fittingFunction\":\"None\",\"yLeftExtent\":{\"mode\":\"full\"},\"yRightExtent\":{\"mode\":\"full\"},\"axisTitlesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"tickLabelsVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"labelsOrientation\":{\"x\":0,\"yLeft\":0,\"yRight\":0},\"gridlinesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"preferredSeriesType\":\"area\",\"layers\":[{\"layerId\":\"8a8967f0-0f47-4f11-b915-e82306124da3\",\"accessors\":[\"6d87b191-1c97-4505-b389-0be3684d7bae\",\"205cb208-9099-4214-aa37-1a60596e5fd0\"],\"position\":\"top\",\"seriesType\":\"area\",\"showGridlines\":false,\"layerType\":\"data\",\"xAccessor\":\"d9f8a7e9-a0c9-4413-afe2-a5348eac6135\",\"yConfig\":[{\"forAccessor\":\"6d87b191-1c97-4505-b389-0be3684d7bae\",\"color\":\"#2de62a\"},{\"forAccessor\":\"205cb208-9099-4214-aa37-1a60596e5fd0\",\"color\":\"#e42626\"}]}]},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"8a8967f0-0f47-4f11-b915-e82306124da3\":{\"columns\":{\"d9f8a7e9-a0c9-4413-afe2-a5348eac6135\":{\"label\":\"@timestamp\",\"dataType\":\"date\",\"operationType\":\"date_histogram\",\"sourceField\":\"@timestamp\",\"isBucketed\":true,\"scale\":\"interval\",\"params\":{\"interval\":\"auto\"}},\"6d87b191-1c97-4505-b389-0be3684d7bae\":{\"label\":\"requests\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"filter\":{\"query\":\"responseCode :*\",\"language\":\"kuery\"},\"customLabel\":true},\"205cb208-9099-4214-aa37-1a60596e5fd0\":{\"label\":\"fails\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"filter\":{\"query\":\"responseCode > 299\",\"language\":\"kuery\"},\"customLabel\":true}},\"columnOrder\":[\"d9f8a7e9-a0c9-4413-afe2-a5348eac6135\",\"6d87b191-1c97-4505-b389-0be3684d7bae\",\"205cb208-9099-4214-aa37-1a60596e5fd0\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":12,\"y\":8,\"w\":12,\"h\":9,\"i\":\"8a049bfc-ec57-4290-a9fc-f766e8b16713\"},\"panelIndex\":\"8a049bfc-ec57-4290-a9fc-f766e8b16713\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsPie\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-fd3629c3-42e5-4847-ab45-3e31b3301e3b\"}],\"state\":{\"visualization\":{\"shape\":\"donut\",\"palette\":{\"type\":\"palette\",\"name\":\"warm\"},\"layers\":[{\"layerId\":\"fd3629c3-42e5-4847-ab45-3e31b3301e3b\",\"groups\":[\"bdf3555a-7dbf-4165-8a97-8a657f69c344\"],\"metric\":\"98625304-b4c6-438d-bd2a-63c2df66162a\",\"numberDisplay\":\"percent\",\"categoryDisplay\":\"default\",\"legendDisplay\":\"show\",\"nestedLegend\":false,\"layerType\":\"data\"}]},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"fd3629c3-42e5-4847-ab45-3e31b3301e3b\":{\"columns\":{\"98625304-b4c6-438d-bd2a-63c2df66162a\":{\"label\":\"Count of records\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\"},\"bdf3555a-7dbf-4165-8a97-8a657f69c344\":{\"label\":\"responseCode\",\"dataType\":\"number\",\"operationType\":\"range\",\"sourceField\":\"responseCode\",\"isBucketed\":true,\"scale\":\"interval\",\"params\":{\"type\":\"histogram\",\"ranges\":[{\"from\":0,\"to\":1000,\"label\":\"\"}],\"maxBars\":\"auto\"}}},\"columnOrder\":[\"bdf3555a-7dbf-4165-8a97-8a657f69c344\",\"98625304-b4c6-438d-bd2a-63c2df66162a\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":0,\"y\":17,\"w\":16,\"h\":18,\"i\":\"2aa3d807-c778-42bf-8348-06d17accca53\"},\"panelIndex\":\"2aa3d807-c778-42bf-8348-06d17accca53\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsXY\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-45a4c51e-02e5-4037-9508-79b85d5a2252\"}],\"state\":{\"visualization\":{\"legend\":{\"isVisible\":true,\"position\":\"right\"},\"valueLabels\":\"hide\",\"fittingFunction\":\"None\",\"yLeftExtent\":{\"mode\":\"full\"},\"yRightExtent\":{\"mode\":\"full\"},\"axisTitlesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"tickLabelsVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"labelsOrientation\":{\"x\":0,\"yLeft\":0,\"yRight\":0},\"gridlinesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"preferredSeriesType\":\"bar\",\"layers\":[{\"layerId\":\"45a4c51e-02e5-4037-9508-79b85d5a2252\",\"accessors\":[\"c59c6492-412c-4181-8001-aaa5b2337c4f\",\"be1aa8fa-ff62-4b98-8331-f3c6eac5096f\"],\"position\":\"top\",\"seriesType\":\"bar\",\"showGridlines\":false,\"layerType\":\"data\",\"xAccessor\":\"f6fed18a-43b0-40fc-a8ad-9a398fe85858\",\"yConfig\":[{\"forAccessor\":\"c59c6492-412c-4181-8001-aaa5b2337c4f\",\"color\":\"#2de62a\"},{\"forAccessor\":\"be1aa8fa-ff62-4b98-8331-f3c6eac5096f\",\"color\":\"#e24035\"}]}]},\"query\":{\"query\":\"uri :*\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"45a4c51e-02e5-4037-9508-79b85d5a2252\":{\"columns\":{\"f6fed18a-43b0-40fc-a8ad-9a398fe85858\":{\"label\":\"service\",\"dataType\":\"string\",\"operationType\":\"terms\",\"scale\":\"ordinal\",\"sourceField\":\"container.image.name\",\"isBucketed\":true,\"params\":{\"size\":3,\"orderBy\":{\"type\":\"column\",\"columnId\":\"be1aa8fa-ff62-4b98-8331-f3c6eac5096f\"},\"orderDirection\":\"desc\",\"otherBucket\":true,\"missingBucket\":false},\"customLabel\":true},\"be1aa8fa-ff62-4b98-8331-f3c6eac5096f\":{\"label\":\"fails\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"filter\":{\"query\":\"responseCode > 299\",\"language\":\"kuery\"},\"customLabel\":true},\"c59c6492-412c-4181-8001-aaa5b2337c4fX0\":{\"label\":\"Part of successes\",\"dataType\":\"number\",\"operationType\":\"count\",\"isBucketed\":false,\"scale\":\"ratio\",\"sourceField\":\"Records\",\"filter\":{\"query\":\"responseCode < 299\",\"language\":\"kuery\"},\"customLabel\":true},\"c59c6492-412c-4181-8001-aaa5b2337c4f\":{\"label\":\"successes\",\"dataType\":\"number\",\"operationType\":\"formula\",\"isBucketed\":false,\"scale\":\"ratio\",\"params\":{\"formula\":\"count(kql='responseCode < 299')\",\"isFormulaBroken\":false},\"references\":[\"c59c6492-412c-4181-8001-aaa5b2337c4fX0\"],\"customLabel\":true}},\"columnOrder\":[\"f6fed18a-43b0-40fc-a8ad-9a398fe85858\",\"c59c6492-412c-4181-8001-aaa5b2337c4f\",\"be1aa8fa-ff62-4b98-8331-f3c6eac5096f\",\"c59c6492-412c-4181-8001-aaa5b2337c4fX0\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":16,\"y\":17,\"w\":8,\"h\":7,\"i\":\"4f5974a1-2651-4b4e-93fd-e3365360e9bd\"},\"panelIndex\":\"4f5974a1-2651-4b4e-93fd-e3365360e9bd\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsMetric\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-76f0cfdb-ddc5-4d15-85b7-bde08d8abc6a\"}],\"state\":{\"visualization\":{\"layerId\":\"76f0cfdb-ddc5-4d15-85b7-bde08d8abc6a\",\"accessor\":\"e0a0fbfe-57c3-46b6-863e-c58f30cc19da\",\"layerType\":\"data\"},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"76f0cfdb-ddc5-4d15-85b7-bde08d8abc6a\":{\"columns\":{\"e0a0fbfe-57c3-46b6-863e-c58f30cc19da\":{\"label\":\"Average of elapsed\",\"dataType\":\"number\",\"operationType\":\"average\",\"sourceField\":\"elapsed\",\"isBucketed\":false,\"scale\":\"ratio\"}},\"columnOrder\":[\"e0a0fbfe-57c3-46b6-863e-c58f30cc19da\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":24,\"y\":17,\"w\":24,\"h\":18,\"i\":\"a847e0b9-49dd-4e6c-830a-d5d3a179caca\"},\"panelIndex\":\"a847e0b9-49dd-4e6c-830a-d5d3a179caca\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsXY\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-856c99ee-30ca-450f-846c-c7a234d9a0ee\"}],\"state\":{\"visualization\":{\"legend\":{\"isVisible\":true,\"position\":\"right\"},\"valueLabels\":\"hide\",\"fittingFunction\":\"None\",\"yLeftExtent\":{\"mode\":\"full\"},\"yRightExtent\":{\"mode\":\"full\"},\"axisTitlesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"tickLabelsVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"labelsOrientation\":{\"x\":0,\"yLeft\":0,\"yRight\":0},\"gridlinesVisibilitySettings\":{\"x\":true,\"yLeft\":true,\"yRight\":true},\"preferredSeriesType\":\"area\",\"layers\":[{\"layerId\":\"856c99ee-30ca-450f-846c-c7a234d9a0ee\",\"accessors\":[\"d43f54a6-b8fc-4a3d-92ae-ca11755d1316\"],\"position\":\"top\",\"seriesType\":\"area\",\"showGridlines\":false,\"layerType\":\"data\",\"xAccessor\":\"b8ff312c-2389-4965-8f72-8bb42990d302\",\"yConfig\":[{\"forAccessor\":\"d43f54a6-b8fc-4a3d-92ae-ca11755d1316\",\"color\":\"#6231dd\"}]}]},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"856c99ee-30ca-450f-846c-c7a234d9a0ee\":{\"columns\":{\"b8ff312c-2389-4965-8f72-8bb42990d302\":{\"label\":\"@timestamp\",\"dataType\":\"date\",\"operationType\":\"date_histogram\",\"sourceField\":\"@timestamp\",\"isBucketed\":true,\"scale\":\"interval\",\"params\":{\"interval\":\"auto\"}},\"d43f54a6-b8fc-4a3d-92ae-ca11755d1316\":{\"label\":\"Average of elapsed\",\"dataType\":\"number\",\"operationType\":\"average\",\"sourceField\":\"elapsed\",\"isBucketed\":false,\"scale\":\"ratio\"}},\"columnOrder\":[\"b8ff312c-2389-4965-8f72-8bb42990d302\",\"d43f54a6-b8fc-4a3d-92ae-ca11755d1316\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}},{\"version\":\"7.17.3\",\"type\":\"lens\",\"gridData\":{\"x\":16,\"y\":24,\"w\":8,\"h\":11,\"i\":\"0152cb05-8cc4-40f1-9ea3-fb7bc4d045b5\"},\"panelIndex\":\"0152cb05-8cc4-40f1-9ea3-fb7bc4d045b5\",\"embeddableConfig\":{\"attributes\":{\"title\":\"\",\"visualizationType\":\"lnsDatatable\",\"type\":\"lens\",\"references\":[{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-current-indexpattern\"},{\"type\":\"index-pattern\",\"id\":\"docker-logs-nist-*\",\"name\":\"indexpattern-datasource-layer-df58d214-c397-4ef0-8189-e54ad635bc01\"}],\"state\":{\"visualization\":{\"columns\":[{\"isTransposed\":false,\"columnId\":\"1fc3e4c8-9e2f-47f4-8203-04cf73d2e9f0\"},{\"columnId\":\"d1f88281-2f0a-463d-980c-cc79d291dfd0\",\"isTransposed\":false}],\"layerId\":\"df58d214-c397-4ef0-8189-e54ad635bc01\",\"layerType\":\"data\"},\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filters\":[],\"datasourceStates\":{\"indexpattern\":{\"layers\":{\"df58d214-c397-4ef0-8189-e54ad635bc01\":{\"columns\":{\"1fc3e4c8-9e2f-47f4-8203-04cf73d2e9f0\":{\"label\":\"service\",\"dataType\":\"string\",\"operationType\":\"terms\",\"scale\":\"ordinal\",\"sourceField\":\"container.image.name\",\"isBucketed\":true,\"params\":{\"size\":5,\"orderBy\":{\"type\":\"column\",\"columnId\":\"d1f88281-2f0a-463d-980c-cc79d291dfd0\"},\"orderDirection\":\"desc\",\"otherBucket\":true,\"missingBucket\":false},\"customLabel\":true},\"d1f88281-2f0a-463d-980c-cc79d291dfd0\":{\"label\":\"Average of elapsed\",\"dataType\":\"number\",\"operationType\":\"average\",\"sourceField\":\"elapsed\",\"isBucketed\":false,\"scale\":\"ratio\"}},\"columnOrder\":[\"1fc3e4c8-9e2f-47f4-8203-04cf73d2e9f0\",\"d1f88281-2f0a-463d-980c-cc79d291dfd0\"],\"incompleteColumns\":{}}}}}}},\"enhancements\":{}}}]",
+        "optionsJSON": "{\"useMargins\":true,\"syncColors\":false,\"hidePanelTitles\":false}",
+        "version": 1,
+        "timeRestore": false,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        }
+      },
+      "references": [
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "46af559e-e1c8-4b69-bc96-11c397475a17:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "46af559e-e1c8-4b69-bc96-11c397475a17:indexpattern-datasource-layer-a39f3084-5b45-4ae7-b48f-62d4da8ff92b"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "37b12b18-0819-45a6-b728-3801a02794fa:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "37b12b18-0819-45a6-b728-3801a02794fa:indexpattern-datasource-layer-5f4e666b-3440-4cac-aa8d-d030e194a690"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "0dee1a5e-21ed-4d2d-b430-f42788645438:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "0dee1a5e-21ed-4d2d-b430-f42788645438:indexpattern-datasource-layer-cf40f98c-4f02-48c2-96a0-eac0b7195cce"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "d553de78-a36f-46fd-bfab-7bca94c3320c:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "d553de78-a36f-46fd-bfab-7bca94c3320c:indexpattern-datasource-layer-8a8967f0-0f47-4f11-b915-e82306124da3"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "8a049bfc-ec57-4290-a9fc-f766e8b16713:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "8a049bfc-ec57-4290-a9fc-f766e8b16713:indexpattern-datasource-layer-fd3629c3-42e5-4847-ab45-3e31b3301e3b"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "2aa3d807-c778-42bf-8348-06d17accca53:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "2aa3d807-c778-42bf-8348-06d17accca53:indexpattern-datasource-layer-45a4c51e-02e5-4037-9508-79b85d5a2252"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "4f5974a1-2651-4b4e-93fd-e3365360e9bd:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "4f5974a1-2651-4b4e-93fd-e3365360e9bd:indexpattern-datasource-layer-76f0cfdb-ddc5-4d15-85b7-bde08d8abc6a"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "a847e0b9-49dd-4e6c-830a-d5d3a179caca:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "a847e0b9-49dd-4e6c-830a-d5d3a179caca:indexpattern-datasource-layer-856c99ee-30ca-450f-846c-c7a234d9a0ee"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "0152cb05-8cc4-40f1-9ea3-fb7bc4d045b5:indexpattern-datasource-current-indexpattern"
+        },
+        {
+          "type": "index-pattern",
+          "id": "docker-logs-nist-*",
+          "name": "0152cb05-8cc4-40f1-9ea3-fb7bc4d045b5:indexpattern-datasource-layer-df58d214-c397-4ef0-8189-e54ad635bc01"
+        }
+      ],
+      "migrationVersion": {
+        "dashboard": "7.17.3"
+      },
+      "coreMigrationVersion": "7.17.3"
+    },
+    {
+      "id": "docker-logs-nist-*",
+      "type": "index-pattern",
+      "namespaces": [
+        "default"
+      ],
+      "updated_at": "2024-06-26T12:47:58.998Z",
+      "version": "WzkxNjEwLDFd",
+      "attributes": {
+        "fieldAttrs": "{\"container.image.name\":{\"count\":1},\"message\":{\"count\":1}}",
+        "title": "docker-logs-nist-*",
+        "timeFieldName": "@timestamp",
+        "fields": "[]",
+        "typeMeta": "{}",
+        "runtimeFieldMap": "{}"
+      },
+      "references": [],
+      "migrationVersion": {
+        "index-pattern": "7.11.0"
+      },
+      "coreMigrationVersion": "7.17.3"
+    }
+  ]
+}
