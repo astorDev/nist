@@ -13,7 +13,7 @@ So in this article, we will fire up a complete stack, exporting logs from docker
 
 ## Firing up the foundations
 
-Deploying and connecting all the basic components is a twisted task even in the most basic setup. Therefore, in my [previous article]() I've talked in depth about the basic setup. This time we'll start from what we got there. If something in the setup wouldn't make sense, feel free to refer to the [old piece](). Anyway, here's the initial setup we got:
+We'll start with a basic setup, firing up `elasticsearch`, `kibana` and `filebeat`, configured in a separate file `filebeat.yml`. Check the configuration below and if something doesn't make sense please refer to [the previous article](https://medium.com/p/ebe75fd13041), explaining the basics. I'll meet you here.
 
 `compose.yaml`
 
@@ -40,7 +40,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 ```
 
-`filebeat.yaml`
+`filebeat.yml`
 
 ```yaml
 filebeat.inputs:
@@ -58,7 +58,7 @@ output.elasticsearch:
     - index: "docker-logs"
 ```
 
-Which produces logs looking something like this:
+This setup produces logs looking something like this:
 
 ```json
 {
@@ -153,7 +153,7 @@ Which produces logs looking something like this:
 
 ## Indexing the logs right
 
-There are a few unsatisfying things about the current log. First of all, logs from all containers end up in a single elasticsearch "index" - which is roughly analogous to a table in a relational database. This prevents us from using an index pattern for really anything useful. Let's fix this! Here are some ideas of what we may want to know from the index names:
+There are a few unsatisfying things about the log above. First of all, logs from all containers end up in a single elasticsearch "index" - which is roughly analogous to a table in a relational database. This prevents us from using indexes for really anything useful. Let's fix this! Here are some ideas of what we may want to know from the index names:
 
 - **Service that produced the log**. So that we can see logs produced by a particular service. `container.name` seems to suit the purpose the best. It does append an instance index (`-1`), but we just need to keep that in mind when creating an index pattern.
 - **Type/Family of service that produced the log**. Let's say we have a few services that produce similar logs e.g. HTTP API services. If we want to get a holistic view of their performance we would need to be able to filter them by some common index pattern. We can use docker labels to identify such services. Let's call the label `family`
@@ -188,9 +188,9 @@ Let's also give a family to just one of our containers. Let's for example give `
       - 5601:5601
 ```
 
-With that, we'll be able to see all `ui` family logs using `docker-logs-ui-*` pattern, all `elasticsearch` service logs using `*-elasticsearch-*`, and so on.
+With that, we'll be able to see all `ui` family logs using `docker-logs-ui-*` index pattern, all `elasticsearch` service logs using `*-elasticsearch-*`, and so on.
 
-## Getting the important stuff
+## Getting Only the Important Stuff
 
 You may notice, that all our deployed services produce not just text logs, but JSON. This is probably the most powerful ability of our stack: structured logging. What that means is that we can extract fields from the message JSON and use them for almost any analytics we can think of. This is enabled by the processor, called `decode_json_fields`. We'll decode JSON from the `message` field into the document root (`""`) for simplicity's sake. Here's the configuration snippet:
 
@@ -215,9 +215,7 @@ The regular expression for that will be `container\.labels\..*_.*`. Agent inform
     ignore_missing: true
 ```
 
-## Let's wrap it up!
-
-Here's an example of the log we get now:
+Giving us logs looking like this:
 
 ```json
 {
@@ -268,7 +266,9 @@ Here's an example of the log we get now:
 }
 ```
 
-Although the record is huge now it contains supposedly useful data from the actual log message, instead of mostly pointless docker metadata. Here's how `compose.yaml` and `filebeat.yml` look after the changes we made:
+## Wrapping It Up!
+
+Although the record is still pretty big now it contains supposedly useful data from the actual log message, instead of mostly pointless docker metadata. Here's how `compose.yaml` and `filebeat.yml` look after the changes we made:
 
 ```yaml
 services:
@@ -324,5 +324,35 @@ output.elasticsearch:
 ```
 
 With that setup we export structured logs to Elasticsearch, allowing the creation of any metric we could possibly imagine from the supplied logs. Beyond that, we can now create various index patterns for a bunch of possible use cases. As the cherry on top, we cleaned up our logs from useless metadata.
+
+## Or simply...
+
+If you don't want to carry the `filebeat.yml` around I have one more thing for you! I've made a docker image, which includes a [similar configuration file]() just with some additional perks. I called the image `el-shippy` (`shippy` as it ships logs and connected to docker i.e. ship and `el` from `elastic`). Here's the `compose.yml` file that will solely deploy about the same stack as the two files above:
+
+```yaml
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    environment:
+      - discovery.type=single-node
+  
+  kibana:
+    image: kibana:7.17.3
+    labels:
+      - family=ui
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+  
+  shipper:
+    image: vosarat/el-shippy
+    user: root
+    environment:
+      - ES_HOSTS=elasticsearch:9200
+    volumes:
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+```
 
 Thank you for reading! By the way... claps are appreciated 👉👈
