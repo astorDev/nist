@@ -1,0 +1,12 @@
+@host = http://localhost:5601
+
+POST /api/index_patterns/index_pattern
+kbn-xsrf: true
+
+{
+    "override" : true,
+    "index_pattern": {
+         "title": "docker-logs*",
+         "timeFieldName": "@timestamp"
+    }
+}

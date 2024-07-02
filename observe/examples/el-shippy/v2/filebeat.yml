@@ -1,0 +1,14 @@
+filebeat.inputs:
+- type: container
+  paths:
+    - '/var/lib/docker/containers/*/*.log'
+
+processors:
+- add_docker_metadata:
+    host: "unix:///var/run/docker.sock"
+
+output.elasticsearch:
+  hosts: elasticsearch:9200
+  indices:
+    - index: "docker-logs-%{[container.labels.family]}-%{[container.name]}-%{+yyyy.MM.dd}"
+    - index: "docker-logs-nofamily-%{[container.name]}-%{+yyyy.MM.dd}"

@@ -3,11 +3,11 @@ type: article
 status: complete
 ---
 
-# Filebeat and Elasticsearch for advanced Docker logs.
+# Advanced Docker Logs with Filebeat and Elasticsearch
 
 Elastic stack is one of the most robust observability systems out there. Application logs are most likely to be handled by docker. The most intuitive way to connect them I've found is Filebeat. So in this article, we will try to fire up a complete stack, that allows the export of logs from docker to elasticsearch in a manner that will lay a simple yet powerful foundation of an observability solution. So, start the beat!
 
-![AI-generated log-lover ready to play a beat](docker-advanced-thumb.png)
+![AI-generated log-lover ready to play a beat](thumb.png)
 
 ## Firing up the foundations
 
@@ -190,12 +190,12 @@ With that, we'll be able to see all `ui` family logs using `docker-logs-ui-*` pa
 
 ## Getting the important stuff
 
-You may notice, that all our deployed services produce not just text logs, but JSON. This is probably the most powerful ability of our stack: structured logging. What that means is that we can extract fields from the message JSON and use them for almost any analytics we can think of. This is enabled by the processor, called `decode_json_fields`. We'll decode JSON from the `message` field into the field called `x` for simplicity's sake. Here's the configuration snippet:
+You may notice, that all our deployed services produce not just text logs, but JSON. This is probably the most powerful ability of our stack: structured logging. What that means is that we can extract fields from the message JSON and use them for almost any analytics we can think of. This is enabled by the processor, called `decode_json_fields`. We'll decode JSON from the `message` field into the document root (`""`) for simplicity's sake. Here's the configuration snippet:
 
 ```yaml
 - decode_json_fields:
     fields: ["message"]
-    target: "x"
+    target: ""
 ```
 
 So, now we have a lot more useful fields in our records. But we have a ton of fields in general, too. Frankly, most of them don't seem useful. Fortunately, filebeat provides yet another useful processor called `drop_fields`. Using it we can specify both precise fields and field patterns with `/regex/` syntax. Probably the most cluttering component of our logs is container labels. Let's drop them all, except the `family` label, we actually use. 

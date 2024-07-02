@@ -1,0 +1,23 @@
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.3
+    environment:
+      - discovery.type=single-node
+  
+  kibana:
+    image: kibana:7.17.3
+    labels:
+      - family=ui
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+  
+  shipper:
+    image: vosarat/el-shippy
+    user: root
+    environment:
+      - ES_HOSTS=elasticsearch:9200
+    volumes:
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock

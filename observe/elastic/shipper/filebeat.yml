@@ -15,6 +15,7 @@ processors:
 - drop_fields:
     fields:
       - "/container.labels.com_docker_compose_*/"
+      - "/container.labels.org_*/"
       - "/agent.*/"
       - "/log.*/"
       - "stream"
