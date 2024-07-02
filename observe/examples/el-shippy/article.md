@@ -5,15 +5,15 @@ status: complete
 
 # Advanced Docker Logs with Filebeat and Elasticsearch
 
-If we want to track what's going on in a system we will most likely start with connecting application logs to an observability stack. Our application logs most likely already reside in docker and if we aim for the most robust technology we'll probably go with elastic stack. The challenge then is to connect those two. I suggest we'll use Filebeat for that.
+If we want to track what is going on in a system we will probably start by connecting application logs to an observability stack. Our application logs most likely already reside in docker and if we aim for the most robust technology we'll probably go with elastic stack. The challenge then is to connect those two. I suggest we'll use Filebeat for that.
 
-So in this article, we will fire up a complete stack, exporting logs from docker to elasticsearch. Building a simple yet powerful foundation of an observability solution. So, start the beat!
+So in this article, we will fire up a complete stack, exporting logs from docker to elasticsearch, building a simple yet powerful foundation of an observability solution. So, start the beat!
 
 ![AI-generated log-lover ready to play a beat](thumb.png)
 
 ## Firing up the foundations
 
-We'll start with a basic setup, firing up `elasticsearch`, `kibana` and `filebeat`, configured in a separate file `filebeat.yml`. Check the configuration below and if something doesn't make sense please refer to [the previous article](https://medium.com/p/ebe75fd13041), explaining the basics. I'll meet you here.
+We'll start with a basic setup, firing up `elasticsearch`, `kibana`, and `filebeat`, configured in a separate file `filebeat.yml`. Check the configuration below and if something doesn't make sense please refer to [the previous article](https://medium.com/p/ebe75fd13041), explaining the basics. I'll meet you here.
 
 `compose.yaml`
 
@@ -327,7 +327,7 @@ With that setup we export structured logs to Elasticsearch, allowing the creatio
 
 ## Or simply...
 
-If you don't want to carry the `filebeat.yml` around I have one more thing for you! I've made a docker image, which includes a [similar configuration file]() just with some additional perks. I called the image `el-shippy` (`shippy` as it ships logs and connected to docker i.e. ship and `el` from `elastic`). Here's the `compose.yml` file that will solely deploy about the same stack as the two files above:
+If you don't want to carry the `filebeat.yml` around I have one more thing for you! I've made a docker image, which includes a [similar configuration file]() just with some additional perks. I called the image `el-shof` (`shippy` as it ships logs and connected to docker i.e. ship and `el` from `elastic`). Here's the `compose.yml` file that will solely deploy about the same stack as the two files above:
 
 ```yaml
 services:
