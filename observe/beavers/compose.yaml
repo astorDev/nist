@@ -1,0 +1,5 @@
+services:
+  webapi:
+    build: .
+    ports:
+      - "5023:8080"

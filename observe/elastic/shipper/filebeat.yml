@@ -26,5 +26,5 @@ processors:
 output.elasticsearch:
   hosts: ${ES_HOSTS}
   indices:
-    - index: "logs-%{[container.labels.family]}-%{[container.name]}-%{+yyyy.MM.dd}"
-    - index: "logs-nofamily-%{[container.name]}-%{+yyyy.MM.dd}"
+    - index: "${PREFIX:docker-logs}-%{[container.labels.family]}-%{[container.name]}-%{+yyyy.MM.dd}"
+    - index: "${PREFIX:docker-logs}-nofamily-%{[container.name]}-%{+yyyy.MM.dd}"
