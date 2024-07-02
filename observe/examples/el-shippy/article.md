@@ -3,11 +3,11 @@ type: article
 status: complete
 ---
 
-# Filebeat and Elasticsearch for advanced Docker logs.
+# Advanced Docker Logs with Filebeat and Elasticsearch
 
 Elastic stack is one of the most robust observability systems out there. Application logs are most likely to be handled by docker. The most intuitive way to connect them I've found is Filebeat. So in this article, we will try to fire up a complete stack, that allows the export of logs from docker to elasticsearch in a manner that will lay a simple yet powerful foundation of an observability solution. So, start the beat!
 
-![AI-generated log-lover ready to play a beat](docker-advanced-thumb.png)
+![AI-generated log-lover ready to play a beat](thumb.png)
 
 ## Firing up the foundations
 
