@@ -1,0 +1,14 @@
+@host = http://localhost:5601
+@prefix = cool-logs
+
+### @name nisters
+GET /api/kibana/dashboards/export?dashboard=nisters
+
+{{
+    var fs = require('fs');
+
+    var path = "/tmp/nisters-dashboard-template.json";
+    var template = response.body.replaceAll("cool-logs", "{{ prefix }}");
+    fs.writeFileSync(path, template);
+    console.log('wrote request to temp file. To open it in VS Code:\n' + "code " + path);
+}}

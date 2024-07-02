@@ -1,0 +1,6 @@
+###
+# @name all
+POST /api/kibana/dashboards/import?force=true
+kbn-xsrf: true
+
+<@ nisters.json
