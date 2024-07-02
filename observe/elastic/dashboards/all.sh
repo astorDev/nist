@@ -12,6 +12,6 @@ if [ -z "$NIST_LOGS_PREFIX" ]; then
     NIST_LOGS_PREFIX=docker-logs
 fi
 
-export COMMAND="httpyac send .http --name all --var host=$NIST_KIBANA_URL prefix=$NIST_LOGS_PREFIX --output none"
+export COMMAND="httpyac send import.http --name all --var host=$NIST_KIBANA_URL prefix=$NIST_LOGS_PREFIX --output none"
 log "Executing command: $COMMAND"
 $COMMAND

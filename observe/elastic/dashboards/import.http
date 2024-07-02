@@ -1,0 +1,13 @@
+###
+# @name all
+POST /api/kibana/dashboards/import?force=true
+kbn-xsrf: true
+
+<@ all.json
+
+###
+# @name one
+POST /api/kibana/dashboards/import?force=true
+kbn-xsrf: true
+
+<@ one.json

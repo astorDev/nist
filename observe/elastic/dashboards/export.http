@@ -1,0 +1,30 @@
+@host = http://localhost:5601
+@prefix = cool-logs
+@serviceName = beavers-webapi
+
+### @name all
+GET /api/kibana/dashboards/export?dashboard=nisters
+
+{{
+    var fs = require('fs');
+
+    var path = "/tmp/nist-all-dashboard-template.json";
+    var template = response.body.replaceAll("cool-logs", "{{ prefix }}");
+    fs.writeFileSync(path, template);
+    console.log('wrote request to temp file. To open it in VS Code:\n' + "code " + path);
+}}
+
+### @name one
+GET /api/kibana/dashboards/export?dashboard={{ serviceName }}
+
+{{
+    var fs = require('fs');
+
+    var path = "/tmp/nist-one-dashboard-template.json";
+    var template = response.body
+        .replaceAll("cool-logs", "{{ prefix }}")
+        .replaceAll(serviceName, "{{ serviceName }}");
+
+    fs.writeFileSync(path, template);
+    console.log('wrote request to temp file. To open it in VS Code:\n' + "code " + path);
+}}
