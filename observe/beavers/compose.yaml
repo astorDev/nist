@@ -1,5 +1,7 @@
 services:
   webapi:
     build: .
+    labels:
+      - family=nist
     ports:
       - "5023:8080"

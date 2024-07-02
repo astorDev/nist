@@ -20,10 +20,10 @@ docker compose up -d
 cd ..
 
 cd ../beavers
-docker compose up -d
-httpyac send beavers.http --name 
+sh pump.sh
 cd ../elastic
 
-# cd ../../tools/elni
-# docker compose -f elnik-compose.yml up -d
-# cd ../../observe/elastic
+cd dashboards
+export NIST_LOGS_PREFIX=cool-logs && sh all.sh
+export NIST_LOGS_PREFIX=cool-logs && export NIST_IMPORTED_SERVICE=beavers-webapi && sh one.sh
+cd ..
