@@ -2,17 +2,18 @@ name: elni
 
 services:
   shipper:
-    image: docker.elastic.co/beats/filebeat:8.14.0
+    image: vosarat/el-shippy
     restart: always
+    build: .
     labels:
       - family=infrastructure
     environment:
       - ES_HOSTS=[elasticsearch:9200]
+      - PREFIX=cool-logs
     user: root
     volumes:
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
     deploy:
       resources:
         limits:

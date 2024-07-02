@@ -1,0 +1,21 @@
+name: Build & Push El Shippy Image
+
+on:
+  push:
+    paths:
+      - 'observe/elastic/shipper/**'
+      - '.github/workflows/docker-el-shippy.yaml'
+  workflow_dispatch:
+
+jobs:
+  push-image:
+    name: Build & Push image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/docker@main
+        with:
+          image: 'vosarat/el-shippy'
+          build-context-path: 'observe/elastic/shipper'
+          dockerfile-path: 'observe/elastic/shipper/Dockerfile'
+          docker-login: 'vosarat'
+          docker-password: ${{ secrets.DOCKER_PASSWORD }}

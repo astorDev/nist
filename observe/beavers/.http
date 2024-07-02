@@ -1,0 +1,17 @@
+{{
+    exports.names = [ "Bucky", "Fever", "Jack" ];
+}}
+# @loop for 100
+# @name pump
+POST http://localhost:5023/beavers
+
+{
+    "name" : "{{ names[Math.floor(Math.random()*names.length)] }}"
+}
+
+###
+POST http://localhost:5023/beavers
+
+{
+    "name" : "Bucky"
+}

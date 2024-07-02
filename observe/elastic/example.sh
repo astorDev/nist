@@ -19,6 +19,11 @@ cd shipper
 docker compose up -d
 cd ..
 
-cd ../../tools/elni
-docker compose -f elnik-compose.yml up -d
-cd ../../observe/elastic
+cd ../beavers
+docker compose up -d
+httpyac send beavers.http --name 
+cd ../elastic
+
+# cd ../../tools/elni
+# docker compose -f elnik-compose.yml up -d
+# cd ../../observe/elastic
