@@ -16,6 +16,8 @@ services:
   shipper:
     image: vosarat/el-shippy
     user: root
+    environment:
+      - ES_HOSTS=elasticsearch:9200
     volumes:
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock

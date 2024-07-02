@@ -9,7 +9,7 @@ processors:
 
 - decode_json_fields:
     fields: ["message"]
-    target: "x"
+    target: ""
 
 - drop_fields:
     fields:
