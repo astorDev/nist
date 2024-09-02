@@ -1,10 +1,7 @@
 {
     "environments": {
         "local" : {
-            "template" : "http://localhost:11110"
-        },
-        "localDocker" : {
-            "template" : "http://localhost:1111"
+            "host" : "http://localhost:1111"
         }
     }
 }

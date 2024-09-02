@@ -14,7 +14,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpIOLogging();
+app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.DefaultWithJsonBodies);
 app.UseErrorBody(ex => ex switch {
     _ => Errors.Unknown
 });

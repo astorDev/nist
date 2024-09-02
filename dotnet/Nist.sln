@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Example.Protocol", "ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Example.Tests", "example\tests\Nist.Example.Tests.csproj", "{51146A4E-FB8C-48FC-B31A-0B2709BE74A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "logging\Nist.Logs.csproj", "{517C3D3B-C051-4F89-BF49-0EFAD8A3442F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Logs", "logging\lib\Nist.Logs.csproj", "{517C3D3B-C051-4F89-BF49-0EFAD8A3442F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "queries", "queries", "{F00FC9B2-5A8D-485B-88C5-C033497093E9}"
 EndProject
@@ -40,7 +40,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.WebApi", "template
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "templates\minist\tests\Template.Tests.csproj", "{8C98884F-9714-41B7-82B3-0E77AE940D57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Bodies", "bodies\Nist.Bodies.csproj", "{D3891B92-2183-44CE-8F14-ABD238360CD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Bodies", "bodies\lib\Nist.Bodies.csproj", "{D3891B92-2183-44CE-8F14-ABD238360CD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
