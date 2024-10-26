@@ -1,6 +1,6 @@
 # Nginx and Docker: Getting Started
 
-Nginx and Docker are probably two dominant components of backend infrastructure nowdays. Still, there's not much information on how to make them play together. This article attempts to fix it by providing a basis for a simple yet flexible and scalable setup of nginx docker container. So, if you will, let's jump to the code!
+Nginx and Docker are probably two dominant components of backend infrastructure nowadays. Still, there's not much information on how to make them play together. This article attempts to fix it by providing a basis for a simple yet flexible and scalable setup of the nginx docker container. So, if you will, let's jump to the code!
 
 ![](thumb.png)
 
