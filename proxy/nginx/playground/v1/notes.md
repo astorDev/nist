@@ -38,7 +38,7 @@ http {
 
 ->
 
-`conf.d/default.conf`
+`/etx/nginx/conf.d/default.conf`
 
 ```conf
 server {
