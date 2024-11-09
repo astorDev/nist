@@ -1,7 +1,5 @@
-name: playground
-
 services:
   nginx:
-    image: nginx
+    build: .
     ports:
       - 4500:80
