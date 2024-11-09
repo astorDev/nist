@@ -1,6 +1,8 @@
-`http://localhost:4500/`
+`curl http://localhost:4500/`
 
-`etc/nginx/nginx.conf`
+```sh
+docker exec -it playground-nginx-1 cat etc/nginx/nginx.conf
+```
 
 ```conf
 user  nginx;
@@ -38,7 +40,9 @@ http {
 
 ->
 
-`/etx/nginx/conf.d/default.conf`
+```sh
+docker exec -it playground-nginx-1 cat /etc/nginx/conf.d/default.conf
+```
 
 ```conf
 server {
@@ -87,7 +91,9 @@ server {
 }
 ```
 
-`/usr/share/nginx/html`:
+```sh
+docker exec -it playground-nginx-1 cat /usr/share/nginx/html/index.html
+```
 
 ```html
 <!DOCTYPE html>
