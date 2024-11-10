@@ -1,12 +1,13 @@
+name: playground
+
 services:
+  one:
+    build:
+      context: .
+      dockerfile: one.Dockerfile
   proxy:
     build:
       context: .
       dockerfile: proxy.Dockerfile
     ports:
       - 4500:80
-  one:
-    build:
-      context: .
-      dockerfile: one.Dockerfile
-
