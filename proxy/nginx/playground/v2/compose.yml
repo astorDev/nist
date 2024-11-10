@@ -1,3 +1,5 @@
+name: playground
+
 services:
   nginx:
     build: .
