@@ -20,11 +20,11 @@ services:
 docker compose up -d --build
 ```
 
-When the build will finish if we'll open `http://localhost:4500/` in a browser we should see a page like this:
+When the build is finished if we open `http://localhost:4500/` in a browser we should see a page like this:
 
 ![](simplest-demo.png)
 
-## Demistifying The Simplest Nginx Docker Setup
+## Demystifying The Simplest Nginx Docker Setup
 
 ```sh
 docker exec -it playground-nginx-1 cat etc/nginx/nginx.conf
@@ -174,7 +174,7 @@ server {
 }
 ```
 
-There are two ways to supply our configuration files to nginx - via volumes binding and via `COPY` command during build. 
+There are two ways to supply our configuration files to nginx - via volumes binding and via the `COPY` command during the build. 
 
 `Dockerfile`:
 
@@ -280,7 +280,7 @@ FROM nginx
 COPY proxy.conf /etc/nginx/conf.d/default.conf
 ```
 
-With addition of proxy service, we'll get our `compose.yml` looking like this:
+With the addition of proxy service, we'll get our `compose.yml` looking like this:
 
 ```yaml
 name: playground
@@ -310,7 +310,7 @@ curl localhost:4500/one/about
 
 `two.conf` `two.Dockerfile` which will be identical to `one.conf` and `one.Dockerfile`, except returning `service two` in the `about`. 
 
-> I will skip those files code to not overload the article. You can investigate the source code [here](https://github.com/astorDev/nist/tree/main/proxy/nginx/playground/v4).
+> I will skip the code in those files to avoid overloading the article. You can investigate the source code [here](https://github.com/astorDev/nist/tree/main/proxy/nginx/playground/v4).
 
 ```conf
 server {
@@ -330,7 +330,7 @@ server {
 }
 ```
 
-> We create `routes` subfolder, so that our files don't match pattern of the root config file: `include /etc/nginx/conf.d/*.conf;`
+> We create a `routes` subfolder so that our files don't match the pattern of the root config file: `include /etc/nginx/conf.d/*.conf;`
 
 ```conf
 location /one {
@@ -351,7 +351,7 @@ COPY proxy.conf /etc/nginx/templates/default.conf.template
 COPY proxy-routes.conf /etc/nginx/templates/routes/default.conf.template
 ```
 
-Nginx will run environment variables substitution for the files in `templates` folder, having `.template` suffix, creating file with substituted values inside matching `conf.d` folder, trimming the `.template` suffix. In our case include from `/etc/nginx/templates/routes/default.conf.template` we'll get the following files with substituted variables `/etc/nginx/conf.d/routes/default.conf`.
+Nginx will run environment variables substitution for the files in the `templates` folder, having the `.template` suffix, creating a file with substituted values inside matching the `conf.d` folder, trimming the `.template` suffix. In our case include from `/etc/nginx/templates/routes/default.conf.template` we'll get the following files with substituted variables `/etc/nginx/conf.d/routes/default.conf`.
 
 ```yml
 services:
@@ -392,4 +392,4 @@ curl localhost:4500/two/about
 
 ## Wrapping this up!
 
-The setup we've end up with should be enough to serve as a fundament for any infrastructure you may want to build. There's also a [source code](https://github.com/astorDev/nist/tree/main/proxy/nginx/playground) for you to play around with. And by the way... claps are appreciated! 👏
+The setup we've ended up with should be enough to serve as a foundation for any infrastructure you may want to build. There's also a [source code](https://github.com/astorDev/nist/tree/main/proxy/nginx/playground) for you to play around with. And by the way... claps are appreciated! 👏
