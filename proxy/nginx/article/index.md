@@ -6,6 +6,8 @@ Nginx and Docker are probably two dominant components of backend infrastructure 
 
 ## The Simplest Nginx Docker Setup
 
+To get started with nginx in docker all we have to do is to map port `80` from the base nginx image. Here's `compose.yml` allowing us to do just that:
+
 ```yaml
 name: playground
 
@@ -16,21 +18,23 @@ services:
       - 4500:80
 ```
 
-```sh
-docker compose up -d --build
-```
-
-When the build is finished if we open `http://localhost:4500/` in a browser we should see a page like this:
+By running `docker compose up -d` we should be able to see the page below, by opening `http://localhost:4500/` in any browser:
 
 ![](simplest-demo.png)
 
+And that's how you configure nginx with docker, thank you for reading! 🎉
+
+Just kidding... although the setup does work, there is not much use in it. To learn how to enhance our nginx setup to do something meaningful let's first investigate how our default setup works.
+
 ## Demystifying The Simplest Nginx Docker Setup
+
+First of all, how does nginx serve something, having that we didn't provide it with any configuration. Well, the container does ship with the default configuration in place. To figure out how this configuration look we can use the command below:
 
 ```sh
 docker exec -it playground-nginx-1 cat etc/nginx/nginx.conf
 ```
 
-
+Here's the content of our root configuration file, for your reference:
 
 ```conf
 user  nginx;
@@ -66,13 +70,19 @@ http {
 }
 ```
 
+Well, the file mostly configures various boring details about our web server. But there's one line we should focus on:
+
 ```conf
 include /etc/nginx/conf.d/*.conf;
 ```
 
+The keyword `include` is the thing allowing nginx to have a composable configuration. The command basically means to insert the content of the files, matching the `/etc/nginx/conf.d/*.conf` pattern in the block where the `include` command resides. In the default configuration, there's only one file in the `/etc/nginx/conf.d/` directory. Let's see its content, too:
+
 ```sh
 docker exec -it playground-nginx-1 cat /etc/nginx/conf.d/default.conf
 ```
+
+Here's the whole file, just for reference:
 
 ```conf
 server {
@@ -121,13 +131,19 @@ server {
 }
 ```
 
+And here's the most fancy part, we will focus on:
+
 ```conf
 root   /usr/share/nginx/html;
 ```
 
+This command roughly tells nginx to serve static content from the folder `/usr/share/nginx/html`. As earlier, there's just one file in the folder:
+
 ```sh
 docker exec -it playground-nginx-1 cat /usr/share/nginx/html/index.html
 ```
+
+And here goes our fine welcome page:
 
 ```html
 <!DOCTYPE html>
@@ -155,9 +171,32 @@ Commercial support is available at
 </html>
 ```
 
+This is the markdown of the page we saw before when opening `http://localhost:4500/`. Now, that we have traced the whole default configuration path, we are ready to tweak it to make something cool!
+
 ## Mocking Json API Endpoints
 
-`nginx.conf`
+We don't need to override any of the high-level nginx configurations, so we'll leave `etc/nginx/nginx.conf` out of this. But we do want to change what we serve hence we need to replace `/etc/nginx/conf.d/default.conf`. We'll need to create our replacement file, let's call it simply `nginx.conf`
+
+There are two ways to supply our configuration files to nginx - via volume binding or via the `COPY` command during the build. In my view, changing the nginx configuration creates a new setup and an appropriate way to update it will be to create a new image, rather than replacing the configuration and restarting a container. That is the case for building an image via a `Dockerfile`. Here's the very simple build file we'll get:
+
+```dockerfile
+FROM nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+```
+
+And we'll also need to update our compose to build the image, instead of just using the base one.
+
+```yaml
+name: playground
+
+services:
+  nginx:
+    build: .
+    ports:
+      - 4500:80
+```
+
+We are going to create a primitive Web API, in which the `/about` endpoint will return a simple json describing the service and all the other roots leading to `404` with JSON describing the problem.
 
 ```conf
 server {
@@ -174,38 +213,23 @@ server {
 }
 ```
 
-There are two ways to supply our configuration files to nginx - via volumes binding and via the `COPY` command during the build. 
-
-`Dockerfile`:
-
-```dockerfile
-FROM nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-```
-
-```yaml
-name: playground
-
-services:
-  nginx:
-    build: .
-    ports:
-      - 4500:80
-```
-
-`curl localhost:4500` or `curl localhost:4500/not-existing`
-
-```json
-{"statusCode":"NotFound","reason":"NoNginxRoute"}
-```
-
-`curl localhost:4500/about`
+Let's build our new app `docker compose up -d --build` and check how our server is responding by sending `curl localhost:4500/about`. Here's what we should get as a response:
 
 ```json
 {"description":"nginx proxy","version":"1.0"}
 ```
 
+And if we send a `curl localhost:4500` or `curl localhost:4500/not-existing` command, we should get an appropriate error message:
+
+```json
+{"statusCode":"NotFound","reason":"NoNginxRoute"}
+```
+
+That is our first configured nginx web server, responding with the predefined response. But it's not what we would really need Nginx to do, is it? Let's make something more interesting!
+
 ## Creating a Proxy
+
+> I find the term "reverse-proxy" very confusing, as it sounds like the proxy communication should be turned upside-down, while in reality it just means that the proxy is placed on the server side in the server-client communication.
 
 `one.conf`:
 
