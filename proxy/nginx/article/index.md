@@ -28,7 +28,7 @@ Just kidding... although the setup does work, there is not much use in it. To le
 
 ## Demystifying The Simplest Nginx Docker Setup
 
-First of all, how does nginx serve something, having that we didn't provide it with any configuration. Well, the container does ship with the default configuration in place. To figure out how this configuration look we can use the command below:
+First of all, how does nginx serve something, having that we didn't provide it with any configuration. Well, the container does ship with the default configuration in place. To figure out how this configuration looks we can use the command below:
 
 ```sh
 docker exec -it playground-nginx-1 cat etc/nginx/nginx.conf
@@ -229,9 +229,11 @@ That is our first configured nginx web server, responding with the predefined re
 
 ## Creating a Proxy
 
+One of the most frequent ways people use Nginx is to create a proxy, load balancer, or as some call it reverse-proxy. Let's do that! But first, we'll need to create a mock service that we will proxy to.
+
 > I find the term "reverse-proxy" very confusing, as it sounds like the proxy communication should be turned upside-down, while in reality it just means that the proxy is placed on the server side in the server-client communication.
 
-`one.conf`:
+We'll call it service "one" and here's its nginx configuration, we'll call `one.conf`:
 
 ```conf
 server {
@@ -248,13 +250,14 @@ server {
 }
 ```
 
-`one.Dockerfile`
+And here's the `one.Dockerfile`, to build the service
 
 ```dockerfile
 FROM nginx
 COPY one.conf /etc/nginx/conf.d/default.conf
 ```
 
+Here's how we will need to update our `compose.yml` to deploy our service.
 ```yaml
 name: playground
 
@@ -265,7 +268,7 @@ services:
       dockerfile: one.Dockerfile
 ```
 
-`proxy.conf`
+Now, to the interesting part! Here's the `proxy.conf` we will use:
 
 ```conf
 server {
@@ -289,22 +292,26 @@ server {
 }
 ```
 
+The most critical part is the line below:
+
 ```conf
 proxy_pass http://one;
 ```
+
+The line basically means that all requests will be forwarded to the url specified after the `proxy_pass` keyword. A thing to notice here is that the request will be sent **exactly** as it was received, which includes the `/one` path in the url. This is why we have the line below:
 
 ```conf
 rewrite ^/one(.*)$ $1 break;
 ```
 
-`proxy.Dockerfile`
+This line will remove `/one` from the beginning of the path, so that `/one/something` will be forwarded to the `/something` endpoint in the service one. Now, let's finish the setup, we'll need to build the proxy via the `proxy.Dockerfile`
 
 ```dockerfile
 FROM nginx
 COPY proxy.conf /etc/nginx/conf.d/default.conf
 ```
 
-With the addition of proxy service, we'll get our `compose.yml` looking like this:
+And with the addition of proxy service, we'll get our `compose.yml` looking like this:
 
 ```yaml
 name: playground
@@ -322,13 +329,19 @@ services:
       - 4500:80
 ```
 
+After we deploy the service by sending a request to the proxy like the one below:
+
 ```sh
 curl localhost:4500/one/about
 ```
 
+We will get a proxied response from the service one, looking like this:
+
 ```json
 {"description":"service one","version":"1.0"}
 ```
+
+This wraps up, in my mind, the most important section of the article, that will already give us a solid setup. In the last section, we will create a more complex and architecturally polished setup. See you there!
 
 ## Environment Variables, Templates, and More
 
