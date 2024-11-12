@@ -1,18 +1,18 @@
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Newtonsoft.Json;
 
 namespace Nist.Responses;
 
 public static class HttpResponseMessageExtensions
 {
-    public static async Task<T> Read<T>(this Task<HttpResponseMessage> responseTask, ILogger? logger = null)
+    public static async Task<T> Read<T>(this Task<HttpResponseMessage> responseTask, ILogger? logger = null, JsonSerializerOptions? serializerOptions = null)
     {
-        var result = await ReadNullable<T>(responseTask, logger);
+        var result = await ReadNullable<T>(responseTask, logger, serializerOptions);
         return result ?? throw new InvalidOperationException("deserialization resulted in null");
     }
 
-    public static async Task<T?> ReadNullable<T>(this Task<HttpResponseMessage> responseTask, ILogger? logger = null)
+    public static async Task<T?> ReadNullable<T>(this Task<HttpResponseMessage> responseTask, ILogger? logger = null, JsonSerializerOptions? serializerOptions = null)
     {
         logger ??= NullLogger.Instance;
         
@@ -25,7 +25,7 @@ public static class HttpResponseMessageExtensions
         }
 
         logger.LogInformation("{HttpMethod} {Url} > {StatusCode} {ResponseBody}", response.RequestMessage!.Method, response.RequestMessage!.RequestUri!.PathAndQuery, response.StatusCode, body);
-        var result = JsonConvert.DeserializeObject<T>(body);
+        var result = JsonSerializer.Deserialize<T>(body, serializerOptions);
         return result;
     }
 }

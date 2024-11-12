@@ -1,27 +1,19 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
-
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Nist.Responses;
 
-public class UnsuccessfulResponseException : Exception
+public class UnsuccessfulResponseException(HttpStatusCode statusCode, HttpResponseHeaders headers, string body) : Exception
 {
-    public HttpStatusCode StatusCode { get; }
-    public HttpResponseHeaders Headers { get; }
-    public string Body { get; }
+    public HttpStatusCode StatusCode { get; } = statusCode;
+    public HttpResponseHeaders Headers { get; } = headers;
+    public string Body { get; } = body;
 
     public override string Message => $"{StatusCode} status code received";
 
-    public UnsuccessfulResponseException(HttpStatusCode statusCode, HttpResponseHeaders headers, string body)
+    public T? DeserializedBody<T>(JsonSerializerOptions? serializerOptions = null)
     {
-        StatusCode = statusCode;
-        Headers = headers;
-        Body = body;
-    }
-
-    public T? DeserializedBody<T>()
-    {
-        return JsonConvert.DeserializeObject<T>(this.Body);
+        return JsonSerializer.Deserialize<T>(this.Body, serializerOptions);
     }
 }
