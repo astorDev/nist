@@ -28,7 +28,7 @@ Just kidding... although the setup does work, there is not much use in it. To le
 
 ## Demystifying The Simplest Nginx Docker Setup
 
-First of all, how does nginx serve something, having that we didn't provide it with any configuration. Well, the container does ship with the default configuration in place. To figure out how this configuration look we can use the command below:
+First of all, how does nginx serve something, having that we didn't provide it with any configuration. Well, the container does ship with the default configuration in place. To figure out how this configuration looks we can use the command below:
 
 ```sh
 docker exec -it playground-nginx-1 cat etc/nginx/nginx.conf
@@ -229,7 +229,7 @@ That is our first configured nginx web server, responding with the predefined re
 
 ## Creating a Proxy
 
-One of the most frequent way people use nginx is to create a proxy, load balancer or how some call it reverse-proxy. Let's do that! But first, we'll need to create a mock service that we will proxy to.
+One of the most frequent ways people use Nginx is to create a proxy, load balancer, or as some call it reverse-proxy. Let's do that! But first, we'll need to create a mock service that we will proxy to.
 
 > I find the term "reverse-proxy" very confusing, as it sounds like the proxy communication should be turned upside-down, while in reality it just means that the proxy is placed on the server side in the server-client communication.
 
@@ -304,7 +304,7 @@ The line basically means that all requests will be forwarded to the url specifie
 rewrite ^/one(.*)$ $1 break;
 ```
 
-This line will remove `/one` from the beginning of the path, so that `/one/something` will be forwarded to `/something` endpoint in the service one. Now, let's finish the setup, we'll need to build the proxy via the `proxy.Dockerfile`
+This line will remove `/one` from the beginning of the path, so that `/one/something` will be forwarded to the `/something` endpoint in the service one. Now, let's finish the setup, we'll need to build the proxy via the `proxy.Dockerfile`
 
 ```dockerfile
 FROM nginx
@@ -329,19 +329,19 @@ services:
       - 4500:80
 ```
 
-After we deploy the service by sending request to the proxy like the one below:
+After we deploy the service by sending a request to the proxy like the one below:
 
 ```sh
 curl localhost:4500/one/about
 ```
 
-We will get proxied response from the service one, looking like this:
+We will get a proxied response from the service one, looking like this:
 
 ```json
 {"description":"service one","version":"1.0"}
 ```
 
-This wrap up, in my mind, the most important section of the article, that will already give us a solid setup. In the last section we will create a more complex and architecturally pollished setup. See you there!
+This wraps up, in my mind, the most important section of the article, that will already give us a solid setup. In the last section, we will create a more complex and architecturally polished setup. See you there!
 
 ## Environment Variables, Templates, and More
 
