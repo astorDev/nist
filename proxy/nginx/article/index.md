@@ -422,13 +422,13 @@ services:
       dockerfile: two.Dockerfile
 ```
 
-Deploying the setup it we will be able to send
+Deploying the setup we will be able to send
 
 ```sh
 curl localhost:4500/one/about
 ```
 
-and get response from service one
+and get a response from service one
 
 ```json
 {"description":"service one","version":"1.0"}
@@ -446,7 +446,7 @@ receiving the appropriate response:
 {"description":"service two","version":"1.0"}
 ```
 
-Which is where we finish this articles investigation of configuring nginx web server via docker containers.
+This is where we finish this article's investigation of configuring the nginx web server via docker containers.
 
 ## Wrapping this up!
 
