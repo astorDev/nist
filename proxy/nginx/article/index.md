@@ -6,7 +6,7 @@ Nginx and Docker are probably two dominant components of backend infrastructure 
 
 ## The Simplest Nginx Docker Setup
 
-To get started with nginx in docker all we have to do is to map port `80` from the base nginx image. Here's `compose.yml` allowing us to do just that:
+To get started with nginx in docker all we have to do is to map the port `80` from the base nginx image. Here's `compose.yml` allowing us to do just that:
 
 ```yaml
 name: playground
@@ -258,6 +258,7 @@ COPY one.conf /etc/nginx/conf.d/default.conf
 ```
 
 Here's how we will need to update our `compose.yml` to deploy our service.
+
 ```yaml
 name: playground
 
@@ -311,7 +312,7 @@ FROM nginx
 COPY proxy.conf /etc/nginx/conf.d/default.conf
 ```
 
-And with the addition of proxy service, we'll get our `compose.yml` looking like this:
+And with the addition of the proxy service, we'll get our `compose.yml` looking like this:
 
 ```yaml
 name: playground
@@ -345,9 +346,11 @@ This wraps up, in my mind, the most important section of the article, that will 
 
 ## Environment Variables, Templates, and More
 
-`two.conf` `two.Dockerfile` which will be identical to `one.conf` and `one.Dockerfile`, except returning `service two` in the `about`. 
+First of all, let's add another mock service to the mix. We will, unoriginally, call the service `two`. `two.conf` `two.Dockerfile` will be identical to `one.conf` and `one.Dockerfile`, except returning `service two` in the `about`. 
 
 > I will skip the code in those files to avoid overloading the article. You can investigate the source code [here](https://github.com/astorDev/nist/tree/main/proxy/nginx/playground/v4).
+
+To make our configuration architecture slightly more fluent, let's utilize nginx composition power and move the proxied services configuration to a dedicated file. Here's how we are going to update `proxy.config` to achieve that:
 
 ```conf
 server {
@@ -367,7 +370,7 @@ server {
 }
 ```
 
-> We create a `routes` subfolder so that our files don't match the pattern of the root config file: `include /etc/nginx/conf.d/*.conf;`
+In the config file, which we will locally call `proxy-routes.conf` we will use a familiar approach to proxy files, but now instead of hard-coding `proxy_pass`es we will utilize environment variables templating:
 
 ```conf
 location /one {
@@ -381,6 +384,10 @@ location /two {
 }
 ```
 
+Now we'll change where we place our configuration files inside the container to trigger nginx to use `envsubst` tool, which is activated in the docker image by default.
+
+> We create a `routes` subfolder so that our files don't match the pattern of the root config file: `include /etc/nginx/conf.d/*.conf;`
+
 ```Dockerfile
 FROM nginx
 
@@ -388,9 +395,13 @@ COPY proxy.conf /etc/nginx/templates/default.conf.template
 COPY proxy-routes.conf /etc/nginx/templates/routes/default.conf.template
 ```
 
-Nginx will run environment variables substitution for the files in the `templates` folder, having the `.template` suffix, creating a file with substituted values inside matching the `conf.d` folder, trimming the `.template` suffix. In our case include from `/etc/nginx/templates/routes/default.conf.template` we'll get the following files with substituted variables `/etc/nginx/conf.d/routes/default.conf`.
+Now, Nginx will run environment variable substitution for the files in the `templates` folder, having the `.template` suffix, creating a file with substituted values inside matching the `conf.d` folder, trimming the `.template` suffix. In our case include from `/etc/nginx/templates/routes/default.conf.template` we'll get the following files with substituted variables `/etc/nginx/conf.d/routes/default.conf`.
+
+Let's now provide our proxy container with environment variables for substitution. Here's how our final `compose.yml` will look like:
 
 ```yml
+name: playground
+
 services:
   proxy:
     build:
@@ -411,21 +422,31 @@ services:
       dockerfile: two.Dockerfile
 ```
 
+Deploying the setup we will be able to send
+
 ```sh
 curl localhost:4500/one/about
 ```
+
+and get a response from service one
 
 ```json
 {"description":"service one","version":"1.0"}
 ```
 
+or call the same endpoint from service two
+
 ```sh
 curl localhost:4500/two/about
 ```
 
+receiving the appropriate response:
+
 ```json
 {"description":"service two","version":"1.0"}
 ```
+
+This is where we finish this article's investigation of configuring the nginx web server via docker containers.
 
 ## Wrapping this up!
 
