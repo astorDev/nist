@@ -1,4 +1,3 @@
-DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
 
