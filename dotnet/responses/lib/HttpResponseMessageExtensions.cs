@@ -25,7 +25,9 @@ public static class HttpResponseMessageExtensions
         }
 
         logger.LogInformation("{HttpMethod} {Url} > {StatusCode} {ResponseBody}", response.RequestMessage!.Method, response.RequestMessage!.RequestUri!.PathAndQuery, response.StatusCode, body);
-        var result = JsonSerializer.Deserialize<T>(body, serializerOptions);
+        
+        var result = Deserialize.Json<T>(body, serializerOptions);
         return result;
     }
 }
+
