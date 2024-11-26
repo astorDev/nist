@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Nist.Errors" Version="2024.106.106.23" />
+    <PackageReference Include="Nist.Responses" Version="2024.111.124.28" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Using Include="System.Net" />
+    <Using Include="Microsoft.Extensions.Logging" />
+    <Using Include="Nist.Responses" />
+    <Using Include="Nist.Errors" />
+  </ItemGroup>
+</Project>
