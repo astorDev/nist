@@ -2,6 +2,8 @@
 
 Since .NET 9 we no longer get a Swagger UI included in the default `webapi` template. Although the document is still included, now via the `MapOpenApi` call, the UI is not here anymore. Gladly, it's relatively easy to get a documentation UI back. But the UI was boring anyway, so let's get something fancier!
 
+![](thumb.png)
+
 ## Meet Scalar
 
 Let's imagine we already have our new .NET 9 API project created from the `dotnet new webapi` command. Now, to get the new look we'll use a library, called Scalar. We'll need to install their nuget package for that:
