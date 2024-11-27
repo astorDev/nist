@@ -1,6 +1,6 @@
 # Making Your OpenAPI (Swagger) Docs UI Awesome in .NET 9
 
-Since .NET 9 we no longer get a Swagger UI included in the default `webapi` template. Although the document is still included, now via the `MapOpenApi` call, the UI is not here anymore. Gladly, that's relatively easy to get a documentation UI back. But the UI was boring anyway, so let's get something fancier!
+Since .NET 9 we no longer get a Swagger UI included in the default `webapi` template. Although the document is still included, now via the `MapOpenApi` call, the UI is not here anymore. Gladly, it's relatively easy to get a documentation UI back. But the UI was boring anyway, so let's get something fancier!
 
 ## Meet Scalar
 
@@ -60,7 +60,7 @@ The Blackest theme.
 
 ![](mars.png)
 
-The most interesting theme out of all, but I'm afraid it will saturate quickly, so I'll probably refrain from it.
+This is the most interesting theme out of all, but I'm afraid it will saturate quickly, so I'll probably refrain from it.
 
 ### Theme 10: Deep Space
 
@@ -70,7 +70,7 @@ The most interesting theme out of all, but I'm afraid it will saturate quickly, 
 
 ## Wrapping Up!
 
-It's very easy to get a nice looking .NET OpenAPI UI with .NET 9 - You just add `Scalar` and pick a theme. My theme of choice will be the `Deep Space` theme. The theme looks interesting, while still not being too extravagant, which make it suitable for something you would use often.
+It's very easy to get a nice looking .NET OpenAPI UI with .NET 9 - You just add `Scalar` and pick a theme. My theme of choice will be the `Deep Space` theme. The theme looks interesting, while still not being too extravagant, which makes it suitable for something you would use often.
 
 So here's the line of code I'll add to all my new .NET projects:
 
@@ -78,4 +78,4 @@ So here's the line of code I'll add to all my new .NET projects:
 app.MapScalarApiReference(o => o.WithTheme(ScalarTheme.DeepSpace));
 ```
 
-Hopefully that article can serve you as a reference for your customizations. Leave your favourite theme in the comments, and ... claps are appreciated! 👏
+Hopefully, this article can serve as a reference for your own customizations. Leave your favorite theme in the comments, and ... claps are appreciated! 👏
