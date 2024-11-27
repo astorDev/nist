@@ -49,7 +49,7 @@ app.MapDelete("/pets/{id}", (string id) =>
 
 ### Theme 0: None
 
-Funny enough, besides the default theme we have a `None` theme. For our experiments, we can servea  few themes on different routes. Here's how we can add the `None` theme to the `none/v1` route:
+Funny enough, besides the default theme we have a `None` theme. For our experiments, we can serve a few themes on different routes. Here's how we can add the `None` theme to the `none/v1` route:
 
 ```csharp
 app.MapScalarApiReference(o => 
