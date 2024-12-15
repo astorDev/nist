@@ -1,0 +1,1 @@
+public record LaunchV1(string Name, bool? Success);
