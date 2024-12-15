@@ -2,6 +2,8 @@
 
 Let's say we want to call an external HTTP API. Let's also say the API doesn't provide an SDK. We can use `HttpClient` but we would still want to get a strongly typed response object instead of the `HttpResponseMessage`, right? So, let's make a strongly typed client together!
 
+![](thumb.png)
+
 ## Spacing Things Up!
 
 We'll use SpaceX API for our little experiment. Let's set up our project - it will have a `SpaceX.Protocol` class library, containing our strongly-typed client and `SpaceX.Tests` to test our efforts. Here are the console commands for setting up our solution:
