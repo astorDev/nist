@@ -28,7 +28,7 @@ public sealed class LaunchesShould
             BaseAddress = new("https://api.spacexdata.com/v4/")
         };
 
-        var response = await http.GetAsync(Uris.LatestLaunch);
+        var response = await http.GetAsync("launches/latest");
         Console.WriteLine(await response.Content.ReadAsStringAsync());
     }
     
