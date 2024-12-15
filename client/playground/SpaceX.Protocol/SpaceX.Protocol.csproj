@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Nist.Responses" Version="2024.112.115.29-spacex-inited" />
+  </ItemGroup>
+
 </Project>
