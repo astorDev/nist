@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Nist.Responses;
+namespace Nist;
 
 public static class Deserialize
 {

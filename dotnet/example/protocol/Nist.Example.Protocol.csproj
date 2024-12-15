@@ -14,7 +14,7 @@
   <ItemGroup>
     <Using Include="System.Net" />
     <Using Include="Nist.Errors" />
-    <Using Include="Nist.Responses" />
+    <Using Include="Nist" />
   </ItemGroup>
 
 </Project>
