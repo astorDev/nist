@@ -48,8 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "playground", "playground", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "defaults-web", "templates\playground\defaults-web\defaults-web.csproj", "{8A9959DF-1B42-4162-A129-CDE54CEFF7EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "defaults-webapi", "templates\playground\defaults-webapi\defaults-webapi.csproj", "{55A61A00-6DA2-4090-BCB0-84A221AF42C7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -6,7 +6,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -14,7 +14,7 @@
   <ItemGroup>
     <Using Include="System.Net" />
     <Using Include="Nist.Errors" />
-    <Using Include="Nist.Responses" />
+    <Using Include="Nist" />
   </ItemGroup>
 
 </Project>

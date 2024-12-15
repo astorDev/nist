@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 
-namespace Nist.Responses;
+namespace Nist;
 
 public class UnsuccessfulResponseException(HttpStatusCode statusCode, HttpResponseHeaders headers, string body) : Exception
 {

@@ -4,6 +4,12 @@ Let's say we want to call an external HTTP API. Let's also say the API doesn't p
 
 ## Spacing Things Up!
 
+```sh
+dotnet new sln --name SpaceX
+dotnet new classlib --name SpaceX.Protocol
+dotnet sln add SpaceX.Protocol
+```
+
 ## Wrapping Up!
 
 Having a strongly typed SpaceX API client is nice, but what's more important is that the setup can be used as a base for any other setup. Utilizing NIST packages we were able to do it in no time. 

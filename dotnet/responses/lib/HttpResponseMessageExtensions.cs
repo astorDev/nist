@@ -2,7 +2,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Nist.Responses;
+namespace Nist;
 
 public static class HttpResponseMessageExtensions
 {
@@ -12,11 +12,22 @@ public static class HttpResponseMessageExtensions
         return result ?? throw new InvalidOperationException("deserialization resulted in null");
     }
 
+    public static async Task<T> Read<T>(this HttpResponseMessage response, ILogger? logger = null, JsonSerializerOptions? serializerOptions = null)
+    {
+        var result = await ReadNullable<T>(response, logger, serializerOptions);
+        return result ?? throw new InvalidOperationException("deserialization resulted in null");
+    }
+    
     public static async Task<T?> ReadNullable<T>(this Task<HttpResponseMessage> responseTask, ILogger? logger = null, JsonSerializerOptions? serializerOptions = null)
+    {
+        using var response = await responseTask;
+        return await response.ReadNullable<T>(logger, serializerOptions);
+    }
+    
+    public static async Task<T?> ReadNullable<T>(this HttpResponseMessage response, ILogger? logger = null, JsonSerializerOptions? serializerOptions = null)
     {
         logger ??= NullLogger.Instance;
         
-        using var response = await responseTask;
         var body = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
