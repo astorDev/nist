@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Net;
 
-namespace Nist.Errors;
+namespace Nist;
 
 public record Error(HttpStatusCode Code, string Reason)
 {
