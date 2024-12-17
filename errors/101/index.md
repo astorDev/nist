@@ -1,6 +1,6 @@
 # Exception Handling in ASP .NET Core
 
-Building an exception handling solution in ASP .NET Core can make you head spin. Athough, the tooling is pretty comprehensive it's surprisingly hard to find a single ready-to-go setup. In this article, we are going to explore the tools Microsoft provides and build a solution that can be reused for any WebApi you build.
+Building an exception-handling solution in ASP .NET Core can make your head spin. Although the tooling is pretty comprehensive it's surprisingly hard to find a single ready-to-go setup. In this article, we are going to explore the tools Microsoft provides and build a solution that can be reused for any WebApi you build.
 
 > Or jump straight to [the end](#bonus-section-using-nist-nuget-package) for the TLDR;
 
@@ -30,7 +30,7 @@ The package we can use to get the exception handling identical to the one we cre
 dotnet add package Nist.Errors
 ```
 
-We could use it's extension method `UseProblemForExceptions` to map exceptions to it's built-in error type. Of course, we would also import the method with dedicated package and `AddProblemDetails` which is a building block of the handler. So in the end our `Program.cs` should look like this:
+We could use its extension method `UseProblemForExceptions` to map exceptions to its built-in error type. Of course, we would also import the method by `using Nist;`. Also, don't forget to `AddProblemDetails`, which is a building block of the handler. So in the end our `Program.cs` should look like this:
 
 ```csharp
 using Nist;
@@ -50,6 +50,6 @@ app.UseProblemForExceptions(
 );
 ```
 
-When error occur the app will return exactly the JSON error object like we saw earlier in this article.
+When an error occurs the app will return exactly the JSON error object like we saw earlier in this article.
 
 You can check out the package code in the [dedicated repository](https://github.com/astorDev/nist). And you can also ... clap to this article 👉👈
