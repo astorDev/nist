@@ -3,6 +3,7 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Nist;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +44,17 @@ var app = builder.Build();
 
 // v5:
 
-app.UseProblemExceptionHandler(
+// app.UseProblemExceptionHandler(
+//     ex => ex switch {
+//         WrongInputException => new (HttpStatusCode.BadRequest, "WrongInput"),
+//         _ => new (HttpStatusCode.InternalServerError, "Unknown")
+//     },
+//     builder.Configuration.GetValue<bool>("ShowExceptions")
+// );
+
+// v6:
+
+app.UseProblemForExceptions(
     ex => ex switch {
         WrongInputException => new (HttpStatusCode.BadRequest, "WrongInput"),
         _ => new (HttpStatusCode.InternalServerError, "Unknown")

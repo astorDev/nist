@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Nist.Errors" Version="2024.112.117.1-problems-for-exception" />
+  </ItemGroup>
+
 </Project>
