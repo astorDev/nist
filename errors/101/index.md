@@ -6,19 +6,15 @@ Building an exception-handling solution in ASP .NET Core can make your head spin
 
 ## Setting Up the Project
 
-```sh
-dotnet new web
-```
+First, let's see what we get by default. We'll need to create a project with `dotnet new web` and add an endpoint, that we can call to get an exception. Let's add a method like in the snippet below:
 
-```sh
+```cs
 app.MapGet("/unknown", () => {
     throw new ("Unknown error");
 });
 ```
 
-`dotnet run`
-
-`curl localhost:5090/unknown`
+Now, if would run the app via `dotnet run` and access the endpoint, for example by running `curl localhost:5090/unknown` we'll get a `500` status code and response looking like this:
 
 ```text
 System.Exception: Unknown error
@@ -36,11 +32,17 @@ Accept-Encoding: gzip, deflate, br
 Content-Type: application/json
 ```
 
+Of course that response is hardly useful for another app since it's in a text format and can not be adequately deserialized. Besides the fact, that the response shows exception details which could cause a security issues, so is not shown in a production environment. Gladly, a much better response is just one line away.
+
 ## Utilizing Problem Details
+
+Since .NET 7 we Microsoft provided an standard and reusable error model they call `ProblemDetails`. We can add it in our application by adding just the line below:
 
 ```cs
 builder.Services.AddProblemDetails();
 ```
+
+Now, if we rerun the application and call the same endpoint again we will get an extensive JSON object looking something like this:
 
 ```json
 {
@@ -78,6 +80,8 @@ builder.Services.AddProblemDetails();
 }
 ```
 
+That's already much nicer, but we still have issues. Firstly, the model is still wouldn't be shown in a production environment, since it exposes exception details. The model is pretty overwhelming now with lots of unnecessary details. Fortunately, we can fix both problems by making a custom exception handler, utilizing the `ProblemDetails` infrastructure. Here's the code we can add to do it:
+
 ```cs
 app.UseExceptionHandler(e => {
     e.Run(async context => {
@@ -95,6 +99,8 @@ app.UseExceptionHandler(e => {
 });
 ```
 
+With that in place we will get a nice error model, that can be shown in any environment:
+
 ```json
 {
   "type": "Unexpected",
@@ -104,7 +110,21 @@ app.UseExceptionHandler(e => {
 }
 ```
 
+Although, the model is nice for now we always returning the same type regardless of the error that is actually happening. Let's make something more sophisticated!
+
 ## Different Errors for Different Exceptions
+
+Before changing the exception handling let's create a custom exception we will map to a specific error later:
+
+```cs
+class WrongInputException(string input) : Exception {
+    public override IDictionary Data => new Dictionary<string, object> {
+        [ "input" ] = input
+    };
+}
+```
+
+We will also need an endpoint to throw the exception:
 
 ```csharp
 app.MapGet("/wrong-input/{input}", (string input) => {
@@ -112,11 +132,7 @@ app.MapGet("/wrong-input/{input}", (string input) => {
 });
 ```
 
-Of course, if we access the new endpoint we will get the same error as before. 
-
-```csharp
-var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
-```
+Of course, if we access the new endpoint now we will get the same error as before. What we are planning to do is to make an problem response depending on the exception we receive. Let's make a helper method for that:
 
 ```csharp
 ProblemDetails ProblemFrom(Exception exception)
@@ -134,6 +150,14 @@ ProblemDetails ProblemFrom(Exception exception)
 }
 ```
 
+Well, to map an exception we first need to get the occurred exception. We can do it using the `HttpContext` features. Here's the code for it:
+
+```csharp
+var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+```
+
+Putting it all together we will get a new version of exception handling looking like this:
+
 ```csharp
 app.UseExceptionHandler(e => {
     e.Run(async context => {
@@ -149,6 +173,8 @@ app.UseExceptionHandler(e => {
     });
 });
 ```
+
+And now if we will call the 
 
 ```json
 {
@@ -159,23 +185,13 @@ app.UseExceptionHandler(e => {
 }
 ```
 
-But the actual request code will still be 500!
+But here's the twist! Despite the `status` field having value of `400`, the actual request code will still be `500`! Let's fix it by explicitly mapping the problem status to the response status code:
 
 ```csharp
-public static class ProblemDetailsExceptionEnricher
-{
-    public static void EnrichWithExceptionDetails(this ProblemDetails problem, Exception exception)
-    {
-        problem.Extensions = new Dictionary<string, object?> {
-            ["exception"] = new {
-                exception.Message,
-                exception.StackTrace,
-                exception.Data
-            }
-        };
-    }
-}
+context.Response.StatusCode = problem.Status ?? 500;
 ```
+
+In the result our exception code
 
 ```csharp
 app.UseExceptionHandler(e => {
@@ -184,7 +200,6 @@ app.UseExceptionHandler(e => {
         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
 
         var problem = ProblemFrom(exception);
-        problem.EnrichWithExceptionDetails(exception);
 
         context.Response.StatusCode = problem.Status ?? 500;
 
@@ -195,6 +210,8 @@ app.UseExceptionHandler(e => {
     });
 });
 ```
+
+The solution is already comprehensive. But still there are some things to improve - let's discuss it in the next section.
 
 ## Creating a Better Error Model
 
@@ -234,6 +251,8 @@ app.UseExceptionHandler(e => {
     });
 });
 ```
+
+## Enriching the Problem
 
 ## Bonus Section: Using Nist Nuget Package
 
