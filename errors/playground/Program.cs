@@ -11,6 +11,113 @@ builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
+// v1
+
+// app.UseExceptionHandler(e => {
+//     e.Run(async context => {
+//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+
+//         var problem = new ProblemDetails() {
+//             Type = "Unexpected"
+//         };
+
+//         await writer.WriteAsync(new ProblemDetailsContext{
+//             HttpContext = context,
+//             ProblemDetails = problem
+//         });
+//     });
+// });
+
+// v2:
+
+// app.UseExceptionHandler(e => {
+//     e.Run(async context => {
+//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+
+//         var problem = new ProblemDetails() {
+//             Type = "Unexpected"
+//         };
+
+//         await writer.WriteAsync(new ProblemDetailsContext{
+//             HttpContext = context,
+//             ProblemDetails = problem
+//         });
+//     });
+// });
+
+// v3:
+
+// app.UseExceptionHandler(e => {
+//     e.Run(async context => {
+//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+//         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+
+//         var problem = ProblemFrom(exception);
+
+//         await writer.WriteAsync(new ProblemDetailsContext{
+//             HttpContext = context,
+//             ProblemDetails = problem
+//         });
+//     });
+// });
+
+// v4:
+
+// app.UseExceptionHandler(e => {
+//     e.Run(async context => {
+//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+//         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+
+//         var problem = ProblemFrom(exception);
+//         problem.EnrichWithExceptionDetails(exception);
+
+//         context.Response.StatusCode = problem.Status ?? 500;
+
+//         await writer.WriteAsync(new ProblemDetailsContext{
+//             HttpContext = context,
+//             ProblemDetails = problem
+//         });
+//     });
+// });
+
+app.UseExceptionHandler(e => {
+    e.Run(async context => {
+        var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+        var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+
+        var problem = ProblemFrom(exception);
+        problem.EnrichWithExceptionDetails(exception);
+
+        context.Response.StatusCode = problem.Status ?? 500;
+
+        await writer.WriteAsync(new ProblemDetailsContext{
+            HttpContext = context,
+            ProblemDetails = problem
+        });
+    });
+});
+
+app.UseExceptionHandler(e => {
+    e.Run(async context => {
+        var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+        var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+
+        var error = ErrorFrom(exception);
+        var problem = new ProblemDetails {
+            Type = error.Reason,
+            Status = (int)error.Code
+        };
+        problem.EnrichWithExceptionDetails(exception);
+
+        context.Response.StatusCode = (int)error.Code;
+
+        await writer.WriteAsync(new ProblemDetailsContext{
+            HttpContext = context,
+            ProblemDetails = problem
+        });
+    });
+});
+
 // v3
 
 // app.UseExceptionHandler(e => {
@@ -54,13 +161,13 @@ var app = builder.Build();
 
 // v6:
 
-app.UseProblemForExceptions(
-    ex => ex switch {
-        WrongInputException => new (HttpStatusCode.BadRequest, "WrongInput"),
-        _ => new (HttpStatusCode.InternalServerError, "Unknown")
-    },
-    builder.Configuration.GetValue<bool>("ShowExceptions")
-);
+// app.UseProblemForExceptions(
+//     ex => ex switch {
+//         WrongInputException => new (HttpStatusCode.BadRequest, "WrongInput"),
+//         _ => new (HttpStatusCode.InternalServerError, "Unknown")
+//     },
+//     builder.Configuration.GetValue<bool>("ShowExceptions")
+// );
 
 app.MapGet("/unknown", () => {
     throw new ("Unknown error 4");
@@ -72,12 +179,41 @@ app.MapGet("/wrong-input/{input}", (string input) => {
 
 app.Run();
 
+
+ProblemDetails ProblemFrom(Exception exception)
+{
+    return exception switch {
+        WrongInputException => new ProblemDetails() {
+            Type = "WrongInput",
+            Status = (int)HttpStatusCode.BadRequest
+        },
+        _ => new ProblemDetails() {
+            Type = "Unexpected",
+            Status = (int)HttpStatusCode.InternalServerError
+        }
+    };
+}
+
 Error ErrorFrom(Exception exception)
 {
     return exception switch {
         WrongInputException => new (HttpStatusCode.BadRequest, "WrongInput"),
         _ => new (HttpStatusCode.InternalServerError, "Unknown")
     };
+}
+
+public static class ProblemDetailsExceptionEnricher
+{
+    public static void EnrichWithExceptionDetails(this ProblemDetails problem, Exception exception)
+    {
+        problem.Extensions = new Dictionary<string, object?> {
+            ["exception"] = new {
+                exception.Message,
+                exception.StackTrace,
+                exception.Data
+            }
+        };
+    }
 }
 
 public record Error(HttpStatusCode Code, string Reason);
@@ -87,6 +223,8 @@ class WrongInputException(string input) : Exception {
         [ "input" ] = input
     };
 }
+
+
 
 public static class ExceptionsToProblems
 {
