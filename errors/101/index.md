@@ -14,7 +14,7 @@ app.MapGet("/unknown", () => {
 });
 ```
 
-Now, if would run the app via `dotnet run` and access the endpoint, for example by running `curl localhost:5090/unknown` we'll get a `500` status code and response looking like this:
+Now, if we would run the app via `dotnet run` and access the endpoint, for example by running `curl localhost:5090/unknown` we'll get a `500` status code and response looking like this:
 
 ```text
 System.Exception: Unknown error
@@ -36,7 +36,7 @@ Of course that response is hardly useful for another app since it's in a text fo
 
 ## Utilizing Problem Details
 
-Since .NET 7 we Microsoft provided an standard and reusable error model they call `ProblemDetails`. We can add it in our application by adding just the line below:
+Since .NET 7 Microsoft provided a standard and reusable error model they call `ProblemDetails`. We can add it to our application by adding just the line below:
 
 ```cs
 builder.Services.AddProblemDetails();
@@ -80,7 +80,7 @@ Now, if we rerun the application and call the same endpoint again we will get an
 }
 ```
 
-That's already much nicer, but we still have issues. Firstly, the model is still wouldn't be shown in a production environment, since it exposes exception details. The model is pretty overwhelming now with lots of unnecessary details. Fortunately, we can fix both problems by making a custom exception handler, utilizing the `ProblemDetails` infrastructure. Here's the code we can add to do it:
+That's already much nicer, but we still have issues. Firstly, the model still wouldn't be shown in a production environment, since it exposes exception details. The model is pretty overwhelming now with lots of unnecessary details. Fortunately, we can fix both problems by making a custom exception handler, utilizing the `ProblemDetails` infrastructure. Here's the code we can add to do it:
 
 ```cs
 app.UseExceptionHandler(e => {
@@ -110,7 +110,7 @@ With that in place we will get a nice error model, that can be shown in any envi
 }
 ```
 
-Although, the model is nice for now we always returning the same type regardless of the error that is actually happening. Let's make something more sophisticated!
+Although, the model is nice for now we always return the same type regardless of the error that is actually happening. Let's make something more sophisticated!
 
 ## Different Errors for Different Exceptions
 
@@ -132,7 +132,7 @@ app.MapGet("/wrong-input/{input}", (string input) => {
 });
 ```
 
-Of course, if we access the new endpoint now we will get the same error as before. What we are planning to do is to make an problem response depending on the exception we receive. Let's make a helper method for that:
+Of course, if we access the new endpoint now we will get the same error as before. What we are planning to do is to make a problem response depending on the exception we receive. Let's make a helper method for that:
 
 ```csharp
 ProblemDetails ProblemFrom(Exception exception)
@@ -174,7 +174,7 @@ app.UseExceptionHandler(e => {
 });
 ```
 
-And now if we will call the `wrong-input` again we will get the following error response:
+And now if we call the `wrong-input` again we will get the following error response:
 
 ```json
 {
@@ -185,13 +185,13 @@ And now if we will call the `wrong-input` again we will get the following error 
 }
 ```
 
-But here's the twist! Despite the `status` field having value of `400`, the actual request code will still be `500`! Let's fix it by explicitly mapping the problem status to the response status code:
+But here's the twist! Despite the `status` field having the value of `400`, the actual request code will still be `500`! Let's fix it by explicitly mapping the problem status to the response status code:
 
 ```csharp
 context.Response.StatusCode = problem.Status ?? 500;
 ```
 
-In the result our exception handling code will look like this:
+In the result, our exception handling code will look like this:
 
 ```csharp
 app.UseExceptionHandler(e => {
@@ -211,11 +211,11 @@ app.UseExceptionHandler(e => {
 });
 ```
 
-Now, we return different response object for different errors and with proper status codes. But as you may see we get a very little information about the occurred problem. This is what we are going to fix next.
+Now, we return different response objects for different errors and with proper status codes. But as you may see we get very little information about the occurred problem. This is what we are going to fix next.
 
 ## Enriching the Problem
 
-As you may remember, the `WrongInputException` gives us the input in a data. We can also extract some useful information from the exception message and stacktrace, sometimes. Let's create an extension method that would add the exception information to our problem response:
+As you may remember, the `WrongInputException` gives us the input in the `Data` field. We can also extract some useful information from the exception message and stack trace, sometimes. Let's create an extension method that would add the exception information to our problem response:
 
 ```csharp
 public static class ProblemDetailsExceptionEnricher
@@ -233,7 +233,7 @@ public static class ProblemDetailsExceptionEnricher
 }
 ```
 
-Yet, the exception information may be sensible security-vise. We would need to call the enrich method only if the exception are implicitly enabled. Let's call the enabling flag `ShowExceptions`. Here's how our exception handling will look like now:
+Yet, the exception information may be sensible security vise. We would need to call the enrich method only if it is explicitly enabled. Let's call the enabling flag `ShowExceptions`. Here's how our exception handling will look like now:
 
 ```cs
 app.UseExceptionHandler(e => {
@@ -289,11 +289,11 @@ With that in place, we should get an error response resembling this:
 }
 ```
 
-The response is already comprehensive, as well as the solution we've developed so far. But still there are some things to improve - let's discuss it in the next section.
+The response is already comprehensive, as well as the solution we've developed so far. But still, there are some things to improve - let's discuss them in the next section.
 
 ## Creating a Better Error Model
 
-Although, the `ProblemDetails` model is very helpful for us it's not really perfect. First of all, its `status` field is optional and is of type int. We want the status for every request and know that it is an `HttpStatusCode`. So shouldn't it be a required field of the appropriate type? Secondly, the model is definately overloaded with fields, while we essentially just need to know the error type or reason. So, how about we create a better model? Something like this:
+Although the `ProblemDetails` model is very helpful for us it's not really perfect. First of all, its `status` field is optional and is of type int. We want the status for every request and know that it is an `HttpStatusCode`. So shouldn't it be a required field of the appropriate type? Secondly, the model is definitely overloaded with fields, while we essentially just need to know the error type or reason. So, how about we create a better model? Something like this:
 
 ```cs
 public record Error(HttpStatusCode Code, string Reason);
