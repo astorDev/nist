@@ -81,18 +81,44 @@ var app = builder.Build();
 
 // v5:
 
+// app.UseExceptionHandler(e => {
+//     e.Run(async context => {
+//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+//         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+//         var configuration = context.RequestServices.GetRequiredService<IConfiguration>();
+
+//         var problem = ProblemFrom(exception);
+//         if (configuration.GetValue<bool>("ShowExceptions")) {
+//             problem.EnrichWithExceptionDetails(exception);
+//         }
+
+//         context.Response.StatusCode = problem.Status ?? 500;
+
+//         await writer.WriteAsync(new ProblemDetailsContext{
+//             HttpContext = context,
+//             ProblemDetails = problem
+//         });
+//     });
+// });
+
+// v6:
+
 app.UseExceptionHandler(e => {
     e.Run(async context => {
         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+
+        var error = ErrorFrom(exception);
+        var problem = new ProblemDetails {
+            Type = error.Reason,
+            Status = (int)error.Code
+        };
+
         var configuration = context.RequestServices.GetRequiredService<IConfiguration>();
-
-        var problem = ProblemFrom(exception);
-        if (configuration.GetValue<bool>("ShowExceptions")) {
+        if (configuration.GetValue<bool>("ShowExceptions"))
             problem.EnrichWithExceptionDetails(exception);
-        }
 
-        context.Response.StatusCode = problem.Status ?? 500;
+        context.Response.StatusCode = (int)error.Code;
 
         await writer.WriteAsync(new ProblemDetailsContext{
             HttpContext = context,
@@ -100,78 +126,6 @@ app.UseExceptionHandler(e => {
         });
     });
 });
-
-// app.UseExceptionHandler(e => {
-//     e.Run(async context => {
-//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
-//         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
-
-//         var error = ErrorFrom(exception);
-//         var problem = new ProblemDetails {
-//             Type = error.Reason,
-//             Status = (int)error.Code
-//         };
-//         problem.EnrichWithExceptionDetails(exception);
-
-//         context.Response.StatusCode = (int)error.Code;
-
-//         await writer.WriteAsync(new ProblemDetailsContext{
-//             HttpContext = context,
-//             ProblemDetails = problem
-//         });
-//     });
-// });
-
-// v3
-
-// app.UseExceptionHandler(e => {
-//     e.Run(async context => {
-//         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
-//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
-
-//         var error = ErrorFrom(exception);
-//         var problem = ProblemFrom(error, exception);
-
-//         context.Response.StatusCode = (int)error.Code;
-
-//         await writer.WriteAsync(new ProblemDetailsContext{
-//             HttpContext = context,
-//             ProblemDetails = problem
-//         });
-//     });
-// });
-
-// v4
-
-// app.UseProblemExceptionHandler(
-//     ErrorFrom,
-//     e => e.Code,
-//     (error, exception) => ExceptionsToProblems.ProblemFrom(
-//         error, 
-//         exception, 
-//         builder.Configuration.GetValue<bool>("ShowExceptions")
-//     )
-// );
-
-// v5:
-
-// app.UseProblemExceptionHandler(
-//     ex => ex switch {
-//         WrongInputException => new (HttpStatusCode.BadRequest, "WrongInput"),
-//         _ => new (HttpStatusCode.InternalServerError, "Unknown")
-//     },
-//     builder.Configuration.GetValue<bool>("ShowExceptions")
-// );
-
-// v6:
-
-// app.UseProblemForExceptions(
-//     ex => ex switch {
-//         WrongInputException => new (HttpStatusCode.BadRequest, "WrongInput"),
-//         _ => new (HttpStatusCode.InternalServerError, "Unknown")
-//     },
-//     builder.Configuration.GetValue<bool>("ShowExceptions")
-// );
 
 app.MapGet("/unknown", () => {
     throw new ("Unknown error 4");

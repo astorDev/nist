@@ -299,6 +299,8 @@ Although the `ProblemDetails` model is very helpful for us it's not really perfe
 public record Error(HttpStatusCode Code, string Reason);
 ```
 
+Let's now map our exception to the newly created error class instead of the problem:
+
 ```cs
 Error ErrorFrom(Exception exception)
 {
@@ -308,6 +310,8 @@ Error ErrorFrom(Exception exception)
     };
 }
 ```
+
+Then using the method and mapping the `error` to the `problem` we'll get our final version looking something like this:
 
 ```cs
 app.UseExceptionHandler(e => {
@@ -320,7 +324,10 @@ app.UseExceptionHandler(e => {
             Type = error.Reason,
             Status = (int)error.Code
         };
-        problem.EnrichWithExceptionDetails(exception);
+
+        var configuration = context.RequestServices.GetRequiredService<IConfiguration>();
+        if (configuration.GetValue<bool>("ShowExceptions"))
+            problem.EnrichWithExceptionDetails(exception);
 
         context.Response.StatusCode = (int)error.Code;
 
@@ -331,6 +338,8 @@ app.UseExceptionHandler(e => {
     });
 });
 ```
+
+This implementation covers all our needs! And we can call it a day. But there's still one question left: What if I don't want to implement this from scratch? Gladly, there is a nuget package that already contains the main parts of our implementation. Let's head to the last to the section to learn how to use it!
 
 ## Bonus Section: Using Nist Nuget Package
 
