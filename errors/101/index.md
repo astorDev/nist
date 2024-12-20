@@ -174,7 +174,7 @@ app.UseExceptionHandler(e => {
 });
 ```
 
-And now if we will call the 
+And now if we will call the `wrong-input` again we will get the following error response:
 
 ```json
 {
@@ -191,7 +191,7 @@ But here's the twist! Despite the `status` field having value of `400`, the actu
 context.Response.StatusCode = problem.Status ?? 500;
 ```
 
-In the result our exception code
+In the result our exception handling code will look like this:
 
 ```csharp
 app.UseExceptionHandler(e => {
@@ -211,9 +211,89 @@ app.UseExceptionHandler(e => {
 });
 ```
 
-The solution is already comprehensive. But still there are some things to improve - let's discuss it in the next section.
+Now, we return different response object for different errors and with proper status codes. But as you may see we get a very little information about the occurred problem. This is what we are going to fix next.
+
+## Enriching the Problem
+
+As you may remember, the `WrongInputException` gives us the input in a data. We can also extract some useful information from the exception message and stacktrace, sometimes. Let's create an extension method that would add the exception information to our problem response:
+
+```csharp
+public static class ProblemDetailsExceptionEnricher
+{
+    public static void EnrichWithExceptionDetails(this ProblemDetails problem, Exception exception)
+    {
+        problem.Extensions = new Dictionary<string, object?> {
+            ["exception"] = new {
+                exception.Message,
+                exception.StackTrace,
+                exception.Data
+            }
+        };
+    }
+}
+```
+
+Yet, the exception information may be sensible security-vise. We would need to call the enrich method only if the exception are implicitly enabled. Let's call the enabling flag `ShowExceptions`. Here's how our exception handling will look like now:
+
+```cs
+app.UseExceptionHandler(e => {
+    e.Run(async context => {
+        var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+        var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+        var configuration = context.RequestServices.GetRequiredService<IConfiguration>();
+
+        var problem = ProblemFrom(exception);
+        if (configuration.GetValue<bool>("ShowExceptions")) {
+            problem.EnrichWithExceptionDetails(exception);
+        }
+
+        context.Response.StatusCode = problem.Status ?? 500;
+
+        await writer.WriteAsync(new ProblemDetailsContext{
+            HttpContext = context,
+            ProblemDetails = problem
+        });
+    });
+});
+```
+
+Of course, we also will need to update `appsettings.Development.json` to allow the enrichment. Here's how the file should look after the update:
+
+```json
+{
+  "ShowExceptions" : "true",
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+```
+
+With that in place, we should get an error response resembling this:
+
+```json
+{
+  "type": "WrongInput",
+  "title": "Bad Request",
+  "status": 400,
+  "exception": {
+    "message": "Exception of type 'WrongInputException' was thrown.",
+    "stackTrace": "   at Program.<>c.<<Main>$>b__0_2(String input) in /Users/egortarasov/repos/nist/errors/playground/Program.cs:line 181\n   at lambda_method2(Closure, Object, HttpContext)\n   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.Invoke(HttpContext context)",
+    "data": {
+      "input": "42"
+    }
+  },
+  "traceId": "00-f609724da483947f8606d4ada4b5a148-9c57ee84d5c15656-00"
+}
+```
+
+The response is already comprehensive, as well as the solution we've developed so far. But still there are some things to improve - let's discuss it in the next section.
 
 ## Creating a Better Error Model
+
+Although, the `ProblemDetails` model is very helpful for us it's not really perfect. First of all, its `status` field is optional and is of type int. We want the status for every request and know that it is an `HttpStatusCode`. So shouldn't it be a required field of the appropriate type? Secondly, the model is definately overloaded with fields, while we essentially just need to know the error type or reason. So, how about we create a better model? Something like this:
 
 ```cs
 public record Error(HttpStatusCode Code, string Reason);
@@ -251,8 +331,6 @@ app.UseExceptionHandler(e => {
     });
 });
 ```
-
-## Enriching the Problem
 
 ## Bonus Section: Using Nist Nuget Package
 

@@ -69,7 +69,6 @@ var app = builder.Build();
 //         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
 
 //         var problem = ProblemFrom(exception);
-//         problem.EnrichWithExceptionDetails(exception);
 
 //         context.Response.StatusCode = problem.Status ?? 500;
 
@@ -80,13 +79,18 @@ var app = builder.Build();
 //     });
 // });
 
+// v5:
+
 app.UseExceptionHandler(e => {
     e.Run(async context => {
         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+        var configuration = context.RequestServices.GetRequiredService<IConfiguration>();
 
         var problem = ProblemFrom(exception);
-        problem.EnrichWithExceptionDetails(exception);
+        if (configuration.GetValue<bool>("ShowExceptions")) {
+            problem.EnrichWithExceptionDetails(exception);
+        }
 
         context.Response.StatusCode = problem.Status ?? 500;
 
@@ -97,26 +101,26 @@ app.UseExceptionHandler(e => {
     });
 });
 
-app.UseExceptionHandler(e => {
-    e.Run(async context => {
-        var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
-        var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
+// app.UseExceptionHandler(e => {
+//     e.Run(async context => {
+//         var writer = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+//         var exception = context.Features.GetRequiredFeature<IExceptionHandlerFeature>()!.Error;
 
-        var error = ErrorFrom(exception);
-        var problem = new ProblemDetails {
-            Type = error.Reason,
-            Status = (int)error.Code
-        };
-        problem.EnrichWithExceptionDetails(exception);
+//         var error = ErrorFrom(exception);
+//         var problem = new ProblemDetails {
+//             Type = error.Reason,
+//             Status = (int)error.Code
+//         };
+//         problem.EnrichWithExceptionDetails(exception);
 
-        context.Response.StatusCode = (int)error.Code;
+//         context.Response.StatusCode = (int)error.Code;
 
-        await writer.WriteAsync(new ProblemDetailsContext{
-            HttpContext = context,
-            ProblemDetails = problem
-        });
-    });
-});
+//         await writer.WriteAsync(new ProblemDetailsContext{
+//             HttpContext = context,
+//             ProblemDetails = problem
+//         });
+//     });
+// });
 
 // v3
 
