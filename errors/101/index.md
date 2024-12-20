@@ -4,6 +4,8 @@ Building an exception-handling solution in ASP .NET Core can make your head spin
 
 > Or jump straight to [the end](#bonus-section-using-nist-nuget-package) for the TLDR;
 
+![](thumb.png)
+
 ## Setting Up the Project
 
 First, let's see what we get by default. We'll need to create a project with `dotnet new web` and add an endpoint, that we can call to get an exception. Let's add a method like in the snippet below:
