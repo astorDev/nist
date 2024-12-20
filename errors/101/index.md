@@ -34,7 +34,7 @@ Accept-Encoding: gzip, deflate, br
 Content-Type: application/json
 ```
 
-Of course, that response is hardly useful for another app since it's in a text format and can not be adequately deserialized. Besides the fact, that the response shows exception details which could cause security issues, so is not shown in a production environment. Gladly, a much better response is just one line away.
+Of course, that response is hardly useful for another service since it's in a text format and can not be adequately deserialized. Besides, the response shows exception details which could cause security issues, therefore the response will not be shown in a production environment. Gladly, a much better response is just one line away.
 
 ## Utilizing Problem Details
 
@@ -82,7 +82,9 @@ Now, if we rerun the application and call the same endpoint again we will get an
 }
 ```
 
-That's already much nicer, but we still have issues. Firstly, the model still wouldn't be shown in a production environment, since it exposes exception details. The model is pretty overwhelming now with lots of unnecessary details. Fortunately, we can fix both problems by making a custom exception handler, utilizing the `ProblemDetails` infrastructure. Here's the code we can add to do it:
+That's already much nicer, but we still have issues. Firstly, the model still wouldn't be shown in a production environment, since it exposes exception details. Secondly, the model is pretty overwhelming now with lots of unnecessary details. 
+
+Fortunately, we can fix both problems by making a custom exception handler, utilizing the `ProblemDetails` infrastructure. Here's the code we can add to do it:
 
 ```cs
 app.UseExceptionHandler(e => {
@@ -112,7 +114,7 @@ With that in place we will get a nice error model, that can be shown in any envi
 }
 ```
 
-Although the model is nice for now we always return the same type regardless of the error that is actually happening. Let's make something more sophisticated!
+The model is quite fine, but now we always return the same type regardless of the error that is actually happening. Let's make something more sophisticated!
 
 ## Different Errors for Different Exceptions
 
@@ -235,7 +237,7 @@ public static class ProblemDetailsExceptionEnricher
 }
 ```
 
-Yet, the exception information may be sensible security vise. We would need to call the enrich method only if it is explicitly enabled. Let's call the enabling flag `ShowExceptions`. Here's how our exception handling will look like now:
+Yet, the exception information may be sensible security-wise. We would need to call the enrich method only if it is explicitly enabled. Let's call the enabling flag `ShowExceptions`. Here's how our exception handling will look like now:
 
 ```cs
 app.UseExceptionHandler(e => {
