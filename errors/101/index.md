@@ -14,7 +14,7 @@ app.MapGet("/unknown", () => {
 });
 ```
 
-Now, if we would run the app via `dotnet run` and access the endpoint, for example by running `curl localhost:5090/unknown` we'll get a `500` status code and response looking like this:
+Now, if we run the app via `dotnet run` and access the endpoint, for example by running `curl localhost:5090/unknown` we'll get a `500` status code and response looking like this:
 
 ```text
 System.Exception: Unknown error
@@ -32,7 +32,7 @@ Accept-Encoding: gzip, deflate, br
 Content-Type: application/json
 ```
 
-Of course that response is hardly useful for another app since it's in a text format and can not be adequately deserialized. Besides the fact, that the response shows exception details which could cause a security issues, so is not shown in a production environment. Gladly, a much better response is just one line away.
+Of course, that response is hardly useful for another app since it's in a text format and can not be adequately deserialized. Besides the fact, that the response shows exception details which could cause security issues, so is not shown in a production environment. Gladly, a much better response is just one line away.
 
 ## Utilizing Problem Details
 
@@ -110,7 +110,7 @@ With that in place we will get a nice error model, that can be shown in any envi
 }
 ```
 
-Although, the model is nice for now we always return the same type regardless of the error that is actually happening. Let's make something more sophisticated!
+Although the model is nice for now we always return the same type regardless of the error that is actually happening. Let's make something more sophisticated!
 
 ## Different Errors for Different Exceptions
 
@@ -299,6 +299,8 @@ Although the `ProblemDetails` model is very helpful for us it's not really perfe
 public record Error(HttpStatusCode Code, string Reason);
 ```
 
+Let's now map our exception to the newly created error class instead of the problem:
+
 ```cs
 Error ErrorFrom(Exception exception)
 {
@@ -308,6 +310,8 @@ Error ErrorFrom(Exception exception)
     };
 }
 ```
+
+Then using the method and mapping the `error` to the `problem` we'll get our final version looking something like this:
 
 ```cs
 app.UseExceptionHandler(e => {
@@ -320,7 +324,10 @@ app.UseExceptionHandler(e => {
             Type = error.Reason,
             Status = (int)error.Code
         };
-        problem.EnrichWithExceptionDetails(exception);
+
+        var configuration = context.RequestServices.GetRequiredService<IConfiguration>();
+        if (configuration.GetValue<bool>("ShowExceptions"))
+            problem.EnrichWithExceptionDetails(exception);
 
         context.Response.StatusCode = (int)error.Code;
 
@@ -331,6 +338,8 @@ app.UseExceptionHandler(e => {
     });
 });
 ```
+
+This implementation covers all our needs! And we can call it a day. But there's still one question left: What if I don't want to implement this from scratch? Gladly, there is a nuget package that already contains the main parts of our implementation. Let's head to the last section to learn how to use it!
 
 ## Bonus Section: Using Nist Nuget Package
 
