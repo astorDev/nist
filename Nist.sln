@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Errors.Playground", "e
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Errors", "errors\lib\Nist.Errors.csproj", "{65C9AFED-F255-4743-BBE7-2ED2E488F05D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "websockets", "websockets", "{B1CFABB9-9703-4B35-9FBD-119234DF5101}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{53E0C99D-9D72-4B96-9168-5AB070F1EF9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground.WebSockets", "websockets\dotnet\playground\Playground.WebSockets.csproj", "{5150ABCD-009A-4F38-B8CE-5DF57E4F8903}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +32,15 @@ Global
 		{65C9AFED-F255-4743-BBE7-2ED2E488F05D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65C9AFED-F255-4743-BBE7-2ED2E488F05D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65C9AFED-F255-4743-BBE7-2ED2E488F05D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5150ABCD-009A-4F38-B8CE-5DF57E4F8903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5150ABCD-009A-4F38-B8CE-5DF57E4F8903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5150ABCD-009A-4F38-B8CE-5DF57E4F8903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5150ABCD-009A-4F38-B8CE-5DF57E4F8903}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3448B6A0-78B9-4F52-A971-9407F9B331CF} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
 		{65C9AFED-F255-4743-BBE7-2ED2E488F05D} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
+		{53E0C99D-9D72-4B96-9168-5AB070F1EF9C} = {B1CFABB9-9703-4B35-9FBD-119234DF5101}
+		{5150ABCD-009A-4F38-B8CE-5DF57E4F8903} = {53E0C99D-9D72-4B96-9168-5AB070F1EF9C}
 	EndGlobalSection
 EndGlobal
