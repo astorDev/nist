@@ -2,7 +2,7 @@
 
 > Learn how to implement WebSocket server endpoints using C# with ASP .NET Core 9 Minimal API.
 
-WebSockets are the simplest way to provide real-time communication between front-end and back-end apps. And it's absolutely possible to use `ASP .NET Core` for that style of communication. However, the Microsoft's  documentation for that technology seems poor and almost abandoned. In this article, I'm going to try fill the gap, giving you the jump start with WebSockets using the latest `.NET` stack.
+WebSockets are the simplest way to provide real-time communication between front-end and back-end apps. And it's surely possible to use `ASP .NET Core` for that communication style. However, Microsoft's documentation for that technology seems poor and almost abandoned. In this article, I will try to fill the gap, giving you the jump start with WebSockets using the latest `.NET` stack.
 
 > Or jump straight to the end for the [TLDR](#the-final-version)
 
@@ -42,4 +42,4 @@ app.Map("/echo-forever-final", async (HttpContext context, CancellationToken can
 });
 ```
 
-The package is part of the [Nist](https://github.com/astorDev/nist) project, providing tools for **Ni**ce **S**tate **T**ransfer. In the repository you can find the [article source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/playground) as well as the [package source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/lib). Give it a Star on the [Github](https://github.com/astorDev/nist)! And also ... claps for the article are appreciated 👉👈
+The package is part of the [Nist](https://github.com/astorDev/nist) project, providing tools for **Ni**ce **S**tate **T**ransfer. In the repository, you can find the [article source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/playground) as well as the [package source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/lib). Give it a Star on the [Github](https://github.com/astorDev/nist)! And also ... claps for the article are appreciated 👉👈
