@@ -60,8 +60,6 @@ app.Map("/echo-forever-right", async (HttpContext context, CancellationToken can
 
 app.Run();
 
-record Person(string FirstName, int Age);
-
 public static class WebSocketExtensions
 {
     public static async Task<byte[]> ReceiveToTheEndAsync(this WebSocket webSocket, CancellationToken? cancellationToken = null)
