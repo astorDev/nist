@@ -2,6 +2,8 @@
 
 > Learn how to implement WebSocket server endpoints using C# with ASP .NET Core 9 Minimal API.
 
+![](thumb.png)
+
 WebSockets are the simplest way to provide real-time communication between front-end and back-end apps. And it's surely possible to use `ASP .NET Core` for that communication style. However, Microsoft's documentation for that technology seems poor and almost abandoned. In this article, I will try to fill the gap, giving you the jump start with WebSockets using the latest `.NET` stack.
 
 > Or jump straight to the end for the [TLDR](#the-final-version)
