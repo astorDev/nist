@@ -41,6 +41,19 @@ app.Map("/echo-forever", async (HttpContext context, CancellationToken cancellat
     }
 });
 
+app.Map("/echo-forever-unexceptioned", async (HttpContext context, CancellationToken cancellationToken) => {
+    var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+
+    while (!cancellationToken.IsCancellationRequested && webSocket.State == WebSocketState.Open)
+    {
+        var buffer = await webSocket.ReceiveToTheEndAsync(cancellationToken);
+        app.Logger.LogInformation("Received: {buffer}", Encoding.UTF8.GetString(buffer));
+        await webSocket.SendFullTextAsync(buffer, cancellationToken);
+    }
+
+    app.Logger.LogInformation("WebSocket closed");
+});
+
 app.Map("/echo-forever-right", async (HttpContext context, CancellationToken cancellationToken) => {
     var webSocket = await context.WebSockets.AcceptWebSocketAsync();
 
