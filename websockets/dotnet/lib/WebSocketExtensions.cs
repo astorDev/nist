@@ -4,9 +4,9 @@ namespace Nist;
 
 public static class WebSocketExtensions
 {
-    public static async Task<byte[]> ReceiveAsync(this WebSocket webSocket, CancellationToken? cancellationToken = null)
+    public static async Task<byte[]> ReceiveAsync(this WebSocket webSocket, int bytesLength = 1024, CancellationToken? cancellationToken = null)
     {
-        var buffer = new byte[8];
+        var buffer = new byte[bytesLength];
         using var memoryStream = new MemoryStream();
         WebSocketReceiveResult result;
 

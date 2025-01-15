@@ -23,14 +23,18 @@ dotnet add package Nist.WebSockets
 Here's how our echo endpoint will look after utilizing the package:
 
 ```csharp
+using Nist;
+
+// ...
+
 app.Map("/echo-forever-final", async (HttpContext context, CancellationToken cancellationToken) => {
     var webSocket = await context.WebSockets.AcceptWebSocketAsync();
 
     while (!cancellationToken.IsCancellationRequested && webSocket.State == WebSocketState.Open)
     {
-        var buffer = await webSocket.ReceiveAsync(cancellationToken);
+        var buffer = await webSocket.ReceiveAsync(cancellationToken: cancellationToken);
         app.Logger.LogInformation("Received: {buffer}", Encoding.UTF8.GetString(buffer));
-        await webSocket.SendAsync(buffer, cancellationToken);
+        await webSocket.SendAsync(buffer, cancellationToken: cancellationToken);
     }
 
     if (webSocket.State == WebSocketState.CloseReceived)
