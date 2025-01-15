@@ -1,5 +1,6 @@
 using System.Net.WebSockets;
 using System.Text;
+using Nist;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,24 @@ app.Map("/echo-forever-right", async (HttpContext context, CancellationToken can
         var buffer = await webSocket.ReceiveToTheEndAsync(cancellationToken);
         app.Logger.LogInformation("Received: {buffer}", Encoding.UTF8.GetString(buffer));
         await webSocket.SendFullTextAsync(buffer, cancellationToken);
+    }
+
+    if (webSocket.State == WebSocketState.CloseReceived)
+    {
+        await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed", CancellationToken.None);
+    }
+
+    app.Logger.LogInformation("WebSocket closed");
+});
+
+app.Map("/echo-forever-final", async (HttpContext context, CancellationToken cancellationToken) => {
+    var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+
+    while (!cancellationToken.IsCancellationRequested && webSocket.State == WebSocketState.Open)
+    {
+        var buffer = await webSocket.ReceiveAsync(cancellationToken: cancellationToken);
+        app.Logger.LogInformation("Received: {buffer}", Encoding.UTF8.GetString(buffer));
+        await webSocket.SendAsync(buffer, cancellationToken: cancellationToken);
     }
 
     if (webSocket.State == WebSocketState.CloseReceived)
