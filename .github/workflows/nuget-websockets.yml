@@ -1,0 +1,18 @@
+name: Nist.WebSockets Nuget
+
+on:
+  push:
+    paths:
+      - 'websockets/dotnet/lib/**'
+      - '.github/workflows/nuget-websockets.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    # name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: websockets/dotnet/lib/Nist.WebSockets
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
