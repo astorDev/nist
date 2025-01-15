@@ -22,7 +22,7 @@ WebSockets are not enabled by default. Gladly, to enable them we just need to ad
 app.UseWebSockets();
 ```
 
-To implement an WebSocket endpoint we'll need to extract the `webSocket` from the `HttpContext`,  receive bytes from it and just send the same bytes back. Here's what our first naive implementation might look like:
+To implement a WebSocket endpoint we'll need to extract the `webSocket` from the `HttpContext`,  receive bytes from it, and just send the same bytes back. Here's what our first naive implementation might look like:
 
 ```csharp
 app.Map("/echo", async (HttpContext context) => {
@@ -45,7 +45,7 @@ And here's how we can use the newly created endpoint:
 
 ![](echo-demo.gif)
 
-Hooray, we made an websockets endpoint using `.NET`! Of course for now our endpoint has a bunch of problems. Let's address them one by one.
+Hooray, we made a WebSockets endpoint using `.NET`! Of course for now our endpoint has a bunch of problems. Let's address them one by one.
 
 ## Improving The Echo: Reading the Whole Message
 
@@ -53,7 +53,7 @@ First, let's try sending a longer message to the endpoint:
 
 ![](echo-problem-demo.gif)
 
-As you may see, the endpoint returns just a first part of the message. WebSockets split messages into frames and a single WebSocket message can be fragmented into multiple frames. When we call `ReceiveAsync` we receive the frame, based on the length of `buffer` we supply. Gladly, `WebSocketReceiveResult` identifies whether the frame indicates the end of the message. So we need to `ReceiveAsync` to a joined buffer, while we don't reach the end of the message. Here's the code for an extension method that implements this:
+As you may see, the endpoint returns just the first part of the message. WebSockets split messages into frames and a single WebSocket message can be fragmented into multiple frames. When we call `ReceiveAsync` we receive the frame, based on the length of `buffer` we supply. Gladly, `WebSocketReceiveResult` identifies whether the frame indicates the end of the message. So we need to `ReceiveAsync` to a joined buffer, while we don't reach the end of the message. Here's the code for an extension method that implements this:
 
 
 ```csharp
@@ -76,7 +76,7 @@ public static class WebSocketExtensions
 }
 ```
 
-> Of course, in a real application we will use a longer byte array length and the `Hello WebSockets!` will fit the size. However, in a real application the message could be significantly longer, so we will still need a way to make sure we have read the message till the end.
+> Of course, in a real application we will use a longer byte array length, and the `Hello WebSockets!` will fit the size. However, in a real application, the message could be significantly longer, so we will still need a way to make sure we have read the message till the end.
 
 Let's also wrap `SendAsync` in a shorter method to simplify our code a little further:
 
@@ -92,7 +92,7 @@ public static async Task SendFullTextAsync(this WebSocket webSocket, ArraySegmen
 }
 ```
 
-With this methods in hand, let's create a new shorter version of our echo endpoint:
+With these methods in hand, let's create a new shorter version of our echo endpoint:
 
 ```csharp
 app.Map("/echo-long", async (HttpContext context) => {
@@ -110,7 +110,7 @@ One Problem solved! A few more to go!
 
 ## Echoing Forever: Keeping the WebSocket
 
-As you may notice, after we send the echo we interrupt our WebSocket connection. Of course, this is not acceptable since it violates the whole purpose of using websockets. Don't worry, we'll fix it right now!
+As you may notice, after we send the echo we interrupt our WebSocket connection. Of course, this is not acceptable since it violates the whole purpose of using WebSockets. Don't worry, we'll fix it right now!
 
 The simplest way to keep the connection is to loop `while` there's no cancellation requested from the `CancellationToken`. Like this:
 
@@ -134,7 +134,7 @@ Great, now we can echo for however long we wish! But see the exception popping i
 
 ## The Almost Perfect Echo: Sending The Close Frame
 
-If we study the exception just for a little we will find that it happens because we try to receive our next frame, despite the WebSocket not being open anymore. This is an easy fix! We just need to check that `webSocket.State == WebSocketState.Open` before running a new cycle of message receiving. With the fix and a few logging added for transparency we can get a code like this:
+If we study the exception just for a little we will find that it happens because we try to receive our next frame, despite the WebSocket not being open anymore. This is an easy fix! We just need to check that `webSocket.State == WebSocketState.Open` before running a new cycle of message receiving. With the fix and a few logging added for transparency, we can get a code like this:
 
 ```csharp
 app.Map("/echo-forever-unexceptioned", async (HttpContext context, CancellationToken cancellationToken) => {
@@ -155,7 +155,7 @@ Let's test this now:
 
 ![](echo-forever-unexceptioned-demo.gif)
 
-We stopped receiving the exception! But, as you might see, Postman shows a warning sign next to the closing message. This is because proper closing of WebSockets connection implies receiving `Close` confirmation from the party opposite to the closing initiation - in this case, our server. Well, we just need to send the `WebSocketCloseStatus.NormalClosure` from our server after receiving closing request from the client. Like this:
+We stopped receiving the exception! But, as you might see, Postman shows a warning sign next to the closing message. This is because proper closing of WebSockets connection implies receiving `Close` confirmation from the party opposite to the closing initiation - in this case, our server. Well, we just need to send the `WebSocketCloseStatus.NormalClosure` from our server after receiving a closing request from the client. Like this:
 
 ```csharp
 if (webSocket.State == WebSocketState.CloseReceived)
@@ -172,7 +172,7 @@ Finally, our endpoint functions properly. Now, there's just one thing left to do
 
 ## The Final Version
 
-In the beginning of the article, we have written a helper extension methods for websockets. That's a shame we would have to write such low-level methods ourselves. Gladly, there's a dedicated nuget package containing similar extension methods. Let's install it:
+At the beginning of the article, we wrote a helper extension method for WebSockets. That's a shame we would have to write such low-level methods ourselves. Gladly, there's a dedicated nuget package containing similar extension methods. Let's install it:
 
 ```sh
 dotnet add package Nist.WebSockets
@@ -208,4 +208,4 @@ Now, let's do the final test!
 
 ![](echo-final-demo.gif)
 
-With the help of the package we will need way less code to write a properly functioning WebSockets endpoint! The package is part of the [Nist](https://github.com/astorDev/nist) project, providing tools for **Ni**ce **S**tate **T**ransfer. In the repository, you can find the [article source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/playground) as well as the [package source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/lib). Give it a Star on the [Github](https://github.com/astorDev/nist)! And also ... claps for the article are appreciated 👉👈
+With the help of the package, we will need way less code to write a properly functioning WebSockets endpoint! The package is part of the [Nist](https://github.com/astorDev/nist) project, providing tools for **Ni**ce **S**tate **T**ransfer. In the repository, you can find the [article source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/playground) as well as the [package source code](https://github.com/astorDev/nist/tree/main/websockets/dotnet/lib). Give it a Star on the [Github](https://github.com/astorDev/nist)! And also ... claps for the article are appreciated 👉👈
