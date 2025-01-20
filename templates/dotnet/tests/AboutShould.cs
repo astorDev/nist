@@ -7,7 +7,7 @@ public class AboutShould : Test
     public async Task ReturnValidMetadata()
     {
         var about = await this.Client.GetAbout();
-        about.Should().BeEquivalentTo(new About(
+        about.ShouldBe(new(
             "Template",
             "1.0.0.0",
             "Development"
