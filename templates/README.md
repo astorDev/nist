@@ -24,7 +24,7 @@ This is what the file structure will look after:
 📄 <folder-name>.sln
 ```
 
-> 🤓 .NET project names are usually in PascalCase, while repository folders are typically in camelCase or similar. The easiest way to achieve it is by using .NET name while creating project via the template: `dotnet new nist --name My.CoolProject` and then renaming the folder. 
+> 🤓 .NET project names are usually in PascalCase, while repository folders are typically in camelCase or similar. The easiest way to achieve it is by using a .NET name while creating a project via the template: `dotnet new nist --name My.CoolProject` and then renaming the folder. 
 
 ### Ensuring everything works fine
 
