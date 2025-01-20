@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.0</PackageVersion>
+    <PackageVersion>1.1</PackageVersion>
     <PackageId>Nist.Template</PackageId>
     <Title>Nist Template</Title>
     <Authors>Astor</Authors>
-    <Description>NIST WebAPI Template</Description>
-    <PackageTags>dotnet-new;templates;contoso</PackageTags>
+    <Description>NIST Template</Description>
+    <PackageTags>dotnet-new;templates</PackageTags>
     <TargetFramework>net9.0</TargetFramework>
 
     <IncludeContentInPack>true</IncludeContentInPack>

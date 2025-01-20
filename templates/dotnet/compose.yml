@@ -1,10 +1,10 @@
 services:
-  webapi:
-    image: template-webapi
+  host:
+    image: template-host
     labels:
       - family=nist
     build:
       context: .
-      dockerfile: webapi/Dockerfile
+      dockerfile: host/Dockerfile
     ports:
       - "1111:8080"

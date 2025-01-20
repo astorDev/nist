@@ -1,6 +1,6 @@
 ## Installation
 
-Use the command b
+Use the command below you can install the .NET Template:
 
 ```sh
 dotnet new install Nist.Template
@@ -20,9 +20,11 @@ This is what the file structure will look after:
 📁 protocol
 📁 tests
 📁 webapi
-📄 docker-compose.yml
+📄 compose.yml
 📄 <folder-name>.sln
 ```
+
+> 🤓 .NET project names are usually in PascalCase, while repository folders are typically in camelCase or similar. The easiest way to achieve it is by using a .NET name while creating a project via the template: `dotnet new nist --name My.CoolProject` and then renaming the folder. 
 
 ### Ensuring everything works fine
 
@@ -41,9 +43,23 @@ cd webapi && dotnet run
 Assuming you have [httpyac CLI installed](https://httpyac.github.io/guide/installation_cli) In another terminal session from the `tests` folder run:
 
 ```sh
-httpyac send --all *.http --env=local
+cd tests && httpyac send --all *.http --env=local
 ```
 
 And you should get something resembling this:
 
 ![](/templates/httpyac-demo.png)
+
+### Pack & Publish the Template NuGet
+
+```
+dotnet pack 
+```
+
+```sh
+cd bin/Release
+```
+
+```sh
+dotnet nuget push Nist.Template.$VERSION.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+```
