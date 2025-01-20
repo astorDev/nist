@@ -1,0 +1,6 @@
+- [ ] Nist.Errors <VERSION>
+    - [ ] extension method `UseProblemForExceptions`
+    - [ ] Only `Nist` namespace
+- [ ] Nist.Template.1.2
+    - [ ] Updated Nist.Errors usage. [#116](https://github.com/astorDev/nist/issues/116)
+    - [ ] Using BUILDPLATFORM in Dockerfile. [#90](https://github.com/astorDev/nist/issues/90)
