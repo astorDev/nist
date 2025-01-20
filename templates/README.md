@@ -49,3 +49,17 @@ cd tests && httpyac send --all *.http --env=local
 And you should get something resembling this:
 
 ![](/templates/httpyac-demo.png)
+
+### Pack & Publish the Template NuGet
+
+```
+dotnet pack 
+```
+
+```sh
+cd bin/Release
+```
+
+```sh
+dotnet nuget push Nist.Template.$VERSION.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+```
