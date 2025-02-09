@@ -1,0 +1,3 @@
+- [ ] `Dependencies` in `About`
+    - [ ] Add `Dependencies` field in `About`
+    - [ ] Make auto tests ignore `About` field.

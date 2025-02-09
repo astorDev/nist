@@ -2,7 +2,7 @@ using Astor.Logging;
 using Scalar.AspNetCore;
 using Fluenv;
 using Nist.Logs;
-using Nist.Errors;
+using Nist;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
@@ -19,9 +19,9 @@ app.MapOpenApi();
 app.MapScalarApiReference(s => s.WithTheme(ScalarTheme.DeepSpace));
 
 app.UseHttpIOLogging(l => l.Message = HttpIOMessagesRegistry.DefaultWithJsonBodies);
-app.UseErrorBody(ex => ex switch {
+app.UseProblemForExceptions(ex => ex switch {
     _ => Errors.Unknown
-});
+}, showExceptions: true);
 
 app.MapGet($"/{Uris.About}", (IHostEnvironment env) => new About(
     Description: "Template",
