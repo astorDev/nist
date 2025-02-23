@@ -2,7 +2,7 @@ name: Publish Nist.Logs
 on:
   push:
     paths:
-      - 'dotnet/logging/lib/**'
+      - 'logging/dotnet/io/lib/**'
       - '.github/workflows/nuget-logs.yaml'
   workflow_dispatch:
 
@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: dotnet/logging/lib/Nist.Logs
+          project: logging/dotnet/io/lib/Nist.Logs
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
