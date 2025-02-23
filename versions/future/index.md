@@ -1,3 +1,5 @@
 - [ ] `Dependencies` in `About`
     - [ ] Add `Dependencies` field in `About`
     - [ ] Make auto tests ignore `About` field.
+- [ ] Project making changes checkbox
+    - [ ] If added an external dependency update `Dependencies` in `About`

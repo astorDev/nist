@@ -4,3 +4,5 @@
 - [ ] Nist.Template.1.2
     - [x] Updated Nist.Errors usage. [#116](https://github.com/astorDev/nist/issues/116)
     - [ ] Using BUILDPLATFORM in Dockerfile. [#90](https://github.com/astorDev/nist/issues/90)
+- [ ] Nist.Logs <VERSION>
+    - [ ] Only `Nist` namespace

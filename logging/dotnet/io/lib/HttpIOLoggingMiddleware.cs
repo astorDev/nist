@@ -1,4 +1,4 @@
-namespace Nist.Logs;
+namespace Nist;
 
 public class HttpIOLoggingMiddleware(
     RequestDelegate next,

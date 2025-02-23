@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace Nist.Logs;
+namespace Nist;
 
 public static class HttpIOReader
 {
