@@ -1,4 +1,4 @@
-namespace Nist.Logs;
+namespace Nist;
 
 public static class ConfigurationExtensions
 {

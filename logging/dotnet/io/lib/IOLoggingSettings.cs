@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Nist.Logs;
+namespace Nist;
 
 public class HttpIOLoggingSettings
 {
