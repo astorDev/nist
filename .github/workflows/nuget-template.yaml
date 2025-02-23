@@ -1,0 +1,17 @@
+name: Publish Nist.Template
+on:
+  push:
+    paths:
+      - 'templates/dotnet/**'
+      - '.github/workflows/nuget-template.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: templates/Nist
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}

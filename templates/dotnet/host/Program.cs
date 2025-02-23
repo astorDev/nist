@@ -1,7 +1,6 @@
 using Astor.Logging;
 using Scalar.AspNetCore;
 using Fluenv;
-using Nist.Logs;
 using Nist;
 
 var builder = WebApplication.CreateBuilder(args);
