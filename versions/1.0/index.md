@@ -1,0 +1,10 @@
+- [ ] Feature-Based Repository Structure
+    - [ ] `~/dotnet` Folder Tear-down
+        - [ ] `bodies`
+        - [ ] `example`
+        - [ ] `queries`
+        - [ ] `registration`
+        - [ ] `responses`
+        - [ ] `templates`
+    - [ ] `tools` folder migrations
+        - [ ] `elni`
