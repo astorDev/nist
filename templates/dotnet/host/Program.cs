@@ -6,6 +6,7 @@ using Nist;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
 
+builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 
 builder.Logging.ClearProviders();
