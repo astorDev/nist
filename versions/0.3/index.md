@@ -1,7 +1,7 @@
 - [x] Nist.Errors **2025.102.109.27**
     - [x] extension method `UseProblemForExceptions`
     - [x] Only `Nist` namespace
-- [ ] Nist.Template <VERSION>
+- [x] Nist.Template **2025.102.128.4**
     - [x] Updated Nist.Errors usage. [#116](https://github.com/astorDev/nist/issues/116)
     - [x] Updated Nist.Logs
     - [x] Using BUILDPLATFORM in Dockerfile. [#90](https://github.com/astorDev/nist/issues/90)
