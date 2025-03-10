@@ -1,4 +1,6 @@
 docker compose up -d --build --pull always
-sleep 5
+sleep 3
 curl localhost:1111/about
+echo
+docker logs templates-dotnet-1
 echo

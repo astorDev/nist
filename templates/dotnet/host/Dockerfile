@@ -3,6 +3,8 @@
 ARG VERSION
 ENV VERSION=$VERSION
 
+RUN echo "Version in the first stage is: ${VERSION}"
+
 WORKDIR /src
 COPY . .
 RUN cd host && dotnet publish
@@ -11,6 +13,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 
 ARG VERSION
 ENV VERSION=$VERSION
+
+RUN echo "Version in the second stage is: ${VERSION}"
 
 WORKDIR /app
 COPY --from=build /src/host/bin/Release/net9.0/publish .
