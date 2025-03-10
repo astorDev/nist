@@ -1,4 +1,8 @@
 ﻿FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
+ARG VERSION
+ENV VERSION=$VERSION
+
 WORKDIR /src
 COPY . .
 RUN cd host && dotnet publish

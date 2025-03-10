@@ -29,6 +29,7 @@ app.MapGet($"/{Uris.About}", (IHostEnvironment env, IConfiguration configuration
     Environment: env.EnvironmentName
 ));
 
+app.Logger.LogInformation("Version from config: '{Version}'", builder.Configuration["Version"]);
 app.Run();
 
 public partial class Program;
