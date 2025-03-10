@@ -16,3 +16,4 @@ jobs:
           dockerfile-path: 'templates/dotnet/host/Dockerfile'
           docker-login: vosarat
           docker-password: ${{ secrets.DOCKER_PASSWORD }}
+          use-buildx: false
