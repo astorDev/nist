@@ -21,7 +21,7 @@ docker compose up -d
 The app can be tested via .NET tests:
 
 ```sh
-cd tests && dotnet test
+dotnet test tests
 ```
 
 Or via [httpyac CLI](https://httpyac.github.io/guide/installation_cli). 
@@ -29,5 +29,5 @@ Or via [httpyac CLI](https://httpyac.github.io/guide/installation_cli).
 > This tests are run against a running app instance, so don't forget to run it first
 
 ```sh
-cd tests && httpyac send --all *.http --env=local
+httpyac send --all tests/*.http --env=local
 ```

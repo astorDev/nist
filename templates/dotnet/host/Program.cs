@@ -23,13 +23,17 @@ app.UseProblemForExceptions(ex => ex switch {
     _ => Errors.Unknown
 }, showExceptions: true);
 
-app.MapGet($"/{Uris.About}", (IHostEnvironment env, IConfiguration configuration) => new About(
-    Description: "Template",
-    Version: configuration["VERSION"] ?? typeof(Program).Assembly!.GetName().Version!.ToString(),
-    Environment: env.EnvironmentName
-));
+app.MapGet($"/{Uris.About}", (IHostEnvironment env, IConfiguration configuration) => { 
+    var versionFromConfig = configuration["Version"];
+    
+    return new About(
+        Description: "Template",
+        Version: !String.IsNullOrEmpty(versionFromConfig) ? versionFromConfig 
+            : typeof(Program).Assembly!.GetName().Version!.ToString(),
+        Environment: env.EnvironmentName
+    );
+});
 
-app.Logger.LogWarning("Version from config: '{Version}'", builder.Configuration["Version"]);
 app.Run();
 
 public partial class Program;
