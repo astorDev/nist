@@ -23,9 +23,9 @@ app.UseProblemForExceptions(ex => ex switch {
     _ => Errors.Unknown
 }, showExceptions: true);
 
-app.MapGet($"/{Uris.About}", (IHostEnvironment env) => new About(
+app.MapGet($"/{Uris.About}", (IHostEnvironment env, IConfiguration configuration) => new About(
     Description: "Template",
-    Version: typeof(Program).Assembly!.GetName().Version!.ToString(),
+    Version: configuration["VERSION"] ?? typeof(Program).Assembly!.GetName().Version!.ToString(),
     Environment: env.EnvironmentName
 ));
 
