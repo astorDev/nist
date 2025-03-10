@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/docker@main
         with:
-          image: 'vosarat/nist-template'
+          image: 'vosarat/nist-dotnet-template'
           build-context-path: 'templates/dotnet'
           dockerfile-path: 'templates/dotnet/host/Dockerfile'
           docker-login: vosarat
