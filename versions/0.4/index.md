@@ -1,4 +1,4 @@
 - [ ] Nist.Template <VERSION>
-    - [ ] Pass `VERSION` build arg as environment variable
+    - [x] Pass `VERSION` build arg as environment variable
     - [ ] Add .sln file
-    - [ ] Update `README` with commands from the project root
+    - [x] Update `README` with commands from the project root

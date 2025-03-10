@@ -1,0 +1,18 @@
+on:
+  push:
+    paths:
+      - '.github/workflows/template-image.yml'
+      - 'templates/dotnet/**'
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/docker@main
+        with:
+          image: 'vosarat/nist-dotnet-template'
+          build-context-path: 'templates/dotnet'
+          dockerfile-path: 'templates/dotnet/host/Dockerfile'
+          docker-login: vosarat
+          docker-password: ${{ secrets.DOCKER_PASSWORD }}

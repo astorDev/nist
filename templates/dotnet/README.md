@@ -7,7 +7,7 @@
 You can run the app directly:
 
 ```sh
-cd host && dotnet run
+dotnet run --project host
 ```
 
 Or via docker
@@ -18,16 +18,22 @@ docker compose up -d
 
 ## Testing 🧪
 
-The app can be tested via .NET tests:
+An aggregated test can be run using the helper script file:
 
 ```sh
-cd tests && dotnet test
+sh test.sh
 ```
 
-Or via [httpyac CLI](https://httpyac.github.io/guide/installation_cli). 
+The script will run .NET tests, deploy the app via docker compose and run httpyac scripts against the running instance. You can also run all of the tests individually. To test via .NET tests use:
+
+```sh
+dotnet test tests
+```
+
+To test via [httpyac CLI](https://httpyac.github.io/guide/installation_cli) use:
 
 > This tests are run against a running app instance, so don't forget to run it first
 
 ```sh
-cd tests && httpyac send --all *.http --env=local
+httpyac send --all tests/*.http --env=local
 ```
