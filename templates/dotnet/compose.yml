@@ -1,6 +1,6 @@
 services:
-  host:
-    image: template-host
+  template:
+    image: template
     labels:
       - family=nist
     build:
