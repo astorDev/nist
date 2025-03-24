@@ -1,4 +1,7 @@
 - [ ] Nist.Template <VERSION>
-    - [x] Pass `VERSION` build arg as environment variable
-    - [ ] Add .sln file
-    - [x] Update `README` with commands from the project root
+    - [x] Use Versy versioning scheme
+    - [x] Improve launch docs 
+        - [x] `README` with commands from the project root
+        - [x] `Makefile`
+    - [x] Add .sln file
+    - [ ] Return .env support

@@ -2,16 +2,18 @@ using Astor.Logging;
 using Scalar.AspNetCore;
 using Fluenv;
 using Nist;
+using Versy;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
 
-builder.Services.AddProblemDetails();
-builder.Services.AddOpenApi();
-
 builder.Logging.ClearProviders();
 builder.Logging.AddMiniJsonConsole();
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
+
+builder.Services.AddProblemDetails();
+builder.Services.AddOpenApi();
+builder.Services.AddVersionProvider();
 
 var app = builder.Build();
 
@@ -23,14 +25,15 @@ app.UseProblemForExceptions(ex => ex switch {
     _ => Errors.Unknown
 }, showExceptions: true);
 
-app.MapGet($"/{Uris.About}", (IHostEnvironment env, IConfiguration configuration) => { 
-    var versionFromConfig = configuration["Version"];
+app.MapGet($"/{Uris.About}", (IHostEnvironment env, VersionProvider version) => { 
     
     return new About(
         Description: "Template",
-        Version: !String.IsNullOrEmpty(versionFromConfig) ? versionFromConfig 
-            : typeof(Program).Assembly!.GetName().Version!.ToString(),
-        Environment: env.EnvironmentName
+        Version: version.Get(),
+        Environment: env.EnvironmentName,
+        Dependencies: new () {
+            [ "foo" ] = "bar"
+        }
     );
 });
 

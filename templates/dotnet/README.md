@@ -1,6 +1,12 @@
 # Template
 
-.NET [NIST](https://github.com/astorDev/nist) API.
+.NET [NIST](https://github.com/astorDev/nist) API. To test the functionality holistically use:
+
+```sh
+make test
+```
+
+Consult [Makefile](./Makefile) for the list of helpful commands. Alternatively, use one of the commands below.
 
 ## Running the App 🚀
 
@@ -13,26 +19,20 @@ dotnet run --project host
 Or via docker
 
 ```sh
-docker compose up -d
+docker compose up -d --build
 ```
 
 ## Testing 🧪
 
-An aggregated test can be run using the helper script file:
+You can test the app either via MS Test by running the command below:
 
 ```sh
-sh test.sh
+dotnet test tests --logger "console;verbosity=detailed"
 ```
 
-The script will run .NET tests, deploy the app via docker compose and run httpyac scripts against the running instance. You can also run all of the tests individually. To test via .NET tests use:
+Or via [httpyac CLI](https://httpyac.github.io/guide/installation_cli):
 
-```sh
-dotnet test tests
-```
-
-To test via [httpyac CLI](https://httpyac.github.io/guide/installation_cli) use:
-
-> This tests are run against a running app instance, so don't forget to run it first
+> These tests are run against a running app instance, so don't forget to run it first
 
 ```sh
 httpyac send --all tests/*.http --env=local
