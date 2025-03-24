@@ -32,7 +32,7 @@ dotnet test tests --logger "console;verbosity=detailed"
 
 Or via [httpyac CLI](https://httpyac.github.io/guide/installation_cli):
 
-> This tests are run against a running app instance, so don't forget to run it first
+> These tests are run against a running app instance, so don't forget to run it first
 
 ```sh
 httpyac send --all tests/*.http --env=local
