@@ -11,7 +11,7 @@ mstest:
 	dotnet test tests --logger "console;verbosity=detailed"
 
 play:
-	bash -c -i 'make mstest && make run & sleep 5 && make yac && fg'
+	bash -c -i 'make run & sleep 5 && make yac && fg'
 
 up:
 	docker compose up -d --build

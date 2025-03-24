@@ -32,4 +32,8 @@
     <ProjectReference Include="..\host\Template.Host.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="../.env" CopyToOutputDirectory="Always" Condition="Exists('../.env')" />
+  </ItemGroup>
+
 </Project>

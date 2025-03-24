@@ -4,4 +4,4 @@
         - [x] `README` with commands from the project root
         - [x] `Makefile`
     - [x] Add .sln file
-    - [ ] Return .env support
+    - [x] Full-blown .env support
