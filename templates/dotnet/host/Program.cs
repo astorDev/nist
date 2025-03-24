@@ -4,6 +4,7 @@ using Fluenv;
 using Nist;
 using Versy;
 
+dotenv.net.DotEnv.Load(new(envFilePaths: [ "../.env", ".env" ]));
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddFluentEnvironmentVariables();
 
@@ -25,18 +26,20 @@ app.UseProblemForExceptions(ex => ex switch {
     _ => Errors.Unknown
 }, showExceptions: true);
 
-app.MapGet($"/{Uris.About}", (IHostEnvironment env, VersionProvider version) => { 
+
+app.MapGet($"/{Uris.About}", (IHostEnvironment env, VersionProvider version, IConfiguration configuration) => { 
     
     return new About(
         Description: "Template",
         Version: version.Get(),
         Environment: env.EnvironmentName,
         Dependencies: new () {
-            [ "foo" ] = "bar"
+            
         }
     );
 });
 
+app.Logger.LogInformation("Version: {Version}", app.Services.GetRequiredService<VersionProvider>().Get());
 app.Run();
 
 public partial class Program;
