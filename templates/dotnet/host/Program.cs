@@ -26,7 +26,6 @@ app.UseProblemForExceptions(ex => ex switch {
     _ => Errors.Unknown
 }, showExceptions: true);
 
-
 app.MapGet($"/{Uris.About}", (IHostEnvironment env, VersionProvider version, IConfiguration configuration) => { 
     
     return new About(
