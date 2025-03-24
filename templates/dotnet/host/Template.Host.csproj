@@ -12,6 +12,7 @@
     <PackageReference Include="Nist.Logs" Version="2025.102.123.35" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.0.1" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    <PackageReference Include="Versy" Version="2025.103.115.169" />
   </ItemGroup>
 
   <ItemGroup>
