@@ -13,7 +13,7 @@ public static class WebhookDumpEndpoints
     private static readonly HashSet<string> registeredGetPaths = [];
 
     public static void MapWebhookDump<TDb>(
-        this WebApplication app,
+        this IEndpointRouteBuilder app,
         string postPath = "/webhooks/dump",
         string getPath = "/webhooks/dump"
     ) where TDb : DbContext, IDbWithWebhookDump
@@ -32,7 +32,7 @@ public static class WebhookDumpEndpoints
     }
 
     public static void MapWebhookDumpPost<TDb>(
-        this WebApplication app,
+        this IEndpointRouteBuilder app,
         string postPath = "/webhooks/dump"
     ) where TDb : DbContext, IDbWithWebhookDump
     {
@@ -52,7 +52,7 @@ public static class WebhookDumpEndpoints
     }
 
     public static void MapWebhookDumpGet<TDb>(
-        this WebApplication app,
+        this IEndpointRouteBuilder app,
         string getPath = "/webhooks/dump"
     ) where TDb : DbContext, IDbWithWebhookDump
     {

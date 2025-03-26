@@ -13,3 +13,19 @@ POST http://localhost:5209/webhooks/dump2
 
 ###
 GET http://localhost:5209/webhooks/dump
+
+###
+POST http://localhost:5209/webhooks
+
+{
+    "url" : "http://localhost:5209/webhooks/dump",
+    "body" : {
+        "example" : "three"
+    }
+}
+
+###
+GET http://localhost:5209/webhooks
+
+###
+GET http://localhost:5209/webhooks/dump
