@@ -1,0 +1,77 @@
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Nist.Bodies;
+
+namespace Nist;
+
+public static class WebhookDumpEndpoints
+{
+    private static readonly HashSet<string> registeredPostPaths = [];
+    private static readonly HashSet<string> registeredGetPaths = [];
+
+    public static void MapWebhookDump<TDb>(
+        this WebApplication app,
+        string postPath = "/webhooks/dump",
+        string getPath = "/webhooks/dump"
+    ) where TDb : DbContext, IDbWithWebhookDump
+    {
+        if (!registeredPostPaths.Contains(postPath))
+        {
+            app.MapWebhookDumpPost<TDb>(postPath);
+            registeredPostPaths.Add(postPath);
+        }
+
+        if (!registeredGetPaths.Contains(getPath))
+        {
+            app.MapWebhookDumpGet<TDb>(getPath);
+            registeredGetPaths.Add(getPath);
+        }
+    }
+
+    public static void MapWebhookDumpPost<TDb>(
+        this WebApplication app,
+        string postPath = "/webhooks/dump"
+    ) where TDb : DbContext, IDbWithWebhookDump
+    {
+        app.MapPost(postPath, async (HttpContext context, TDb db) =>
+        {
+            var record = new WebhookDump
+            {
+                Path = context.Request.Path.ToString(),
+                Body = JsonDocument.Parse(context.GetRequestBodyString()),
+                Time = DateTime.UtcNow
+            };
+
+            db.WebhookDumps.Add(record);
+            await db.SaveChangesAsync();
+            return record;
+        });
+    }
+
+    public static void MapWebhookDumpGet<TDb>(
+        this WebApplication app,
+        string getPath = "/webhooks/dump"
+    ) where TDb : DbContext, IDbWithWebhookDump
+    {
+        app.MapGet(getPath, async (TDb db) =>
+        {
+            return await db.WebhookDumps.ToArrayAsync();
+        });
+    }
+}
+
+public class WebhookDump
+{
+    public int Id { get; set; }
+    public string Path { get; set; } = null!;
+    public JsonDocument Body { get; set; } = null!;
+    public DateTime Time { get; set; }
+}
+
+public interface IDbWithWebhookDump
+{
+    DbSet<WebhookDump> WebhookDumps { get; set; }
+}

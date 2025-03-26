@@ -9,6 +9,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <LangVersion>12.0</LangVersion>
+    <RootNamespace>Nist</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

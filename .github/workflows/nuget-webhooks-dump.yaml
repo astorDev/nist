@@ -1,9 +1,9 @@
-name: Publish Nist.Bodies
+name: Nist.Webhooks.Dump Nuget
 on:
   push:
     paths:
-      - 'bodies/lib/**'
-      - '.github/workflows/nuget-bodies.yaml'
+      - 'webhooks/accept/lib/**'
+      - '.github/workflows/nuget-webhooks-dump.yaml'
   workflow_dispatch:
 
 jobs:
@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: bodies/lib/Nist.Bodies
+          project: webhooks/accept/lib/Nist.Webhooks.Dump
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}

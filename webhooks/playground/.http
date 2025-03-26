@@ -1,0 +1,15 @@
+POST http://localhost:5209/webhooks/dump
+
+{
+    "example" : "one"
+}
+
+###
+POST http://localhost:5209/webhooks/dump2
+
+{
+    "example" : "two"
+}
+
+###
+GET http://localhost:5209/webhooks/dump

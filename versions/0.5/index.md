@@ -1,0 +1,7 @@
+- [ ] Nist.Template <VERSION>
+    - [ ] Utilize RootNamespace
+- [ ] Nist.Webhooks.Sender <VERSION>
+- [ ] Nist.Webhooks.Dump <VERSION>
+- [ ] Nist.Bodies <VERSION>
+    - [ ] `Nist` namespace
+    - [ ] Idempotent Registration
