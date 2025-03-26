@@ -1,4 +1,4 @@
-namespace Nist.Bodies;
+namespace Nist;
 
 public class ResponseBodyStringReader(RequestDelegate next) 
 {
@@ -25,9 +25,16 @@ public class ResponseBodyStringReader(RequestDelegate next)
 
 public static class ResponseBodyStringReaderRegistration
 {
-    public static void UseResponseBodyStringReader(this IApplicationBuilder app)
+    public static bool registered = false;
+
+    public static void UseResponseBodyStringReader(this IApplicationBuilder app, DuplicateRegistrationBehavior duplicatingRegistrationBehavior = DuplicateRegistrationBehavior.Ignore)
     {
-        app.UseMiddleware<ResponseBodyStringReader>();
+        DuplicateRegistrationDecorator.HandleRegistration(
+            app, 
+            nameof(ResponseBodyStringReader), 
+            (x) => x.UseMiddleware<ResponseBodyStringReader>(), 
+            duplicatingRegistrationBehavior
+        );
     }
 }
 
