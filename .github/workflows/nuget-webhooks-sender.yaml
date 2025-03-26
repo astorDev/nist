@@ -1,0 +1,17 @@
+name: Nist.Webhooks.Sender Nuget
+on:
+  push:
+    paths:
+      - 'webhooks/send/lib/**'
+      - '.github/workflows/nuget-webhooks-sender.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: webhooks/send/lib/Nist.Webhooks.Sender
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
