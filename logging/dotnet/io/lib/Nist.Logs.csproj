@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nist.Bodies" Version="2024.102.101.7" />
+    <PackageReference Include="Nist.Bodies" Version="2025.103.126.17" />
   </ItemGroup>
 
 </Project>
