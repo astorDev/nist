@@ -1,7 +1,8 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Extensions;
-using Nist.Bodies;
+
+namespace Nist;
 
 public static class HttpIOMessagesRegistry
 {

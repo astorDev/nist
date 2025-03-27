@@ -1,5 +1,7 @@
 using System.Diagnostics;
 
+namespace Nist;
+
 public class ElapsedMiddleware(RequestDelegate next)
 {
     public const string ElapsedKey = "elapsed";

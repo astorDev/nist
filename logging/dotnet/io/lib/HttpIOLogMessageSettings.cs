@@ -1,5 +1,7 @@
 using System.Text.RegularExpressions;
 
+namespace Nist;
+
 public record HttpIOLogMessageSetting
 {
     readonly LogMessageTemplate template;
