@@ -73,7 +73,19 @@ public class WebhooksSendingIteration(IDbWithWebhookRecord db, IHttpClientFactor
 
         var sendTasks = pendingForUpdate.Select(wh => Task.Run(async () => {
             db.Update(wh);
-            await SendPendingWebhook(wh);
+
+            try
+            {
+                await SendPendingWebhook(wh);
+                logger.LogInformation("Sent webhook {webhookId}", wh.Id);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error sending webhook");
+                wh.Status = WebhookStatus.Error;
+                wh.ResponseStatusCode = null;
+                wh.Response = JsonDocument.Parse($"{{\"error\": \"{ex.Message}\"}}");
+            }
         }));
 
         await Task.WhenAll(sendTasks);
@@ -95,19 +107,7 @@ public class WebhooksSendingIteration(IDbWithWebhookRecord db, IHttpClientFactor
             Content = new StringContent(record.Body.RootElement.GetRawText(), Encoding.UTF8, "application/json")
         };
 
-        HttpResponseMessage response;
-
-        try
-        {
-            response = await client.SendAsync(request);
-        }
-        catch(Exception ex)
-        {
-            record.Status = WebhookStatus.Error;
-            record.ResponseStatusCode = null;
-            record.Response = JsonDocument.Parse($"{{\"error\": \"{ex.Message}\"}}");
-            return;
-        }
+        var response = await client.SendAsync(request);
 
         record.Status = response.IsSuccessStatusCode ? WebhookStatus.Success : WebhookStatus.Error;
         record.ResponseStatusCode = (int)response.StatusCode;
