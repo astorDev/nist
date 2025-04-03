@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 
 builder.Services.AddPostgres<Db>();
-builder.Services.AddContinuousWebhooksSending(sp => sp.GetRequiredService<Db>());
+//builder.Services.AddContinuousWebhooksSending(sp => sp.GetRequiredService<Db>());
 
 var app = builder.Build();
 
@@ -17,7 +17,19 @@ var db = scope.ServiceProvider.GetRequiredService<Db>();
 await db.Database.EnsureDeletedAsync();
 await db.Database.EnsureCreatedAsync();
 
+// v0:
+// app.MapWebhookDumpPost<Db>();
+// app.MapWebhookDumpGet<Db>();
+
+// v1:
+// app.UseRequestBodyStringReader();
+
+// app.MapWebhookDumpPost<Db>();
+// app.MapWebhookDumpGet<Db>();
+
+// vfinal:
 app.UseRequestBodyStringReader();
+
 app.MapWebhookDump<Db>();
 app.MapWebhookDump<Db>("/webhooks/dump2");
 

@@ -6,6 +6,218 @@ Webhooks are a nice and flexible way to implement an event-based integration. Ho
 
 > For the quick solution, jump straight to the end of the article, to the [TLDR; section](#tldr)
 
+## Building The Core Parts: `WebhookDump` Models
+
+```sh
+dotnet new web
+```
+
+```csharp
+public class WebhookDump
+{
+    public int Id { get; set; }
+    public string Path { get; set; } = null!;
+    public JsonDocument Body { get; set; } = null!;
+    public DateTime Time { get; set; }
+}
+
+public interface IDbWithWebhookDump
+{
+    DbSet<WebhookDump> WebhookDumps { get; set; }
+}
+```
+
+```sh
+dotnet add package Nist.Bodies
+```
+
+> Since we are getting request body as a string we will need to enable it via `app.UseRequestBodyStringReader();`, but more on that later.
+
+```csharp
+public static class WebhookDumpEndpoints
+{
+    public static void MapWebhookDumpPost<TDb>(
+        this IEndpointRouteBuilder app,
+        string postPath = "/webhooks/dump"
+    ) where TDb : DbContext, IDbWithWebhookDump
+    {
+        app.MapPost(postPath, async (HttpContext context, TDb db) =>
+        {
+            var record = new WebhookDump
+            {
+                Path = context.Request.Path.ToString(),
+                Body = JsonDocument.Parse(context.GetRequestBodyString()),
+                Time = DateTime.UtcNow
+            };
+
+            db.WebhookDumps.Add(record);
+            await db.SaveChangesAsync();
+            return record;
+        });
+    }
+
+    public static void MapWebhookDumpGet<TDb>(
+        this IEndpointRouteBuilder app,
+        string getPath = "/webhooks/dump"
+    ) where TDb : DbContext, IDbWithWebhookDump
+    {
+        app.MapGet(getPath, async (TDb db) =>
+        {
+            return await db.WebhookDumps.ToArrayAsync();
+        });
+    }
+}
+```
+
+## Setting Up Our Database: Deploying and Connecting to Postgres
+
+> You can skip the section 
+
+`compose.yml`
+
+```yaml
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: webhooks_playground
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+```
+
+`ConnectionStrings:Postgres` `launchSettings`
+
+```json
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "local": {
+      // ...
+      "environmentVariables": {
+        // ...      
+        "ConnectionStrings:Postgres" : "Host=localhost;Port=5432;Database=webhooks_playground;Username=postgres;Password=postgres"
+      }
+    }
+  }
+}
+```
+
+```sh
+dotnet add package Persic.EF.Postgres
+```
+
+```csharp
+builder.Services.AddPostgres<Db>();
+```
+
+```csharp
+await using var scope = app.Services.CreateAsyncScope();
+var db = scope.ServiceProvider.GetRequiredService<Db>();
+await db.Database.EnsureDeletedAsync();
+await db.Database.EnsureCreatedAsync();
+```
+
+## Assembling It All Together
+
+```csharp
+app.MapWebhookDumpPost<Db>();
+app.MapWebhookDumpGet<Db>();
+```
+
+```text
+Request body is not available. Make sure you've registered the required middleware with `UseRequestBodyStringReader()`
+```
+
+```csharp
+app.UseRequestBodyStringReader();
+
+app.MapWebhookDumpPost<Db>();
+app.MapWebhookDumpGet<Db>();
+```
+
+> I use httpyac for http testing, you can read a dedicated article about it [here](https://medium.com/@vosarat1995/best-postman-alternative-5890e3e9ddc7), but the code should be intuitive. You should also use your own generated port, which you can find in the `Now listening on: http://localhost:5209` logs.
+
+```http
+POST http://localhost:5209/webhooks/dump
+
+{
+    "example" : "one"
+}
+```
+
+```json
+[
+  {
+    "id": 1,
+    "path": "/webhooks/dump",
+    "body": {
+      "example": "one"
+    },
+    "time": "2025-04-02T13:40:30.169178Z"
+  }
+]
+```
+
+## Making It More Fluent
+
+```csharp
+public static class WebhookDumpEndpoints
+{
+    private static readonly HashSet<string> registeredPostPaths = [];
+    private static readonly HashSet<string> registeredGetPaths = [];
+
+    public static void MapWebhookDump<TDb>(
+        this IEndpointRouteBuilder app,
+        string postPath = "/webhooks/dump",
+        string getPath = "/webhooks/dump"
+    ) where TDb : DbContext, IDbWithWebhookDump
+    {
+        if (!registeredPostPaths.Contains(postPath))
+        {
+            app.MapWebhookDumpPost<TDb>(postPath);
+            registeredPostPaths.Add(postPath);
+        }
+
+        if (!registeredGetPaths.Contains(getPath))
+        {
+            app.MapWebhookDumpGet<TDb>(getPath);
+            registeredGetPaths.Add(getPath);
+        }
+    }
+}
+```
+
+```http
+POST http://localhost:5209/webhooks/dump2
+
+{
+    "example" : "two"
+}
+```
+
+```json
+[
+  {
+    "id": 1,
+    "path": "/webhooks/dump",
+    "body": {
+      "example": "one"
+    },
+    "time": "2025-04-02T13:52:36.641974Z"
+  },
+  {
+    "id": 2,
+    "path": "/webhooks/dump2",
+    "body": {
+      "example": "two"
+    },
+    "time": "2025-04-02T13:52:43.420825Z"
+  }
+]
+```
+
 ## TLDR;
 
 We built a simple infrastructure for webhook dumps. Instead of implementing it again, you can just install the `Nist.Webhooks.Dump` package:
@@ -26,6 +238,8 @@ public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWithWebho
 And to add endpoints to your application:
 
 ```csharp
+app.UseRequestBodyStringReader();
+
 app.MapWebhookDump<Db>();
 ```
 
