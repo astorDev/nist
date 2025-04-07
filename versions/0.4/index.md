@@ -1,4 +1,4 @@
-- [ ] Nist.Template <VERSION>
+- [x] Nist.Template 2025.103.124.22
     - [x] Use Versy versioning scheme
     - [x] Improve launch docs 
         - [x] `README` with commands from the project root

@@ -6,11 +6,84 @@ Webhooks are a nice and flexible way to implement an event-based integration. Ho
 
 > For the quick solution, jump straight to the end of the article, to the [TLDR; section](#tldr)
 
-## Building The Core Parts: `WebhookDump` Models
+## Setting Up the Fundamentals: Web Project, EF Core, Postgres
+
+To begin, we need a project to run our experiments. Let's use a minimal API template:
 
 ```sh
 dotnet new web
 ```
+
+We'll also need a database for storing our received webhooks.
+
+```sh
+dotnet add package Persic.EF.Postgres
+```
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+using Persic;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
+
+builder.Services.AddPostgres<Db>();
+
+var app = builder.Build();
+
+await using var scope = app.Services.CreateAsyncScope();
+var db = scope.ServiceProvider.GetRequiredService<Db>();
+await db.Database.EnsureDeletedAsync();
+await db.Database.EnsureCreatedAsync();
+
+app.Run();
+
+public class Db(DbContextOptions<Db> options) : DbContext(options)
+{
+}
+```
+
+Of course, we will also need an instance of PostgreSQL database. Here's a simple `compose.yml` that you can use `docker compose up -d`
+
+```yaml
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: webhooks_playground
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+```
+
+`ConnectionStrings:Postgres` `launchSettings`
+
+```json
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "local": {
+      // ...
+      "environmentVariables": {
+        // ...      
+        "ConnectionStrings:Postgres" : "Host=localhost;Port=5432;Database=webhooks_playground;Username=postgres;Password=postgres"
+      }
+    }
+  }
+}
+```
+
+## Building The Core Parts: `WebhookDump` Models
+
+To begin, we need to create a minimal API project. This will serve as the foundation for our webhook dump. Use the following command to scaffold the project:
+
+```sh
+dotnet new web
+```
+
+Next, let's define the `WebhookDump` model. This class will represent each webhook request we receive. We will assume the request body will be in JSON. We will also need to have an interface for the database
 
 ```csharp
 public class WebhookDump
