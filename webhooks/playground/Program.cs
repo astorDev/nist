@@ -1,7 +1,6 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Nist;
 using Persic;
+using V0;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,40 +27,53 @@ await db.Database.EnsureCreatedAsync();
 // app.MapWebhookDumpGet<Db>();
 
 // vfinal:
-app.UseRequestBodyStringReader();
+// app.UseRequestBodyStringReader();
 
-app.MapWebhookDump<Db>();
-app.MapWebhookDump<Db>("/webhooks/dump2");
+// app.MapWebhookDump<Db>();
+// app.MapWebhookDump<Db>("/webhooks/dump2");
 
-app.MapPost("/webhooks", async (WebhookCandidate candidate, Db db) => {
-    var record = new WebhookRecord {
-        Url = candidate.Url,
-        Body = candidate.Body,
-        Status = WebhookStatus.Pending,
-        CreatedAt = DateTime.UtcNow
-    };
+// app.MapPost("/webhooks", async (WebhookCandidate candidate, Db db) => {
+//     var record = new WebhookRecord {
+//         Url = candidate.Url,
+//         Body = candidate.Body,
+//         Status = WebhookStatus.Pending,
+//         CreatedAt = DateTime.UtcNow
+//     };
 
-    db.WebhookRecords.Add(record);
-    await db.SaveChangesAsync();
-    return record;
-});
+//     db.WebhookRecords.Add(record);
+//     await db.SaveChangesAsync();
+//     return record;
+// });
 
-app.MapGet("/webhooks", async (Db db) => {
-    return await db.WebhookRecords.ToArrayAsync();
-});
+// app.MapGet("/webhooks", async (Db db) => {
+//     return await db.WebhookRecords.ToArrayAsync();
+// });
 
 app.Run();
 
-public record WebhookCandidate(
-    string Url,
-    JsonDocument Body
-);
-
-public class Db(DbContextOptions<Db> options) : 
-    DbContext(options), 
-    IDbWithWebhookDump,
-    IDbWithWebhookRecord
+namespace V0
 {
-    public DbSet<WebhookDump> WebhookDumps { get; set; } = null!;
-    public DbSet<WebhookRecord> WebhookRecords { get; set; } = null!;
+    public class Db(DbContextOptions<Db> options) : DbContext(options)
+    {
+    }
+}
+
+namespace VFinal
+{
+    using System.Text.Json;
+    using Nist;
+
+    public record WebhookCandidate(
+        string Url,
+        JsonDocument Body
+    );
+
+    public class Db(DbContextOptions<Db> options) : 
+        DbContext(options), 
+        IDbWithWebhookDump,
+        IDbWithWebhookRecord
+    {
+        public DbSet<WebhookDump> WebhookDumps { get; set; } = null!;
+        public DbSet<WebhookRecord> WebhookRecords { get; set; } = null!;
+    }
 }
