@@ -2,7 +2,7 @@ name: Nist.Webhooks.Dump Nuget
 on:
   push:
     paths:
-      - 'webhooks/accept/lib/**'
+      - 'webhooks/dump/lib/**'
       - '.github/workflows/nuget-webhooks-dump.yaml'
   workflow_dispatch:
 
@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: webhooks/accept/lib/Nist.Webhooks.Dump
+          project: webhooks/dump/lib/Nist.Webhooks.Dump
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}

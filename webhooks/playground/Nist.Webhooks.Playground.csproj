@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\accept\lib\Nist.Webhooks.Dump.csproj" />
+    <ProjectReference Include="..\dump\lib\Nist.Webhooks.Dump.csproj" />
     <ProjectReference Include="..\send\lib\Nist.Webhooks.Sender.csproj" />
   </ItemGroup>
 
