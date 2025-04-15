@@ -1,0 +1,15 @@
+POST /webhooks/dump
+
+{
+    "name" : "basic POST-GET one"
+}
+
+###
+POST /webhooks/dump
+
+{
+    "name" : "basic POST-GET two"
+}
+
+###
+GET /webhooks/dump
