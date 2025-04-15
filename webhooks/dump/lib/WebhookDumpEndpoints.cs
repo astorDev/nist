@@ -65,13 +65,19 @@ public static class WebhookDumpEndpoints
 public class WebhookDump
 {
     public int Id { get; set; }
-    public string Path { get; set; } = null!;
-    public JsonDocument Body { get; set; } = null!;
-    public DateTime Time { get; set; }
+    public required string Path { get; set; }
+    public required JsonDocument Body { get; set; }
+    public required DateTime Time { get; set; }
+
+    public static WebhookDump From(HttpContext context) => new()
+    {
+        Path = context.Request.Path.ToString(),
+        Body = JsonDocument.Parse(context.GetRequestBodyString()),
+        Time = DateTime.UtcNow
+    };
 }
 
 public interface IDbWithWebhookDump
 {
     DbSet<WebhookDump> WebhookDumps { get; set; }
 }
-

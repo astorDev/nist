@@ -1,0 +1,10 @@
+{
+    "defaultHeaders": {
+        "Content-Type": "application/json"
+    },
+    "environments": {
+        "$shared" : {
+            "host" : "http://localhost:5261"
+        }
+    }
+}

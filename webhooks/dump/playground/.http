@@ -1,6 +1,14 @@
 @host = http://localhost:5261
 
 ###
+# @name simplest
+POST /webhooks/dump
+
+{
+    "experiment" : "alpha"
+}
+
+###
 POST /webhooks/dump/one
 
 {
