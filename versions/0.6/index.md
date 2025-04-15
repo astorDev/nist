@@ -3,3 +3,5 @@
     - [ ] Allow limit specification with 100 by default
 - [ ] Nist.Webhooks.Sender <VERSION>
     - [ ] WebhooksManager.Enqueue
+- [ ] Nist.Template <VERSION>
+    - [ ] Remove `test.sh` from 
