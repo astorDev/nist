@@ -2,4 +2,10 @@ yac:
 	httpyac send $(Name).http --all
 
 test:
-	bash -c -i 'dotnet run & pid=$$! && sleep 5 && make yac && kill $$pid'
+	dotnet run &
+	sleep 5
+	make yac
+	make kill
+
+kill:
+	kill `lsof -t -i :5155`

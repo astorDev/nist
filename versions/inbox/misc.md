@@ -1,0 +1,3 @@
+- `Nist.Registration`
+    - [ ] `Nist` namespace instead of `Microsoft`'s.
+    - [ ] `AddNistClient` instead of `AddHttpService`
