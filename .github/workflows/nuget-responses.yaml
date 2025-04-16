@@ -13,5 +13,6 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: dotnet/responses/lib/Nist.Responses
+          main: nist-dotnet-proxy
+          project: responses/lib/Nist.Responses
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}

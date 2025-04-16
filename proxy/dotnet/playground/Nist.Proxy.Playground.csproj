@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nist.Registration" Version="2024.106.106.23" />
+    <PackageReference Include="Nist.Responses" Version="2024.111.124.28" />
+  </ItemGroup>
+
+</Project>

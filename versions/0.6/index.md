@@ -1,7 +1,9 @@
-- [ ] Nist.Webhooks.Dump <VERSION>
-    - [ ] Sort by date desc
-    - [ ] Allow limit specification with 100 by default
-- [ ] Nist.Webhooks.Sender <VERSION>
-    - [ ] WebhooksManager.Enqueue
+- [ ] Nist.Responses <VERSION>
+    - [ ] `Nist` namespace and feature-based folder
+- [ ] Nist.Registration <VERSION>
+    - [ ] Feature-based folder
+    - [ ] **To Consider**: `Nist` namespace instead of `Microsoft`'s.
+- [ ] Nist.Proxy <VERSION>
+    - [ ] Project Inited
 - [ ] Nist.Template <VERSION>
     - [ ] Remove `test.sh` from 
