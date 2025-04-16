@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - 'proxy/dotnet/lib/**'
-      - '.github/workflows/proxy-nuget.yaml'
+      - '.github/workflows/proxy.yaml'
   workflow_dispatch:
 
 jobs:
@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: proxy/lib/Nist.Proxy
+          project: proxy/dotnet/lib/Nist.Proxy
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
