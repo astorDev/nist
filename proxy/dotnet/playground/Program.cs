@@ -9,6 +9,8 @@ builder.Services.AddHttpService<PostmanEchoClient>(new Uri("https://postman-echo
 
 var app = builder.Build();
 
+app.UseHttpIOLogging(o => o.Message = HttpIOMessagesRegistry.DefaultWithJsonBodies);
+
 app.MapGet("/author", async (GithubClient github, HttpContext context) => {
     await github.Http.Proxy(context, "users/astorDev");
 });
@@ -17,4 +19,12 @@ app.MapPost("/echo", async (PostmanEchoClient echo, HttpContext context) => {
     await echo.Http.Proxy(context, "post");
 });
 
+app.MapPost("simple-echo", async (HttpContext context) => {
+
+});
+
 app.Run();
+
+public class GithubClient(HttpClient http) {
+    public HttpClient Http => http;
+}
