@@ -1,5 +1,3 @@
-using Nist.Responses;
-
 namespace Nist;
 
 public partial class GithubClient(HttpClient http, ILogger<GithubClient> logger) {

@@ -2,10 +2,12 @@ using Nist;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpService<GithubClient>("Github:Url");
+builder.Services.AddHttpService<GithubClient>(new Uri("http://api.github.com"));
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/author", async (GithubClient github, HttpContext context) => {
+    await github.Http.Proxy(context, "users/astorDev");
+});
 
 app.Run();

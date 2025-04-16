@@ -8,8 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nist.Registration" Version="2024.106.106.23" />
-    <PackageReference Include="Nist.Responses" Version="2024.111.124.28" />
+    <PackageReference Include="Nist.Registration" Version="2025.104.116.29" />
+    <PackageReference Include="Nist.Responses" Version="2025.104.116.37" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Nist.Proxy.csproj" />
   </ItemGroup>
 
 </Project>

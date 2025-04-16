@@ -2,7 +2,7 @@ name: Publish Nist.Registration
 on:
   push:
     paths:
-      - 'dotnet/registration/**'
+      - 'registration/lib/**'
       - '.github/workflows/nuget-registration.yaml'
   workflow_dispatch:
 

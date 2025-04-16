@@ -1,9 +1,10 @@
 - [ ] Nist.Responses <VERSION>
-    - [ ] `Nist` namespace and feature-based folder
+    - [x] `Nist` namespace and feature-based folder
 - [ ] Nist.Registration <VERSION>
-    - [ ] Feature-based folder
+    - [x] Feature-based folder
     - [ ] **To Consider**: `Nist` namespace instead of `Microsoft`'s.
 - [ ] Nist.Proxy <VERSION>
-    - [ ] Project Inited
+    - [x] Project Inited
 - [ ] Nist.Template <VERSION>
-    - [ ] Remove `test.sh` from 
+    - [x] Remove `test.sh`
+    - [x] `Client.Http` property exposing `HttpClient`

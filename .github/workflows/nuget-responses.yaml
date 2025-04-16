@@ -2,7 +2,7 @@ name: Publish Nist.Responses
 on:
   push:
     paths:
-      - 'dotnet/responses/lib/**'
+      - 'responses/lib/**'
       - '.github/workflows/nuget-responses.yaml'
   workflow_dispatch:
 
