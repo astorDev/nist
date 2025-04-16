@@ -1,9 +1,9 @@
-name: Publish Nist.Registration
+name: Publish Nist.Proxy
 on:
   push:
     paths:
-      - 'registration/lib/**'
-      - '.github/workflows/nuget-registration.yaml'
+      - 'proxy/dotnet/lib/**'
+      - '.github/workflows/proxy.yaml'
   workflow_dispatch:
 
 jobs:
@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: registration/lib/Nist.Registration
+          project: proxy/dotnet/lib/Nist.Proxy
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}

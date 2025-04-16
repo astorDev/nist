@@ -1,0 +1,5 @@
+POST http://localhost:5155/echo
+
+{
+    "example" : "one"
+}

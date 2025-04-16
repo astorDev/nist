@@ -3,4 +3,3 @@ yac:
 
 test:
 	bash -c 'dotnet run & pid=$$!; sleep 5; make yac; kill $$pid'
-

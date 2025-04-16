@@ -132,7 +132,7 @@ public class VFinal {
     }
 }
 
-public class VFinal {
+public class VFinal2 {
     public static void Run(string[] args){
         var builder = WebApplication.CreateBuilder(args);
 

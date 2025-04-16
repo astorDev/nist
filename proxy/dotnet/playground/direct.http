@@ -1,0 +1,11 @@
+http://api.github.com
+
+###
+http://api.github.com/users/astorDev
+
+###
+POST https://postman-echo.com/post
+
+{
+    "example" : "one"
+}

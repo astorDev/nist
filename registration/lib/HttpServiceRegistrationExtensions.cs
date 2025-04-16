@@ -13,6 +13,12 @@ public static class HttpServiceRegistrationExtensions
     {
         services.AddHttpClient<TInterface, TService>(typeof(TInterface).FullName!, (sp, cl) => ConfigureClient(sp, cl, urlConfigurationPath, configuration));
     }
+
+    public static IServiceCollection AddHttpService<TService>(this IServiceCollection services, Uri baseUrl) where TService : class
+    {
+        services.AddHttpClient<TService>((sp, cl) => cl.BaseAddress = baseUrl);
+        return services;
+    }
     
     private static void ConfigureClient(IServiceProvider serviceProvider, HttpClient client, string urlConfigurationPath, Action<HttpClient>? adjustment = null)
     {

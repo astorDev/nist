@@ -2,7 +2,7 @@ name: Publish Nist.Responses
 on:
   push:
     paths:
-      - 'dotnet/responses/lib/**'
+      - 'responses/lib/**'
       - '.github/workflows/nuget-responses.yaml'
   workflow_dispatch:
 
@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: dotnet/responses/lib/Nist.Responses
+          project: responses/lib/Nist.Responses
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
