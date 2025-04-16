@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Nist.Logs" Version="2025.103.127.39" />
     <PackageReference Include="Nist.Registration" Version="2025.104.116.30" />
     <PackageReference Include="Nist.Responses" Version="2025.104.116.37" />
   </ItemGroup>
