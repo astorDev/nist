@@ -16,15 +16,15 @@ To start, let's create our project. The minimal API template will work perfectly
 dotnet new web
 ```
 
-Now, let's create our model and make a helper method to fill the model from the `HttpContext`. We'll need a `Path`, request `Body`, and the `Time` when the request was received.
+Now, let's create our model and make a helper method to fill the model from the `HttpContext`. We'll need a `Path`, a `Body`, and the `Time` when the request was received.
 
-While filling `Path` and `Time` is extremely easy, reading request and response bodies from `HttpContext` as a string is surprisingly complicated. Gladly, there's a package that does all the heavy-lifting. Let's install it first:
+While filling `Path` and `Time` is extremely easy, reading request and response bodies from `HttpContext` as a string is surprisingly complicated. Gladly, there's a package that does all the heavy lifting. Let's install it first:
 
 ```sh
 dotnet add package Nist.Bodies
 ```
 
-We'll also assume the request body we'll be a `JsonDocument`. Despite being not flexible, this will allow us to work with JSON more fluently, while covering most of the use cases anyway. Here's the code:
+We'll also assume the request body will be a `JsonDocument`. Despite not being flexible, this will allow us to work with JSON more fluently, while covering most of the use cases anyway. Here's the code:
 
 > We will make an EF-friendly model from the get-go, hence the `Id` and the auto-properties look.
 
@@ -66,7 +66,7 @@ POST /webhooks/dump
 }
 ```
 
-Sadly, there's still a thing wwe need to fix. Here's an error message we should receive:
+Sadly, there's still a thing we need to fix. Here's an error message we should receive:
 
 ```text
 System.InvalidOperationException: Request body is not available. Make sure you've registered the required middleware with `UseRequestBodyStringReader()`
@@ -76,7 +76,7 @@ Let's fix it in the next section.
 
 ## Webhook Dump Object: Fixing It with UseRequestBodyStringReader
 
-`Nist.Bodies` packages contains a middlewares that save request and response as a string in the `HttpContext`. However, those middlewares need to be registered in the pipeline. Since we are only interested in request - let's add just that:
+`Nist.Bodies` package contains a middlewares that save the request and response as a string in the `HttpContext`. However, those middlewares need to be registered in the pipeline. Since we are only interested in request, let's add just that:
 
 ```csharp
 app.UseRequestBodyStringReader();
@@ -112,19 +112,19 @@ app.MapPost("webhooks/dump", (HttpContext context) =>
 app.Run();
 ```
 
-We were able to extract a `WebhookDump` from the example webhook request we've received. But there's not much use of it yet, since we haven't introduced any way to see the requests we've received. Let's complete our system in the next section.
+We were able to extract a `WebhookDump` from the example webhook request we've received. But there's not much use of it yet, since we haven't introduced any way to see the requests we've received. Let's go ahead and complete our system in the next section.
 
 ## Storing Webhook Dump. Part 1: Introducing an In-Memory Database
 
-The primary goal of the webhook dump is to test webhook integration and just show that everything was going as expected. Therefore, most of the times, we don't need a real persistence. And since an in-memory database is easier to setup than a real one we'll go with it. Let's start by installing the appropriate package:
+The primary goal of the webhook dump is to test webhook integration and just show that everything was going as expected. Therefore, most of the time, we don't need real persistence. And since an in-memory database is easier to set up than a real one, we'll go with it. Let's start by installing the appropriate package:
 
-> We can easily use a real database with our setup as well. More on that in the end of the article.
+> We can easily use a real database with our setup as well. More on that at the end of the article.
 
 ```sh
 dotnet add package Microsoft.EntityFrameworkCore.InMemory
 ```
 
-Now, we can add create our database model:
+Now, we can create our database model:
 
 ```csharp
 public class WebhookDumpDb(DbContextOptions<WebhookDumpDb> options) 
@@ -134,7 +134,7 @@ public class WebhookDumpDb(DbContextOptions<WebhookDumpDb> options)
 }
 ```
 
-Then, we'll generate an in-memory database id, generated once per our application startup. We'll use the id to have a single in-memory database in our app. Here's the code:
+Then, we'll generate an in-memory database ID, generated once per our application startup. We'll use the ID to have a single in-memory database in our app. Here's the code:
 
 ```csharp
 public static class WebhookDbRegistration
@@ -166,7 +166,7 @@ app.MapPost("webhooks/dump", async (HttpContext context, WebhookDumpDb db) => {
 );
 ```
 
-Unfortunatelly, if we repeat the test we've made earlier with the current setup we will get an exception.
+Unfortunately, if we repeat the test we've made earlier with the current setup, we will get an exception.
 
 ```text
 System.InvalidOperationException: No suitable constructor was found for entity type 'JsonDocument'. The following constructors had parameters that could not be bound to properties of the entity type: 
@@ -174,9 +174,9 @@ System.InvalidOperationException: No suitable constructor was found for entity t
 
 Let's fix it and finish our setup in the next section.
 
-## Storing Webhook Dump. Part 2: Making In-Memory Database work with JsonDocument
+## Storing Webhook Dump. Part 2: Making an In-Memory Database work with JsonDocument
 
-Unfortunatelly, the in-memory database doesn't support `JsonDocument`'s natively. Unlike PostgreSQL, by the way. Gladly, we can always add an arbitrary type support using EF converters. Let's add one to our `WebhookDumpDb`:
+Unfortunately, the in-memory database doesn't support `JsonDocument` natively. Unlike PostgreSQL, by the way. Gladly, we can always add an arbitrary type support using EF converters. Let's add one to our `WebhookDumpDb`:
 
 ```csharp
 protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -241,17 +241,17 @@ And here's the last response we should've received from running those tests:
 ]
 ```
 
-This wraps up our little experiment. Of couse, there's quite a few improvements we can make, but we'll do something even better in the last section. Let's get straight to it!
+This wraps up our little experiment. Of couse, there are quite a few improvements we can make, but we'll do something even better in the last section. Let's get straight to it!
 
 ## TLDR;
 
-In this article, we've build a simple setup for webhook dumps. We could've extracted a reusable components out of our work, however, there is a `Nist.Webhooks.Dump` package that already does the heavy-lifting for us. It also make them slightly more flexible with multiple dumps support, flexible path, and bring-your-own-database design. To use it just install the package:
+In this article, we've built a simple setup for webhook dumps. We could've extracted reusable components out of our work, however, there is a `Nist.Webhooks.Dump` package that already does the heavy-lifting for us. It also makes them slightly more flexible with multiple dumps support, flexible path, and bring-your-own-database design. To use it, just install the package:
 
 ```sh
 dotnet add package Nist.Webhooks.Dump
 ```
 
-Then, just plug the required services, middleware, and mapper to your application like this:
+Then, just plug the required services, middleware, and mapper into your application like this:
 
 ```csharp
 builder.Services.AddInMemoryWebhookDumpDb();
