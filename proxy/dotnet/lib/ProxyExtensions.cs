@@ -10,17 +10,16 @@ public static class ProxyExtensions
         var request = context.Request.CopyWith(route);
         var response = await invoker.SendAsync(request, cancellationToken ?? CancellationToken.None);
         await response.CopyTo(context.Response);
+
+        // SendAsync removes chunking from the response. This removes the header so it doesn't expect a chunked response.
+        context.Response.Headers.Remove("transfer-encoding");
     }
 
     public static HttpRequestMessage CopyWith(this HttpRequest request, string? route = null)
     {
         var requestMessage = new HttpRequestMessage(new(request.Method), route);
-        if (!request.HasBodylessMethod())
-        {
-            var streamContent = new StreamContent(request.Body);
-            requestMessage.Content = streamContent;
-        }
 
+        requestMessage.TryCopyContent(request);
         requestMessage.AddHeaders(request.Headers.Where(k => k.Key != "Host"));
 
         return requestMessage;
@@ -30,12 +29,19 @@ public static class ProxyExtensions
     {
         response.StatusCode = (int)responseMessage.StatusCode;
         response.SetHeaders(responseMessage.GetHeaders());
+        await response.CopyContentFrom(responseMessage.Content);
+    }
 
-        // SendAsync removes chunking from the response. This removes the header so it doesn't expect a chunked response.
-        response.Headers.Remove("transfer-encoding");
+    public static async Task CopyContentFrom(this HttpResponse response, HttpContent content)
+    {
+        var stream = await content.ReadAsStreamAsync();
+        await stream.CopyToAsync(response.Body);
+    }
 
-        await using var responseStream = await responseMessage.Content.ReadAsStreamAsync();
-        await responseStream.CopyToAsync(response.Body);
+    public static void SetContent(this HttpRequestMessage requestMessage, Stream stream)
+    {
+        var streamContent = new StreamContent(stream);
+        requestMessage.Content = streamContent;
     }
 
     public static bool HasBodylessMethod(this HttpRequest request)
@@ -46,6 +52,19 @@ public static class ProxyExtensions
                string.Equals(method, HttpMethods.Head, StringComparison.OrdinalIgnoreCase) ||
                string.Equals(method, HttpMethods.Delete, StringComparison.OrdinalIgnoreCase) ||
                string.Equals(method, HttpMethods.Trace, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static bool TryCopyContent(this HttpRequestMessage requestMessage, HttpRequest request)
+    {
+        if (requestMessage.Content != null)
+            return false;
+
+        if (request.HasBodylessMethod())
+            return false;
+
+        var streamContent = new StreamContent(request.Body);
+        requestMessage.Content = streamContent;
+        return true;
     }
 
     public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpResponseMessage response)
