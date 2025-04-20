@@ -1,11 +1,12 @@
-http://api.github.com
-
-###
-http://api.github.com/users/astorDev
-
 ###
 POST https://postman-echo.com/post
 
 {
     "example" : "one"
 }
+
+###
+GET https://postman-echo.com/get?example=one
+
+###
+GET https://api.spacexdata.com/v4/launches/latest
