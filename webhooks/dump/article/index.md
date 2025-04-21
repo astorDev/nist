@@ -78,7 +78,7 @@ Let's fix it in the next section.
 
 ## Webhook Dump Object: Fixing It with UseRequestBodyStringReader
 
-`Nist.Bodies` package contains a middlewares that save the request and response as a string in the `HttpContext`. However, those middlewares need to be registered in the pipeline. Since we are only interested in request, let's add just that:
+`Nist.Bodies` package contains middleware that saves the request and response as a string in the `HttpContext`. However, those middlewares need to be registered in the pipeline. Since we are only interested in the request, let's add just that:
 
 ```csharp
 app.UseRequestBodyStringReader();
@@ -243,7 +243,7 @@ And here's the last response we should've received from running those tests:
 ]
 ```
 
-This wraps up our little experiment. Of couse, there are quite a few improvements we can make, but we'll do something even better in the last section. Let's get straight to it!
+This wraps up our little experiment. Of course, there are quite a few improvements we can make, but we'll do something even better in the last section. Let's get straight to it!
 
 ## TLDR;
 
@@ -280,7 +280,7 @@ After that, you can point any webhook sender to the `/webhooks/dump` path and se
 ]
 ```
 
-You can use your own database, as well. All you'd have to do is to make it implement `IDbWithWebhookDump`:
+You can use your own database, as well. All you'd have to do is make it implement `IDbWithWebhookDump`:
 
 ```csharp
 public class YourOwnDb(DbContextOptions<YourOwnDb> options) : DbContext(options), IDbWithWebhookDump {
