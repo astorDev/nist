@@ -2,6 +2,8 @@
 
 > Building a Simple Webhook Dump using .NET to Quickly Mock and Test a Webhook Acceptor.
 
+![](thumb.png)
+
 Webhooks are a nice and flexible way to implement an event-based integration. However, it's relatively tricky to test webhook connections, both for a sender and for the receiver. Wouldn't it be nice to quickly set up a simple webhook dump to see all the incoming and outgoing requests? In this article, we'll build such a dump using .NET, giving you full control over webhook testing in no time - no external tools like Postman or WireMock needed.
 
 > For the quick solution, jump straight to the end of the article, to the [TLDR; section](#tldr)
@@ -76,7 +78,7 @@ Let's fix it in the next section.
 
 ## Webhook Dump Object: Fixing It with UseRequestBodyStringReader
 
-`Nist.Bodies` package contains a middlewares that save the request and response as a string in the `HttpContext`. However, those middlewares need to be registered in the pipeline. Since we are only interested in request, let's add just that:
+`Nist.Bodies` package contains middleware that saves the request and response as a string in the `HttpContext`. However, those middlewares need to be registered in the pipeline. Since we are only interested in the request, let's add just that:
 
 ```csharp
 app.UseRequestBodyStringReader();
@@ -241,7 +243,7 @@ And here's the last response we should've received from running those tests:
 ]
 ```
 
-This wraps up our little experiment. Of couse, there are quite a few improvements we can make, but we'll do something even better in the last section. Let's get straight to it!
+This wraps up our little experiment. Of course, there are quite a few improvements we can make, but we'll do something even better in the last section. Let's get straight to it!
 
 ## TLDR;
 
@@ -278,7 +280,7 @@ After that, you can point any webhook sender to the `/webhooks/dump` path and se
 ]
 ```
 
-You can use your own database, as well. All you'd have to do is to make it implement `IDbWithWebhookDump`:
+You can use your own database, as well. All you'd have to do is make it implement `IDbWithWebhookDump`:
 
 ```csharp
 public class YourOwnDb(DbContextOptions<YourOwnDb> options) : DbContext(options), IDbWithWebhookDump {
