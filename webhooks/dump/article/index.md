@@ -2,6 +2,8 @@
 
 > Building a Simple Webhook Dump using .NET to Quickly Mock and Test a Webhook Acceptor.
 
+![](thumb.png)
+
 Webhooks are a nice and flexible way to implement an event-based integration. However, it's relatively tricky to test webhook connections, both for a sender and for the receiver. Wouldn't it be nice to quickly set up a simple webhook dump to see all the incoming and outgoing requests? In this article, we'll build such a dump using .NET, giving you full control over webhook testing in no time - no external tools like Postman or WireMock needed.
 
 > For the quick solution, jump straight to the end of the article, to the [TLDR; section](#tldr)
