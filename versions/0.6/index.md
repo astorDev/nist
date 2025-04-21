@@ -2,7 +2,6 @@
     - [x] `Nist` namespace and feature-based folder
 - [x] Nist.Registration **2025.104.116.32**
     - [x] Feature-based folder
-    - [ ] **To Consider**: `Nist` namespace instead of `Microsoft`'s.
 - [x] Nist.Proxy **2025.104.120.6**
     - [x] Project Inited
 - [x] Nist.Template **2025.104.116.28**
