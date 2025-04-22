@@ -8,11 +8,11 @@ Proxying, or reverse-proxying, a request is a pretty common task, especially in 
 
 ## Building the Skeleton: Proxy Extension Method
 
-Let's start straight with the spoilers. To build a proxy we will essentially need just one method, called `Proxy`. The method will copy incoming request from the `HttpContext` to the a new `HttpRequestMessage` and copy a received `HttpResponseMessage` back to `HttpContext`s `HttpResponse` property. 
+Let's start straight with the spoilers. To build a proxy, we will essentially need just one method, called `Proxy`. The method will copy the incoming request from the `HttpContext` to the new `HttpRequestMessage` and copy a received `HttpResponseMessage` back to the `HttpContext`s `HttpResponse` property. 
 
-Of course, we will also do a couple of modifications along the way. We will change the route, host, and remove chunking. Here's the code:
+Of course, we will also do a couple of modifications along the way. We will change the route, host and remove chunking. Here's the code:
 
-> It would be cool to just make the 4 lines implementation. Unfortunately, the  `ToProxyMessageWith` and `CopyTo` methods are not existent and we will have to implement them.
+> It would be cool to just make the 4 lines implementation. Unfortunately, the  `ToProxyMessageWith` and `CopyTo` methods do not exist and we will have to implement them.
 
 ```csharp
 public static async Task Proxy(this HttpMessageInvoker invoker, HttpContext context, string? route = null, CancellationToken? cancellationToken = null)
@@ -26,9 +26,9 @@ public static async Task Proxy(this HttpMessageInvoker invoker, HttpContext cont
 }
 ```
 
-Now, let's peek into the `ToProxyMessageWith` implementation. The method will construct a new `HttpRequestMessage` using source Method, a passed root, source headers and content. Here's the code: 
+Now, let's peek into the `ToProxyMessageWith` implementation. The method will construct a new `HttpRequestMessage` using the source method, a passed root, source headers, and content. Here's the code: 
 
-> Of course, we will copy all headers except the `Host`, since that's basically the point of a proxy to overwrite host.
+> Of course, we will copy all headers except the `Host`, since that's basically the point of a proxy to overwrite the host.
 
 ```csharp
 public static HttpRequestMessage ToProxyMessageWith(this HttpRequest source, string? route = null)
@@ -45,7 +45,7 @@ public static HttpRequestMessage ToProxyMessageWith(this HttpRequest source, str
 }
 ```
 
-We will need to copy even less for the response: just the status code, headers, and content. Here the code is much simpler:
+We will need to copy even less for the response: just the status code, headers, and content. Here, the code is much simpler:
 
 ```csharp
 public static async Task CopyTo(this HttpResponseMessage source, HttpResponse target)
@@ -56,7 +56,7 @@ public static async Task CopyTo(this HttpResponseMessage source, HttpResponse ta
 }
 ```
 
-Here's the code in assemblance just for reference:
+Here's the code in assembly just for reference:
 
 ```csharp
 using Microsoft.AspNetCore.Http;
@@ -97,11 +97,11 @@ public static class ProxyExtensions
 }
 ```
 
-Unfortunatelly, most of the methods for copying are also missing from the built-in libraries and we will have to implement them ourselves. Let's do just that in the next sections, starting with headers.
+Unfortunately, most of the methods for copying are also missing from the built-in libraries and we will have to implement them ourselves. Let's do just that in the next sections, starting with headers.
 
 ## Copying Headers: The Peculiar .NET Structuring
 
-.NET has quite interesting model for representing HTTP headers. Although, technically a headers is just a header, .NET also split the header in two categories based on their semantic: `RequestHeaders` and `ContentHeaders`.
+.NET has quite an interesting model for representing HTTP headers. Although technically a header is just a header, .NET also splits the header into two categories based on their semantics: `RequestHeaders` and `ContentHeaders`.
 
 Let me show you a quick experiment to explain what I mean. Here's the experiment code:
 
@@ -118,7 +118,7 @@ foreach (var header in response.Content.Headers)
     Console.WriteLine($"{header.Key}: {string.Join(", ", header.Value)}");
 ```
 
-If you run the code you should see the output looking something like this:
+If you run the code, you should see the output looking something like this:
 
 ```text
 ------Headers directly in response:-----
@@ -153,9 +153,9 @@ If you run the code you should see the output looking something like this:
  Content-Length: 9
 ```
 
-Although, the separation makes some sense, it doesn't make our lives easier, since we have to copy all the headers. 
+Although the separation makes some sense, it doesn't make our lives easier, since we have to copy all the headers. 
 
-It also doesn't help, that .NET represent headers somewhat different, depending on the context. So the first thing we will need to do is to make a universal model, we will use for our headers:
+It also doesn't help that .NET represents headers somewhat differently, depending on the context. So the first thing we will need to do is to make a universal model, we will use for our headers:
 
 ```csharp
 public record HttpHeader(string Key, IEnumerable<string> Value)
@@ -164,9 +164,9 @@ public record HttpHeader(string Key, IEnumerable<string> Value)
 }
 ```
 
-Now, let's do a set of extension method. Let's start with the one for the requests:
+Now, let's do a set of extension methods. Let's start with the one for the requests:
 
-> I hope the code is pretty self-explainatory so I won't bother you with an explanation. Feel free to ask in the comments if something is unclear.
+> I hope the code is pretty self-explanatory, so I won't bother you with an explanation. Feel free to ask in the comments if something is unclear.
 
 ```csharp
 public static class RequestHeaderExtensions
@@ -226,7 +226,7 @@ public static class ResponseHeaderExtensions
 }
 ```
 
-Quite a journey for copying key-value pairs, huh? Well, gladly content copying is much easier. Let's get to it!
+Quite a journey for copying key-value pairs, huh? Well, gladly, content copying is much easier. Let's get to it!
 
 ## Proxying Content: Keep It Streamed
 
@@ -256,13 +256,13 @@ This should cover all the custom extension methods we had in the initial setup. 
 
 ## Testing The Proxy: Utilizing Postman Echo
 
-To test the proxying we will need a web app. Let's use the super simple minimal API template:
+To test the proxying, we will need a web app. Let's use the super simple minimal API template:
 
 ```sh
 dotnet new web
 ```
 
-We'll use `postman-echo` service for our testing. All we'd have to do is to register the typed client in our DI container, access it `HttpClient` and call our `Proxy` method. Notice, how we also changed the path from `post` to `echo`:
+We'll use the `postman-echo` service for our testing. All we'd have to do is register the typed client in our DI container, access it `HttpClient` and call our `Proxy` method. Notice how we also changed the path from `post` to `echo`:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
