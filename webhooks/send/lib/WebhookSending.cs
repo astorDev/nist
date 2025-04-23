@@ -4,8 +4,6 @@ using Backi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Nist;
 
@@ -111,7 +109,7 @@ public class WebhooksSendingIteration(IDbWithWebhookRecord db, IHttpClientFactor
 
         record.Status = response.IsSuccessStatusCode ? WebhookStatus.Success : WebhookStatus.Error;
         record.ResponseStatusCode = (int)response.StatusCode;
-        record.Response = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+        record.Response = Json.ParseSafely(await response.Content.ReadAsStreamAsync());
     }
 }
 
@@ -122,5 +120,23 @@ public static class WebhookSendingRegistration
         services.AddHttpClient();
         services.AddScoped(provider => dbFactory(provider));
         services.AddContinuousBackgroundService<WebhooksSendingIteration>();
+    }
+}
+
+public static class Json
+{
+    /// <summary>
+    /// Because .NET team decided not to implement proper TryParse: https://github.com/dotnet/runtime/issues/82605
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
+    public static JsonDocument? ParseSafely(this Stream stream)
+    {
+        try {
+            return JsonDocument.Parse(stream);
+        }
+        catch {
+            return null;
+        }
     }
 }
