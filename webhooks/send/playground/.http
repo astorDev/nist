@@ -1,0 +1,24 @@
+POST /webhooks
+
+{
+    "url" : "{{ host }}/destination",
+    "body" : {
+        "example" : "one"
+    }
+}
+
+###
+POST /webhooks
+
+{
+    "url" : "{{ host }}/webhooks/dump",
+    "body" : {
+        "example" : "one"
+    }
+}
+
+###
+GET /webhooks
+
+###
+GET /webhooks/dump
