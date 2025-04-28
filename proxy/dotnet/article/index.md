@@ -12,7 +12,7 @@ Proxying, or reverse-proxying, a request is a pretty common task, especially in 
 
 Let's start straight with the spoilers. To build a proxy, we will essentially need just one method, called `Proxy`. The method will copy the incoming request from the `HttpContext` to the new `HttpRequestMessage` and copy a received `HttpResponseMessage` back to the `HttpContext`s `HttpResponse` property. 
 
-Of course, we will also do a couple of modifications along the way. We will change the route, host and remove chunking. Here's the code:
+Of course, we will also do a couple of modifications along the way. We will change the route, host, and remove chunking. Here's the code:
 
 > It would be cool to just make the 4 lines implementation. Unfortunately, the  `ToProxyMessageWith` and `CopyTo` methods do not exist and we will have to implement them.
 
@@ -99,7 +99,7 @@ public static class ProxyExtensions
 }
 ```
 
-Unfortunately, most of the methods for copying are also missing from the built-in libraries and we will have to implement them ourselves. Let's do just that in the next sections, starting with headers.
+Unfortunately, most of the methods for copying are also missing from the built-in libraries, and we will have to implement them ourselves. Let's do just that in the next sections, starting with headers.
 
 ## Copying Headers: The Peculiar .NET Structuring
 
@@ -329,7 +329,7 @@ We should get the following response straight from our localhost, proxied from `
 }
 ```
 
-We'll call it a success! The next section contains a short recap of what we have done, along with one more thing that will make our life easier. Let's jump straight to it!
+We'll call it a success! The next section contains a short recap of what we have done, along with one more thing that will make our lives easier. Let's jump straight to it!
 
 ## TLDR;
 
