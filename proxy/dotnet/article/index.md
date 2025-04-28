@@ -2,6 +2,8 @@
 
 > A Simple Guide to Writing Your Own Reverse-Proxy using C# in 2025.
 
+![](thumb.png)
+
 Proxying, or reverse-proxying, a request is a pretty common task, especially in a microservices architecture. One of the scenarios I bump into frequently is developing a gateway, authorizing a user, and proxying a request to a private microservice by an updated path. There's already a tool in the .NET ecosystem handling the task. It is called [YARP](https://github.com/dotnet/yarp/tree/main) - Yet Another Reverse Proxy. However, for me, it feels over-engineered. If you feel the same, welcome to the article, where we will create our own simple version, although inspired by YARP.
 
 > If you don't want to implement it, but are still interested in getting a simple reverse-proxy, jump straight to the end of the article, to the [TLDR; section](#tldr).
