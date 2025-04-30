@@ -43,15 +43,15 @@ await app.Services.EnsureRecreated<Db>(async db => {
 
 ## TLDR;
 
-In this article, we've built and tested a background service for sending webhooks, based on a PostgreSQL queue. Instead of recreating it from scratch you can use `Nist.Webhooks.Sender` package:
+In this article, we've built and tested a background service for sending webhooks, based on a PostgreSQL queue. Instead of recreating it from scratch, you can use the `Nist.Webhooks.Sender` package:
 
 ```sh
 dotnet add package Nist.Webhooks.Sender
 ```
 
-With the package in place, we could add continous webhook sending to our app in just a few lines of code:
+With the package in place, we could add continuous webhook sending to our app in just a few lines of code:
 
-> For a simple EF Core PostgreSQL setup I use `Persic.EF.Postgres` package. Check out [the dedicated article](https://medium.com/@vosarat1995/integrating-postgresql-with-net-9-using-ef-core-a-step-by-step-guide-a773768777f2) for details!
+> For the simple EF Core PostgreSQL setup, I use the  `Persic.EF.Postgres` package. Check out [the dedicated article](https://medium.com/@vosarat1995/integrating-postgresql-with-net-9-using-ef-core-a-step-by-step-guide-a773768777f2) for details!
 
 ```csharp
 builder.Services.AddPostgres<Db>();
@@ -64,6 +64,6 @@ public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWithWebho
 }
 ```
 
-You can find the code to check the setup in the previous section. You can also check a playground project [straight on the GitHub](). The playground, the package, and even this article, are parts of the [NIST project](https://github.com/astorDev/nist). The project's purpose in a few words is to be a Non-Toxic REST alternative, so there's many interesting stuff beyond webhooks - check it out and don't hesitate to give it a star! ⭐
+You can find the code to check the setup in the previous section. You can also check a playground project [straight on GitHub](https://github.com/astorDev/nist/tree/main/webhooks/send/playground). The playground, the package, and even this article are parts of the [NIST project](https://github.com/astorDev/nist). The project's purpose in a few words is to be a Non-Toxic REST alternative, so there's many interesting stuff beyond webhooks - check it out and don't hesitate to give it a star! ⭐
 
 Claps for this article are also highly appreciated! 😉
