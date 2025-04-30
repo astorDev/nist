@@ -5,7 +5,7 @@ up:
 	docker compose up -d
 
 yac:
-	httpyac send .http --all
+	httpyac send $(NAME).http --all
 
 down:
 	docker compose down
@@ -14,3 +14,10 @@ down:
 reset:
 	make down
 	make up
+
+play:
+	make up
+	bash -c -i 'make run & sleep 5 && make yac NAME=get-dump && fg'
+
+kill:
+	kill `lsof -t -i:5195`

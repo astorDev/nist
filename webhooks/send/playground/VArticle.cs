@@ -1,4 +1,6 @@
-public static class VFinal
+using System.Text.Json;
+
+public static class VArticle
 {
     public static async Task<WebApplication> Main(WebApplicationBuilder builder)
     {        
@@ -9,24 +11,16 @@ public static class VFinal
         
         var app = builder.Build();
         
-        await app.Services.EnsureRecreated<Db>();
-        
-        app.UseRequestBodyStringReader();
-        
-        app.MapPost(WebhookUris.Webhooks, async (WebhookCandidate candidate, Db db) => {
-            var record = new WebhookRecord() {
-                Url = candidate.Url,
-                Body = candidate.Body,
-                CreatedAt = DateTime.UtcNow,
-                Status = WebhookStatus.Pending
-            };
-        
-            db.Add(record);
+        await app.Services.EnsureRecreated<Db>(async db => {
+            db.WebhookRecords.Add(new WebhookRecord() {
+                Url = "http://localhost:5195/webhooks/dump/from-record",
+                Body = JsonDocument.Parse("{\"example\": \"one\"}")
+            });
+
             await db.SaveChangesAsync();
-            return record;
         });
         
-        app.MapGetWebhooks<Db, WebhookRecord>();
+        app.UseRequestBodyStringReader();
         app.MapWebhookDump<Db>();
         
         return app;
@@ -35,10 +29,5 @@ public static class VFinal
     public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWithWebhookRecord<WebhookRecord>, IDbWithWebhookDump {
         public DbSet<WebhookRecord> WebhookRecords { get; set; }
         public DbSet<WebhookDump> WebhookDumps { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
     }
 }

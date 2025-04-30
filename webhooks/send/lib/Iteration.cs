@@ -12,8 +12,8 @@ public class WebhookRecord : IWebhook
     public long Id { get; set; }
     public required string Url { get; set; }
     public required JsonDocument Body { get; set; }
-    public required string Status { get; set; }
-    public required DateTime CreatedAt { get; set; }
+    public string Status { get; set; } = WebhookStatus.Pending;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public int? ResponseStatusCode { get; set; }
     public JsonDocument? Response { get; set; }
 }

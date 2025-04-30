@@ -31,6 +31,7 @@ POST /webhooks
 GET /webhooks
 
 ###
+# @name dump
 GET /webhooks/dump
 
 ###
