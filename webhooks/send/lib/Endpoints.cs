@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Nist;
 
 public static class WebhookEndpoints {
-    public static IEndpointRouteBuilder MapGetWebhooks<TDb>(this IEndpointRouteBuilder app) where TDb : IDbWithWebhookRecord {
-        app.MapGet($"/{WebhookUris.Webhooks}", GetWebhooks<TDb>);
+    public static IEndpointRouteBuilder MapGetWebhooks<TDb, TRecord>(this IEndpointRouteBuilder app) where TDb : IDbWithWebhookRecord<TRecord> where TRecord : WebhookRecord {
+        app.MapGet($"/{WebhookUris.Webhooks}", GetWebhooks<TDb, TRecord>);
 
         return app;
     }
 
-    public static async Task<WebhookCollection> GetWebhooks<TDb>(HttpRequest request, TDb db) where TDb : IDbWithWebhookRecord {
+    public static async Task<WebhookCollection<TRecord>> GetWebhooks<TDb, TRecord>(HttpRequest request, TDb db) where TDb : IDbWithWebhookRecord<TRecord> where TRecord : WebhookRecord{
         var query = WebhookQuery.Parse(request.Query);
 
         var counters = await db.WebhookRecords
@@ -26,7 +26,7 @@ public static class WebhookEndpoints {
             .Take(query.Limit ?? WebhookQuery.DefaultLimit)
             .ToArrayAsync();
 
-        return new WebhookCollection(
+        return new WebhookCollection<TRecord>(
             TotalCounts: counters.ToDictionary(c => c.Status.ToLower(), c => c.Count),
             Count: selected.Length,
             Items: selected
@@ -49,10 +49,10 @@ public record WebhookQuery(
     );
 }
 
-public record WebhookCollection(
+public record WebhookCollection<TRecord>(
     Dictionary<string, int> TotalCounts,
     int Count,
-    WebhookRecord[] Items
+    TRecord[] Items
 );
 
 public static class QueryCollectionExtensions

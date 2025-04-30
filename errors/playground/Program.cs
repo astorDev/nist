@@ -137,21 +137,6 @@ app.MapGet("/wrong-input/{input}", (string input) => {
 
 app.Run();
 
-
-ProblemDetails ProblemFrom(Exception exception)
-{
-    return exception switch {
-        WrongInputException => new ProblemDetails() {
-            Type = "WrongInput",
-            Status = (int)HttpStatusCode.BadRequest
-        },
-        _ => new ProblemDetails() {
-            Type = "Unexpected",
-            Status = (int)HttpStatusCode.InternalServerError
-        }
-    };
-}
-
 Error ErrorFrom(Exception exception)
 {
     return exception switch {

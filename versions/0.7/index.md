@@ -5,9 +5,9 @@
     - [ ] Allow limit specification with 100 by default
 - [ ] Nist.Webhooks.Sender <VERSION>
     - [x] WebhookSender Endpoints
-    - [ ] Repeats
-        - [ ] `active_since` and `attempt` column
-        - [ ] Requeuing
+    - [x] Repeats
+        - [x] `start_at` and `attempt` column
+        - [x] Requeuing
 
 ## Webhook Repeat Action
 
