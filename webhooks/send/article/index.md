@@ -7,3 +7,49 @@ Webhooks are practically the only option to build an eventually consistent, even
 > Or jump straight to the [TLDR;](#tldr) in the end of this article
 
 ## TLDR;
+
+```csharp
+builder.Services.AddPostgres<Db>();
+
+public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWithWebhookRecord<WebhookRecord> {
+    public DbSet<WebhookRecord> WebhookRecords { get; set; }
+}
+```
+
+```csharp
+builder.Services.AddContinuousWebhookSending(sp => sp.GetRequiredService<Db>());
+```
+
+```csharp
+app.UseRequestBodyStringReader();
+app.MapWebhookDump<Db>();
+```
+
+```csharp
+await app.Services.EnsureRecreated<Db>(async db => {
+    db.WebhookRecords.Add(new WebhookRecord() {
+        Url = "http://localhost:5195/webhooks/dump/from-record",
+        Body = JsonDocument.Parse("{\"example\": \"one\"}")
+    });
+
+    await db.SaveChangesAsync();
+});
+```
+
+`dotnet run` and `GET /webhooks/dump`
+
+```json
+[
+  {
+    "id": 1,
+    "path": "/webhooks/dump/from-record",
+    "body": {
+      "example": "one"
+    },
+    "time": "2025-04-30T14:11:49.607198Z"
+  }
+]
+```
+
+
+

@@ -1,4 +1,4 @@
-public static class VRepeatable
+public static class VExtensive
 {
     public static async Task<WebApplication> Main(WebApplicationBuilder builder)
     {
@@ -16,9 +16,7 @@ public static class VRepeatable
         app.MapPost(WebhookUris.Webhooks, async (WebhookCandidate candidate, Db db) => {
             var record = new RepeatableWebhookRecord() {
                 Url = candidate.Url,
-                Body = candidate.Body,
-                CreatedAt = DateTime.UtcNow,
-                Status = WebhookStatus.Pending
+                Body = candidate.Body
             };
 
             db.WebhookRecords.Add(record);

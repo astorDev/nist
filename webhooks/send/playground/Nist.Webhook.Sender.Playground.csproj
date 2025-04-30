@@ -7,8 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
     <PackageReference Include="Nist.Webhooks.Dump" Version="2025.104.115.11" />
-    <PackageReference Include="Persic.EF" Version="2025.104.121.14" />
-    <PackageReference Include="Persic.EF.Postgres" Version="2025.104.108.5" />
+    <PackageReference Include="Persic.EF.Postgres" Version="2025.104.130.6" />
   </ItemGroup>
 
   <PropertyGroup>
