@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Proxy.Tests", "proxy\d
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhook.Sender.Playground", "webhooks\send\playground\Nist.Webhook.Sender.Playground.csproj", "{9BA28776-A8DD-44FF-AF05-9208FAC4AA27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Sender.Tests", "webhooks\send\tests\Nist.Webhooks.Sender.Tests.csproj", "{2A3C17CF-2FDB-46F5-B974-C7EB224393D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +156,10 @@ Global
 		{9BA28776-A8DD-44FF-AF05-9208FAC4AA27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BA28776-A8DD-44FF-AF05-9208FAC4AA27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BA28776-A8DD-44FF-AF05-9208FAC4AA27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A3C17CF-2FDB-46F5-B974-C7EB224393D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A3C17CF-2FDB-46F5-B974-C7EB224393D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A3C17CF-2FDB-46F5-B974-C7EB224393D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A3C17CF-2FDB-46F5-B974-C7EB224393D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3448B6A0-78B9-4F52-A971-9407F9B331CF} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
@@ -180,5 +186,6 @@ Global
 		{23CD4903-6234-4603-ABA4-ECE8DAD2C38B} = {DA0F6345-2D0B-427A-95B1-FD36E76E0212}
 		{AD3144EF-31F1-4795-940C-249257BAFEF7} = {23CD4903-6234-4603-ABA4-ECE8DAD2C38B}
 		{9BA28776-A8DD-44FF-AF05-9208FAC4AA27} = {9F87D931-2A57-4C0E-9E28-22EE758171D0}
+		{2A3C17CF-2FDB-46F5-B974-C7EB224393D1} = {9F87D931-2A57-4C0E-9E28-22EE758171D0}
 	EndGlobalSection
 EndGlobal

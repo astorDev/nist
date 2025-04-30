@@ -71,7 +71,7 @@ namespace VFinal
     public class Db(DbContextOptions<Db> options) : 
         DbContext(options), 
         IDbWithWebhookDump,
-        IDbWithWebhookRecord
+        IDbWithWebhookRecord<WebhookRecord>
     {
         public DbSet<WebhookDump> WebhookDumps { get; set; } = null!;
         public DbSet<WebhookRecord> WebhookRecords { get; set; } = null!;
