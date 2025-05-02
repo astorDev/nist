@@ -11,4 +11,8 @@
     <PackageReference Include="Persic.EF" Version="2025.104.130.15" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Nist.Queries.Include.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -31,115 +31,22 @@ await app.Services.EnsureRecreated<Db>(async db =>
 app.MapGet("/transactions", async (Db db, HttpRequest request) =>
 {
     var query = TransactionsQuery.Parse(request.Query);
-    IQueryable<TransactionRecord> dbQuery = db.Transactions;
+    IQueryable<Transaction> dbQuery = db.Transactions;
 
-    int? total = null;
-    Dictionary<string, object>? groups = new();
-
-    if (query.Includes("total"))
-    {
-        total = await dbQuery.CountAsync();
-    }
-
-    var groupPathes = query.Include?.GetSubpathes("groups") ?? [];
-    var categoryPathes = groupPathes.GetSubpathes("category");
-
-    if (categoryPathes.Any())
-        groups.Add("category", await dbQuery.GroupBy(x => x.Category).ToTransactionGroup(categoryPathes));
-
-    var expressionPaths = groupPathes.GetExpressionSubpathes();
-    var amountExpressionPaths = expressionPaths.Where(x => x.Key.Field == "amount");
-
-    foreach (var x in amountExpressionPaths)
-    {
-        var amExp = AmountExpression.From(x.Key);
-        groups.Add(amExp.ToString(), await dbQuery.GroupBy(amExp.ToExpression()).ToTransactionGroup(x.Value));
-    }
-
+    var groups = await dbQuery.GetGroups(query.Include);
     var items = await dbQuery
-        .Limit(query.Limit)
+        .Take(query.Limit ?? int.MaxValue)
         .ToArrayAsync();
 
     return new TransactionCollection(
         Count: items.Length,
         Items: items,
-        Total: total,
+        Total: query.Includes("total") ? await dbQuery.CountAsync() : null,
         Groups: groups
     );
 });
 
 app.Run();
-
-public record IncludeExpression(
-    string Field,
-    string Operator,
-    string Value
-)
-{
-    public static bool TryParse(string includePath, out IncludeExpression expression)
-    {
-        expression = null!;
-        var parts = includePath.Split("_");
-        if (parts.Length != 3) return false;
-
-        expression = new IncludeExpression(
-            parts[0],
-            parts[1],
-            parts[2]
-        );
-
-        return true;
-    }
-}
-
-public record AmountExpression(string Operator, decimal Value)
-{
-    public const string FieldKey = "amount";
-    public const string GteOperator = "gte";
-
-    public static AmountExpression From(IncludeExpression source)
-    {
-        return new AmountExpression(
-            Operator: source.Operator,
-            Value: decimal.Parse(source.Value)
-        );
-    }
-
-    public static bool TryParse(IncludeExpression expression, out AmountExpression amountExpression)
-    {
-        amountExpression = null!;
-        if (expression.Field != "amount") return false;
-
-        amountExpression = new AmountExpression(
-            Operator: expression.Operator,
-            Value: decimal.Parse(expression.Value)
-        );
-
-        return true;
-    }
-
-    public static Expression<Func<TransactionRecord, bool>> Gte(decimal value) => x => x.Amount >= value;
-
-    public Expression<Func<TransactionRecord, bool>> ToExpression()
-    {
-        return Operator switch
-        {
-            GteOperator => Gte(Value),
-            _ => throw new($"operator '{Operator}' not found")
-        };
-    }
-
-    public override string ToString()
-    {
-        return $"{FieldKey}_{Operator}_{Value}";
-    }
-}
-
-public static class IQueryableExtensions
-{
-    public static IQueryable<T> Limit<T>(this IQueryable<T> query, int? limit) =>
-        limit == null ? query : query.Take(limit.Value);
-}
 
 public record TransactionsQuery(
     IncludeQueryParameter? Include = null,
@@ -157,114 +64,78 @@ public record TransactionsQuery(
     public bool Includes(string value) => Include?.Contains(value) ?? false;
 }
 
-public record IncludeQueryParameter(
-    Path[] Paths
-)
+public static class TransactionCollectionAssembler
 {
-    public static IncludeQueryParameter Parse(string value)
+    public static async Task<TransactionGroupCollection?> GetGroups(this IQueryable<Transaction> query, IncludeQueryParameter? include) 
     {
-        var rawValues = value.Split(",");
-        var paths = rawValues.Select(v => Path.Parse(v));
+        if (include == null) return null;
+        var subpathes = include.GetSubpathes("groups").ToArray();
+        if (!subpathes.Any()) return null;
 
-        return new IncludeQueryParameter([.. paths]);
-    }
-
-    public static IncludeQueryParameter? Search(IQueryCollection query)
-    {
-        var raw = query.SearchString("include");
-        return raw == null ? null : Parse(raw);
-    }
-
-    public bool Contains(string key) => TryGetSubpath(key, out _);
-    public bool TryGetSubpath(string key, out Path? subpath)
-    {
-        var path = Paths.FirstOrDefault(p => p.Root == key);
-        subpath = path?.Subpath;
-        return path != null;
-    }
-
-    public IEnumerable<Path> GetSubpathes(string key) => this.Paths.GetSubpathes(key);
-}
-
-public static class PathEnumerable
-{
-    public static IEnumerable<Path> GetSubpathes(this IEnumerable<Path> pathes, string key)
-    {
-        return pathes
-            .Where(p => p.Root == key && p.Subpath != null)
-            .Select(p => p.Subpath!);
-    }
-
-    public static Dictionary<IncludeExpression, IEnumerable<Path>> GetExpressionSubpathes(this IEnumerable<Path> pathes)
-    {
-        var result = new List<KeyValuePair<IncludeExpression, Path>>();
-
-        foreach (var path in pathes)
-        {
-            if (IncludeExpression.TryParse(path.Root, out var expression))
-            {
-                if (path.Subpath != null)
-                {
-                    result.Add(new(expression, path.Subpath!));
-                }
-            }
-        }
-
-        return result
-            .GroupBy(x => x.Key)
-            .ToDictionary(gr => gr.Key, gr => gr.Select(x => x.Value));
-    }
-
-    public static bool Have(this IEnumerable<Path> pathes, string key)
-    {
-        return pathes.Any(p => p.Root == key);
-    }
-}
-
-public record Path(
-    string Root,
-    Path? Subpath
-)
-{
-    public static Path Parse(string value)
-    {
-        var parts = value.Split(".");
-        return Parse(parts);
-    }
-
-    public static Path Parse(string[] parts)
-    {
-        return new Path(
-            Root: parts[0],
-            Subpath: parts.Length > 1 ? Path.Parse([.. parts.Skip(1)]) : null
+        var categoryGroup = await query.SearchCategoryGroup(subpathes);
+        var amountGroup = await query.SearchAmountGroup(subpathes);
+        
+        if (categoryGroup == null && amountGroup == null) return null;
+        return new TransactionGroupCollection(
+            Category: categoryGroup,
+            Amount: amountGroup
         );
     }
+
+    public static async Task<Dictionary<string, TransactionGroup>?> SearchCategoryGroup(this IQueryable<Transaction> query, Nist.IncludePath[] groupPathes)
+    {
+        var categoryPathes = groupPathes.GetSubpathes("category").ToArray();
+        if (categoryPathes.Length == 0) return null;
+        return await query.GroupBy(x => x.Category).ToTransactionGroup(categoryPathes);
+    }
+
+    public static async Task<Dictionary<string, Dictionary<string, TransactionGroup>>?> SearchAmountGroup(this IQueryable<Transaction> query, Nist.IncludePath[] groupPathes)
+    {
+        var amountPathes = groupPathes.GetSubpathes("amount")
+            .GetExpressionSubpathes()
+            .NewKeys(AmountExpression.From)
+            .GroupToDictionary();
+
+        if (amountPathes.Count == 0) return null;
+
+        var result = new Dictionary<string, Dictionary<string, TransactionGroup>>();
+        
+        foreach (var pair in amountPathes)
+        {
+            var groups = await query.GroupBy(pair.Key.ToExpression()).ToTransactionGroup(pair.Value);
+            result.Add(pair.Key.ToString(), groups);
+        }
+
+        return result;
+    }
 }
 
-public record TransactionCollection(
-    int Count,
-    TransactionRecord[] Items,
-    int? Total = null,
-    Dictionary<string, object>? Groups = null
-);
-
-public static class QueryCollectionExtensions
+public record AmountExpression(string Operator, decimal Value)
 {
-    public static int? SearchInt(this IQueryCollection query, string name)
+    public const string FieldKey = "amount";
+    public const string GteOperator = "gte";
+
+    public static AmountExpression From(IncludeExpression source)
     {
-        var value = query.FirstOrDefault(q => q.Key == name);
-        return value.Key == null ? null : int.Parse(value.Value!);
+        return new AmountExpression(
+            Operator: source.Operator,
+            Value: decimal.Parse(source.Value)
+        );
     }
 
-    public static string? SearchString(this IQueryCollection query, string name)
+    public static Expression<Func<Transaction, bool>> Gte(decimal value) => x => x.Amount >= value;
+
+    public Expression<Func<Transaction, bool>> ToExpression()
     {
-        var value = query.FirstOrDefault(q => q.Key == name);
-        return value.Key == null ? null : value.Value.First();
+        return Operator switch
+        {
+            GteOperator => Gte(Value),
+            _ => throw new($"operator '{Operator}' not found")
+        };
     }
 
-    public static DateTime? SearchDateTime(this IQueryCollection query, string name)
+    public override string ToString()
     {
-        var value = query.FirstOrDefault(q => q.Key == name);
-        return value.Key == null ? null : DateTime.Parse(value.Value!).ToUniversalTime();
+        return $"{Operator}_{Value}";
     }
 }

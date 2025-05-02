@@ -1,0 +1,17 @@
+name: Nist.Queries.Include NuGet
+on:
+  push:
+    paths:
+      - 'queries/include/lib/**'
+      - '.github/workflows/queries-include-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: queries/include/lib/Nist.Queries.Include
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
