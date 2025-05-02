@@ -1,7 +1,7 @@
 ## Examples
 
 ```http
-GET transactions?include=total,amount_gte_0.total,category.total,category.totalSum
+GET transactions?include=total,groups.amount_gte_0.total,groups.category.total,category.totalSum
 ```
 
 ```json
@@ -30,26 +30,28 @@ GET transactions?include=total,amount_gte_0.total,category.total,category.totalS
         },
     ],
     "total" : 5,
-    "amount_gte_0" : {
-        "yes" : {
-            "total" : 3
+    "groups" : {
+        "amount_gte_0" : {
+            "yes" : {
+                "total" : 3
+            },
+            "no" : {
+                "total" : 2
+            }
         },
-        "no" : {
-            "total" : 2
-        }
-    },
-    "category" : {
-        "salary" : {
-            "total" : 2,
-            "totalSum" : 300
-        },
-        "stocks" : {
-            "total" : 2,
-            "totalSum" : 200
-        },
-        "food" : {
-            "total" : 2,
-            "totalSum" : -100
+        "category" : {
+            "salary" : {
+                "total" : 2,
+                "totalSum" : 300
+            },
+            "stocks" : {
+                "total" : 2,
+                "totalSum" : 200
+            },
+            "food" : {
+                "total" : 2,
+                "totalSum" : -100
+            }
         }
     }
 }
