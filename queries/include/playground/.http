@@ -13,7 +13,7 @@ GET /transactions?limit=0&include=groups.category.total
 GET /transactions?limit=0&include=groups.category.total,groups.category.totalSum
 
 ###
-GET /transactions?limit=0&include=groups.amount_gte_0.total,groups.amount_gte_0.totalSum
+GET /transactions?limit=0&include=groups.amount.gte_0.total,groups.amount.gte_0.totalSum
 
 ###
-GET /transactions?include=total,groups.category.totalSum,groups.amount_gte_0.total
+GET /transactions?include=total,groups.category.totalSum,groups.amount.gte_0.total

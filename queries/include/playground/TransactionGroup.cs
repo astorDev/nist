@@ -3,7 +3,7 @@ using Nist;
 
 public static class CategoryAggregate
 {
-    public static async Task<Dictionary<string, TransactionGroup>> ToTransactionGroup<TKey>(this IQueryable<IGrouping<TKey, TransactionRecord>> query, IEnumerable<Path> includes)
+    public static async Task<Dictionary<string, TransactionGroup>> ToTransactionGroup<TKey>(this IQueryable<IGrouping<TKey, Transaction>> query, IEnumerable<Nist.IncludePath> includes)
     {
         var aggregate = await query.Select(cgr => new GroupAggregateDbResult
         {
@@ -19,8 +19,8 @@ public static class CategoryAggregate
 public class GroupAggregateDbResult
 {
     public required string Key { get; set;}
-    public required decimal? TotalSum { get; set;}
-    public required int? Total { get; set;}
+    public required decimal? TotalSum { get; set; }
+    public required int? Total { get; set; }
 }
 
 public static class GroupAggregateDbResultExtensions
@@ -34,7 +34,3 @@ public static class GroupAggregateDbResultExtensions
     }
 }
 
-public record TransactionGroup(
-    decimal? TotalSum,
-    int? Total
-);
