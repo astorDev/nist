@@ -1,7 +1,0 @@
-{
-    "environments": {
-        "local" : {
-            "host" : "http://localhost:1111"
-        }
-    }
-}
