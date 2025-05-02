@@ -1,5 +1,3 @@
-- [ ] Nist.Queries
-    - [ ] `Search` and `SearchInt` extension methods
 - [ ] Nist.Webhooks.Dump <VERSION>
     - [ ] Sort by date desc
     - [ ] Allow limit specification with 100 by default
