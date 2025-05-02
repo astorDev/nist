@@ -1,0 +1,19 @@
+@host = http://localhost:5058
+
+###
+GET /transactions
+
+###
+GET /transactions?limit=0&include=total
+
+###
+GET /transactions?limit=0&include=groups.category.total
+
+###
+GET /transactions?limit=0&include=groups.category.total,groups.category.totalSum
+
+###
+GET /transactions?limit=0&include=groups.amount_gte_0.total,groups.amount_gte_0.totalSum
+
+###
+GET /transactions?include=total,groups.category.totalSum,groups.amount_gte_0.total
