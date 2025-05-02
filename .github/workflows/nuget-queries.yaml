@@ -2,7 +2,7 @@ name: Publish Nist.Queries
 on:
   push:
     paths:
-      - 'dotnet/queries/Nist.Queries/**'
+      - 'queries/lib/**'
       - '.github/workflows/nuget-queries.yaml'
   workflow_dispatch:
 
@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: astorDev/versy/calver/nuget@main
         with:
-          project: dotnet/queries/Nist.Queries/Nist.Queries
+          project: queries/lib/Nist.Queries
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}

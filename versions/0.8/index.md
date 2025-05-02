@@ -1,2 +1,5 @@
+- [ ] Nist.Queries
+    - [ ] `Search` and `SearchInt` extension methods
+- [ ] Nist.Queries.Include
 - [ ] `Nist.Webhooks.Sender` <VERSION>
     - [ ] `WebhooksManager.Enqueue`
