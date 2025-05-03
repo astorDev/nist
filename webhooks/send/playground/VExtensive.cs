@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 public static class VExtensive
 {
     public static async Task<WebApplication> Main(WebApplicationBuilder builder)
@@ -5,11 +7,23 @@ public static class VExtensive
         builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 
         builder.Services.AddPostgres<Db>();
-        builder.Services.AddContinuousRepeatableWebhookSending(sp => sp.GetRequiredService<Db>());
+        builder.Services.AddPostgreRepeatableWebhookSending<Db>();
 
         var app = builder.Build();
 
-        await app.Services.EnsureRecreated<Db>();
+        await app.Services.EnsureRecreated<Db>(async db => {
+            db.WebhookRecords.Add(new RepeatableWebhookRecord() {
+                Url = "http://localhost:5195/webhooks/dump/from-record",
+                Body = JsonDocument.Parse("{\"example\": \"one\"}")
+            });
+
+            db.WebhookRecords.Add(new RepeatableWebhookRecord() {
+                Url = "http://localhost:5195/failure",
+                Body = JsonDocument.Parse("{\"example\": \"fail\"}")
+            });
+
+            await db.SaveChangesAsync();
+        });
 
         app.UseRequestBodyStringReader();
 
@@ -31,7 +45,7 @@ public static class VExtensive
         return app;
     }
 
-    public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWithWebhookRecord<RepeatableWebhookRecord>, IDbWithWebhookDump {
+    public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWith<RepeatableWebhookRecord>, IDbWithWebhookDump {
         public DbSet<RepeatableWebhookRecord> WebhookRecords { get; set; }
         public DbSet<WebhookDump> WebhookDumps { get; set; }
 

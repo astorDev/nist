@@ -7,7 +7,7 @@ public static class VArticle
         builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
         
         builder.Services.AddPostgres<Db>();
-        builder.Services.AddContinuousWebhookSending(sp => sp.GetRequiredService<Db>());
+        builder.Services.AddPostgresWebhookSending<Db>();
         
         var app = builder.Build();
         
@@ -26,7 +26,7 @@ public static class VArticle
         return app;
     }
 
-    public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWithWebhookRecord<WebhookRecord>, IDbWithWebhookDump {
+    public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWith<WebhookRecord>, IDbWithWebhookDump {
         public DbSet<WebhookRecord> WebhookRecords { get; set; }
         public DbSet<WebhookDump> WebhookDumps { get; set; }
     }
