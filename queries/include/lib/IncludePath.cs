@@ -1,23 +1,30 @@
-﻿using QueryEnumerable = System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>;
+﻿namespace Nist;
 
-namespace Nist;
+public record IncludePath(
+    string Root,
+    IncludePath? Subpath
+)
+{
+    public static IncludePath Parse(string value) => 
+        Parse(value.Split("."));
+
+    public static IncludePath Parse(string[] parts) => new(
+        Root: parts[0],
+        Subpath: parts.Length > 1 ? IncludePath.Parse([.. parts.Skip(1)]) : null
+    );
+}
 
 public record IncludeQueryParameter(
     IncludePath[] Paths
 )
 {
-    public static IncludeQueryParameter Parse(string value)
+    public static bool TryParse(string source, out IncludeQueryParameter includeQueryParameter)
     {
-        var rawValues = value.Split(",");
+        var rawValues = source.Split(",");
         var paths = rawValues.Select(IncludePath.Parse);
+        includeQueryParameter = new IncludeQueryParameter([.. paths]);
 
-        return new IncludeQueryParameter([.. paths]);
-    }
-
-    public static IncludeQueryParameter? Search(QueryEnumerable query)
-    {
-        var raw = query.SearchString("include");
-        return raw == null ? null : Parse(raw);
+        return true;
     }
 
     public bool Contains(string key) => TryGetSubpath(key, out _);
@@ -40,18 +47,4 @@ public static class IncludePathEnumerableExtensions
 
     public static bool Have(this IEnumerable<IncludePath> pathes, string key) => 
         pathes.Any(p => p.Root == key);
-}
-
-public record IncludePath(
-    string Root,
-    IncludePath? Subpath
-)
-{
-    public static IncludePath Parse(string value) => 
-        Parse(value.Split("."));
-
-    public static IncludePath Parse(string[] parts) => new(
-        Root: parts[0],
-        Subpath: parts.Length > 1 ? IncludePath.Parse([.. parts.Skip(1)]) : null
-    );
 }

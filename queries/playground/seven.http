@@ -1,0 +1,13 @@
+@host = http://localhost:5074
+
+###
+GET /query-controller?name=Egor&age=29
+
+###
+GET /parameters-mini?name=Egor&age=29
+
+###
+GET /parameters-controller?name=Egor&age=29
+
+###
+GET /hard-parameters-mini?name=Egor&age=29&tags=tag1,tag2
