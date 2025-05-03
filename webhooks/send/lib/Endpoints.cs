@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Nist;
 
 public static class WebhookEndpoints {
-    public static IEndpointRouteBuilder MapGetWebhooks<TDb, TRecord>(this IEndpointRouteBuilder app) where TDb : IDbWithWebhookRecord<TRecord> where TRecord : WebhookRecord {
+    public static IEndpointRouteBuilder MapGetWebhooks<TDb, TRecord>(this IEndpointRouteBuilder app) where TDb : IDbWith<TRecord> where TRecord : WebhookRecord {
         app.MapGet($"/{WebhookUris.Webhooks}", GetWebhooks<TDb, TRecord>);
 
         return app;
     }
 
-    public static async Task<WebhookCollection<TRecord>> GetWebhooks<TDb, TRecord>(HttpRequest request, TDb db) where TDb : IDbWithWebhookRecord<TRecord> where TRecord : WebhookRecord{
+    public static async Task<WebhookCollection<TRecord>> GetWebhooks<TDb, TRecord>(HttpRequest request, TDb db) where TDb : IDbWith<TRecord> where TRecord : WebhookRecord{
         var query = WebhookQuery.Parse(request.Query);
 
         var counters = await db.WebhookRecords

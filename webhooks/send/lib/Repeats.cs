@@ -10,21 +10,39 @@ public class RepeatableWebhookRecord : WebhookRecord
     public long? RepeatedFrom { get; set;}
 }
 
-public class RepeatableWebhookSendingIteration(
-    IDbWithWebhookRecord<RepeatableWebhookRecord> db, 
-    WebhookSender sender, 
-    ILogger<WebhookSendingIteration<RepeatableWebhookRecord>> logger) 
-    : WebhookSendingIteration<RepeatableWebhookRecord>(db, sender, logger)
+public class PostgresRepeatableWebhookStore<TDb>(TDb db, Func<TDb, DbSet<RepeatableWebhookRecord>> webhookRecordSetExtractor) 
+    : IWebhookStore<RepeatableWebhookRecord>
+    where TDb : DbContext
 {
-    public override async Task HandleResult(RepeatableWebhookRecord record, OneOf<HttpResponseMessage, Exception> result)
+    public async Task RunTransactionWithPendingRecords(Func<RepeatableWebhookRecord[], Task> processing, CancellationToken cancellationToken = default)
     {
-        await base.HandleResult(record, result);
+        using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
+        var pendingForUpdate = await webhookRecordSetExtractor(db)
+            .FromSqlInterpolated($"""
+            SELECT * 
+            FROM webhook_records 
+            WHERE status = {WebhookStatus.Pending}
+                AND (start_at IS NULL OR start_at <= NOW())
+            LIMIT 100
+            FOR UPDATE SKIP LOCKED
+            """)
+            .ToArrayAsync();
+
+        await processing(pendingForUpdate);
+
+        await db.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+    }
+
+    public async Task HandleResult(RepeatableWebhookRecord record, OneOf<HttpResponseMessage, Exception> result)
+    {
+        await PostgresWebhookStore<TDb>.HandleResultStatic(record, result);
 
         if (!result.RequiresRepeat()) return;
         
         var attemptIndex = (record.Attempt ?? 0) + 1;
         var delay = Fibonacci.At(attemptIndex);
-        db.WebhookRecords.Add(new RepeatableWebhookRecord
+        webhookRecordSetExtractor(db).Add(new RepeatableWebhookRecord
         {
             Url = record.Url,
             Body = record.Body,
@@ -34,22 +52,6 @@ public class RepeatableWebhookSendingIteration(
             StartAt = DateTime.UtcNow.Add(TimeSpan.FromMinutes(delay)),
             RepeatedFrom = record.Id
         });
-    }
-
-    public override async Task<IEnumerable<RepeatableWebhookRecord>> GetPendingForUpdate(int limit = 100)
-    {
-        var records = await db.WebhookRecords
-            .FromSqlInterpolated($"""
-            SELECT * 
-            FROM webhook_records 
-            WHERE status = {WebhookStatus.Pending} 
-                AND (start_at IS NULL OR start_at <= NOW())
-            LIMIT {limit}
-            FOR UPDATE SKIP LOCKED
-            """)
-            .ToArrayAsync();
-
-        return records;
     }
 }
 
@@ -68,10 +70,18 @@ public static class RepeatConditionExtensions
     }
 }
 
-public static class RepeatableRegistration
+public static class PostgresRepeatableWebhookStoreRegistration
 {
-    public static IServiceCollection AddContinuousRepeatableWebhookSending(this IServiceCollection services, Func<IServiceProvider, IDbWithWebhookRecord<RepeatableWebhookRecord>> dbFactory)
+    public static IServiceCollection AddPostgresRepeatableWebhookSending<TDb>(this IServiceCollection services, Func<TDb, DbSet<RepeatableWebhookRecord>> webhookRecordSetExtractor) where TDb : DbContext
     {
-        return services.AddContinuousWebhookSending<RepeatableWebhookRecord, RepeatableWebhookSendingIteration>(dbFactory);
+        return services.AddWebhookSending(x => {
+            var db = x.GetRequiredService<TDb>();
+            return new PostgresRepeatableWebhookStore<TDb>(db, x => webhookRecordSetExtractor(x));
+        });
+    }
+
+    public static IServiceCollection AddPostgreRepeatableWebhookSending<TDb>(this IServiceCollection services) where TDb : DbContext, IDbWith<RepeatableWebhookRecord>
+    {
+        return services.AddPostgresRepeatableWebhookSending<TDb>(x => x.WebhookRecords);
     }
 }
