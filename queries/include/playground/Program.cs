@@ -28,9 +28,9 @@ await app.Services.EnsureRecreated<Db>(async db =>
     await db.SaveChangesAsync();
 });
 
-app.MapGet("/transactions", async (Db db, HttpRequest request) =>
+app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query) =>
 {
-    var query = TransactionsQuery.Parse(request.Query);
+    //var query = TransactionsQuery.From(rawQuery);
     IQueryable<Transaction> dbQuery = db.Transactions;
 
     var groups = await dbQuery.GetGroups(query.Include);
@@ -53,14 +53,6 @@ public record TransactionsQuery(
     int? Limit = null
 )
 {
-    public static TransactionsQuery Parse(IQueryCollection query)
-    {
-        return new TransactionsQuery(
-            Include: IncludeQueryParameter.Search(query),
-            Limit: query.SearchInt("limit")
-        );
-    }
-
     public bool Includes(string value) => Include?.Contains(value) ?? false;
 }
 
