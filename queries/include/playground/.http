@@ -7,6 +7,9 @@ GET /transactions
 GET /transactions?limit=0&include=total
 
 ###
+GET /transactions?limit=0&include=total%2Cgroups.category.total
+
+###
 GET /transactions?limit=0&include=groups.category.total
 
 ###
