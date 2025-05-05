@@ -56,6 +56,19 @@ public class QueryUriShould
         uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
     }
 
+    [TestMethod]
+    public void WorkWithInclude()
+    {
+        var tags = new DictionaryQueryParameters (new Dictionary<string, object>() {
+            { "category", "test" },
+            { "createdAt", new DateTime(2020, 2, 20, 12, 16, 00, DateTimeKind.Utc) }
+        });
+
+        string uri = QueryUri.From("resource", new Query(Tags: tags));
+
+        uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
+    }
+
     public record Query(
         DateTime? From = null, 
         string[]? Names = null, 

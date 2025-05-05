@@ -15,4 +15,9 @@ public record ObjectPath(
         parts[0],
         parts.Length > 1 ? Parse(parts[1..]) : null
     );
+
+    override public string ToString()
+    {
+        return Child != null ? $"{Root}.{Child}" : Root;
+    }
 }

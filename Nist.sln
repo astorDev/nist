@@ -85,6 +85,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries.Include.Playgr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries.Playground", "queries\playground\Nist.Queries.Playground.csproj", "{4C3B2AE1-DA4C-43B6-A307-352465325FC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Queries.Include.Tests", "queries\include\tests\Nist.Queries.Include.Tests.csproj", "{BB795FA7-9D7B-4BD8-B5E9-37A24ED28B22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,6 +196,10 @@ Global
 		{4C3B2AE1-DA4C-43B6-A307-352465325FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C3B2AE1-DA4C-43B6-A307-352465325FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C3B2AE1-DA4C-43B6-A307-352465325FC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB795FA7-9D7B-4BD8-B5E9-37A24ED28B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB795FA7-9D7B-4BD8-B5E9-37A24ED28B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB795FA7-9D7B-4BD8-B5E9-37A24ED28B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB795FA7-9D7B-4BD8-B5E9-37A24ED28B22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3448B6A0-78B9-4F52-A971-9407F9B331CF} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
@@ -227,5 +233,6 @@ Global
 		{CFF59D8A-CDED-4E88-93DD-2D852E7811A7} = {072844CE-8ECE-4EA8-8382-006CEE164DCF}
 		{31D9A9D7-DD47-418A-9B64-3A32CB6BB2B6} = {072844CE-8ECE-4EA8-8382-006CEE164DCF}
 		{4C3B2AE1-DA4C-43B6-A307-352465325FC9} = {BCA25828-4837-4C8D-94D4-467E6FBF47F1}
+		{BB795FA7-9D7B-4BD8-B5E9-37A24ED28B22} = {072844CE-8ECE-4EA8-8382-006CEE164DCF}
 	EndGlobalSection
 EndGlobal

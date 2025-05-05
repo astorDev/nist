@@ -12,6 +12,11 @@ public record IncludePath(
         Root: parts[0],
         Subpath: parts.Length > 1 ? IncludePath.Parse([.. parts.Skip(1)]) : null
     );
+
+    override public string ToString()
+    {
+        return Subpath != null ? $"{Root}.{Subpath}" : Root;
+    }
 }
 
 public record IncludeQueryParameter(
@@ -20,11 +25,15 @@ public record IncludeQueryParameter(
 {
     public static bool TryParse(string source, out IncludeQueryParameter includeQueryParameter)
     {
+        includeQueryParameter = Parse(source);
+        return true;
+    }
+
+    public static IncludeQueryParameter Parse(string source)
+    {
         var rawValues = source.Split(",");
         var paths = rawValues.Select(IncludePath.Parse);
-        includeQueryParameter = new IncludeQueryParameter([.. paths]);
-
-        return true;
+        return new IncludeQueryParameter([.. paths]);
     }
 
     public bool Contains(string key) => TryGetSubpath(key, out _);
@@ -36,6 +45,11 @@ public record IncludeQueryParameter(
     }
 
     public IEnumerable<IncludePath> GetSubpathes(string key) => Paths.GetSubpathes(key);
+
+    public override string ToString()
+    {
+        return string.Join(",", Paths.Select(p => p.ToString()));
+    }
 }
 
 public static class IncludePathEnumerableExtensions
