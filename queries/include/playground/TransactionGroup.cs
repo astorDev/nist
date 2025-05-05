@@ -3,7 +3,7 @@ using Nist;
 
 public static class CategoryAggregate
 {
-    public static async Task<Dictionary<string, TransactionGroup>> ToTransactionGroup<TKey>(this IQueryable<IGrouping<TKey, Transaction>> query, IEnumerable<Nist.IncludePath> includes)
+    public static async Task<Dictionary<string, TransactionGroup>> ToTransactionGroup<TKey>(this IQueryable<IGrouping<TKey, Transaction>> query, IEnumerable<ObjectPath> includes)
     {
         var aggregate = await query.Select(cgr => new GroupAggregateDbResult
         {

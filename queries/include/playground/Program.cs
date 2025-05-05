@@ -61,7 +61,7 @@ public static class TransactionCollectionAssembler
     public static async Task<TransactionGroupCollection?> GetGroups(this IQueryable<Transaction> query, IncludeQueryParameter? include) 
     {
         if (include == null) return null;
-        var subpathes = include.GetSubpathes("groups").ToArray();
+        var subpathes = include.GetChildren("groups").ToArray();
         if (!subpathes.Any()) return null;
 
         var categoryGroup = await query.SearchCategoryGroup(subpathes);
@@ -74,16 +74,16 @@ public static class TransactionCollectionAssembler
         );
     }
 
-    public static async Task<Dictionary<string, TransactionGroup>?> SearchCategoryGroup(this IQueryable<Transaction> query, Nist.IncludePath[] groupPathes)
+    public static async Task<Dictionary<string, TransactionGroup>?> SearchCategoryGroup(this IQueryable<Transaction> query, ObjectPath[] groupPathes)
     {
-        var categoryPathes = groupPathes.GetSubpathes("category").ToArray();
+        var categoryPathes = groupPathes.GetChildren("category").ToArray();
         if (categoryPathes.Length == 0) return null;
         return await query.GroupBy(x => x.Category).ToTransactionGroup(categoryPathes);
     }
 
-    public static async Task<Dictionary<string, Dictionary<string, TransactionGroup>>?> SearchAmountGroup(this IQueryable<Transaction> query, Nist.IncludePath[] groupPathes)
+    public static async Task<Dictionary<string, Dictionary<string, TransactionGroup>>?> SearchAmountGroup(this IQueryable<Transaction> query, ObjectPath[] groupPathes)
     {
-        var amountPathes = groupPathes.GetSubpathes("amount")
+        var amountPathes = groupPathes.GetChildren("amount")
             .GetExpressionSubpathes()
             .NewKeys(AmountExpression.From)
             .GroupToDictionary();

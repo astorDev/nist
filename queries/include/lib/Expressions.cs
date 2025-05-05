@@ -26,11 +26,13 @@ public record IncludeExpression(
 
         return null;
     }
+
+    override public string ToString() => $"{Operator}_{Value}";
 }
 
 public static class IncludePathExpressionExtensions
 {
-    public static Dictionary<IncludeExpression, IEnumerable<IncludePath>> GetExpressionSubpathesDict(this IEnumerable<IncludePath> pathes)
+    public static Dictionary<IncludeExpression, IEnumerable<ObjectPath>> GetExpressionSubpathesDict(this IEnumerable<ObjectPath> pathes)
     {
         var result = GetExpressionSubpathes(pathes);
 
@@ -39,15 +41,15 @@ public static class IncludePathExpressionExtensions
             .ToDictionary(gr => gr.Key, gr => gr.Select(x => x.Value));
     }
 
-    public static IEnumerable<KeyValuePair<IncludeExpression, IncludePath>> GetExpressionSubpathes(this IEnumerable<IncludePath> pathes)
+    public static IEnumerable<KeyValuePair<IncludeExpression, ObjectPath>> GetExpressionSubpathes(this IEnumerable<ObjectPath> pathes)
     {
         return pathes
             .Select(x => new {
                 exp = IncludeExpression.Search(x.Root),
-                sub = x.Subpath
+                sub = x.Child
             })
             .Where(z => z.exp != null && z.sub != null)
-            .Select(x => new KeyValuePair<IncludeExpression, IncludePath>(x.exp!, x.sub!));
+            .Select(x => new KeyValuePair<IncludeExpression, ObjectPath>(x.exp!, x.sub!));
     }
 
     public static Dictionary<TKey, IEnumerable<TValue>> GroupToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source) where TKey : notnull => 
