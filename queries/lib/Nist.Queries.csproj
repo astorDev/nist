@@ -6,12 +6,14 @@
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <LangVersion>11</LangVersion>
+    <LangVersion>12</LangVersion>
     <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <RootNamespace>Nist</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Astor.Linq" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="9.0.4" />
   </ItemGroup>
 

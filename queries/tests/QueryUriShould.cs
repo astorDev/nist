@@ -30,9 +30,9 @@ public class QueryUriShould
     [TestMethod]
     public void DisplayCorrectlyDateBasedQuery()
     {
-        string uri = QueryUri.From("resource", new Query(From: new DateTime(2020, 1, 10, 11, 30, 10)));
+        string uri = QueryUri.From("resource", new Query(From: new DateTime(2020, 1, 10, 11, 30, 10, DateTimeKind.Utc)));
 
-        uri.Should().Be("resource?from=2020-01-10T11:30:10.0000000");
+        uri.Should().Be("resource?from=2020-01-10T11:30:10.0000000Z");
     }
 
     [TestMethod]
@@ -46,13 +46,19 @@ public class QueryUriShould
     [TestMethod]
     public void ProduceCorrectQueryForDictionary()
     {
-        string uri = QueryUri.From("resource", new Query(Tags: new Dictionary<string, object> {
+        var tags = new DictionaryQueryParameters (new Dictionary<string, object>() {
             { "category", "test" },
-            { "createdAt", new DateTime(2020, 2, 20, 12, 16, 00) }
-        }));
+            { "createdAt", new DateTime(2020, 2, 20, 12, 16, 00, DateTimeKind.Utc) }
+        });
 
-        uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12:16:00.0000000");
+        string uri = QueryUri.From("resource", new Query(Tags: tags));
+
+        uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
     }
 
-    public record Query(DateTime? From = null, string[]? Names = null, Dictionary<string, object>? Tags = null);
+    public record Query(
+        DateTime? From = null, 
+        string[]? Names = null, 
+        DictionaryQueryParameters? Tags = null
+    );
 }

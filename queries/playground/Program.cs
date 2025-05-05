@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Nist;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +12,7 @@ app.MapControllers();
 app.MapGet("/query-mini", ([FromQuery] SimpleQuery query) => query);
 app.MapGet("/parameters-mini", ([AsParameters] SimpleQuery query) => query);
 app.MapGet("/hard-parameters-mini", ([AsParameters] HardQuery query) => query);
+app.MapGet("/dict-parameters-mini", ([AsParameters] DictQuery query, HttpContext ctx) => query);
 
 app.Run();
 
@@ -34,6 +35,12 @@ public class DotnetSix : ControllerBase
     {
         return Ok(query);
     }
+
+    [HttpGet("/dict-query-controller")]
+    public IActionResult GetDict([FromQuery] DictQuery query)
+    {
+        return Ok(query);
+    }
 }
 
 public record SimpleQuery(
@@ -50,14 +57,19 @@ public record SimpleQuery(
 public record HardQuery(
     string? Name,
     int? Age,
-    CommaQueryParameter? Tags
+    CommaQueryParameter? Tags,
+    DateTime? Time
 );
 
 public record CommaQueryParameter(string[] Parts)
 {
     public static bool TryParse(string source, out CommaQueryParameter result)
     {
-        result = new (source.Split(','));
+        result = new(source.Split(','));
         return true;
     }
 }
+
+public record DictQuery(
+    DictionaryQueryParameters Labels
+);

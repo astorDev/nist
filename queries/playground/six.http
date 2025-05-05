@@ -8,3 +8,6 @@ GET /query-controller?name=Egor&age=29
 
 ###
 GET /hard-query-controller?name=Egor&age=29&tags=tag1,tag2
+
+###
+GET /dict-query-controller?labels.system=sysa&labels.app=appa
