@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nist.Queries\Nist.Queries.csproj" />
+    <ProjectReference Include="..\lib\Nist.Queries.csproj" />
   </ItemGroup>
 
 </Project>

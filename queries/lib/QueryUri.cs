@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Net;
-
 using Astor.Linq;
 
-namespace Nist.Queries;
+namespace Nist;
 
 public record QueryUri(string Url, IEnumerable<QueryKeyValue> QueryParams)
 {
@@ -44,10 +43,16 @@ public record QueryKeyValue(string Key, string Value)
 {
     public override string ToString() => $"{this.Key}={this.Value}";
 
-    public static QueryKeyValue From(string key, object value) => value switch
+    public static QueryKeyValue From(string key, object value) => 
+        new(key, QueryStringValue.From(value));
+}
+
+public static class QueryStringValue
+{
+    public static string From(object value) => value switch
     {
-        DateTime time => new(key, time.ToUniversalTime().ToString("O")),
-        _ => new(key, WebUtility.UrlEncode(value.ToString())!)
+        DateTime time => time.ToUniversalTime().ToString("O"),
+        _ => WebUtility.UrlEncode(value.ToString())!
     };
 }
 
