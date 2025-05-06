@@ -69,6 +69,17 @@ public class QueryUriShould
         uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
     }
 
+    [TestMethod]
+    public void Anonymous()
+    {
+        var uri = QueryUri.From("example", new {
+            search = "stuff",
+            good = true
+        });
+
+        Console.WriteLine(uri); // example?search=stuff&good=True
+    }
+
     public record Query(
         DateTime? From = null, 
         string[]? Names = null, 
