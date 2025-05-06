@@ -4,9 +4,9 @@
 
 If you are something like me, you will likely bump into the broken behaviour. You will find out that `FromQuery` no longer binds the whole query object from the request. You will face it when upgrading from Controllers to Minimal API, from .NET 6 to .NET 7. Or even if using `FromQuery` for your new Minimal API.
 
-Gladly, since .NET 7 there's a newer attribute that not just replaces the `FromQuery`, but let's you bind whichever part of the request you want. Let's do a quick recap of the problem and get straight to fixing it!
+Gladly, since .NET 7, there's a newer attribute that not just replaces the `FromQuery`, but let's you bind whichever part of the request you want. Let's do a quick recap of the problem and get straight to fixing it!
 
-> Or jump straight to the [TLDR;](#tldr) in the end of this article for a quick fix.
+> Or jump straight to the [TLDR;](#tldr) at the end of this article for a quick fix.
 
 ## .NET 6: Inconsistent FromQuery Behavior
 
@@ -40,14 +40,14 @@ public record SimpleQuery(
 );
 ```
 
-Now if we run the request below:
+Now, if we run the request below:
 
 
 ```http
 GET http://localhost:5074/query-controller?name=Egor&age=29
 ```
 
-We should get the mathching query as a JSON:
+We should get the matching query as a JSON:
 
 ```json
 {
@@ -56,7 +56,7 @@ We should get the mathching query as a JSON:
 }
 ```
 
-So far so good. Now, let's add a Minimal API endpoint there as well:
+So far, so good. Now, let's add a Minimal API endpoint there as well:
 
 ```csharp
 app.MapGet("/query-mini", ([FromQuery] SimpleQuery query) => query);
@@ -80,25 +80,25 @@ Microsoft.AspNetCore.Http.BadHttpRequestException: Required parameter "SimpleQue
    at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
 ```
 
-When I first bump into it I've assumed this is just a bug in Minimal API and decided to stick with the good old controllers. But this was a wrong assumption and the things continue to fall apart!
+When I first bumped into it, I assumed this was just a bug in Minimal API and decided to stick with the good old controllers. But this was a wrong assumption, and things continued to fall apart!
 
 ## .NET 7: FromQuery is broken, but AsParameters has arrived
 
-To reproduce the story let's now upgrade our application one step further: `<TargetFramework>net7.0</TargetFramework>`. Let's run exactly the same request to the controller as we did before:
+To reproduce the story, let's now upgrade our application one step further: `<TargetFramework>net7.0</TargetFramework>`. Let's run exactly the same request to the controller as we did before:
 
 ```http
 GET /query-controller?name=Egor&age=29
 ```
 
-Surprisingly, instead of our query JSON we will get an empty response:
+Surprisingly, instead of our query JSON, we will get an empty response:
 
 ```http
 HTTP/1.1 204  - No Content
 ```
 
-The reason is that since .NET 7 (and in Minimal APIs before) the `FromQuery` is used to bind only individual parameters, not the whole object. So what do with do with that?
+The reason is that since .NET 7 (and in Minimal APIs before), the `FromQuery` is used to bind only individual parameters, not the whole object. So what do with do with that?
 
-Of course, we can rewrite our request to use individual parameters instead of the query object, but a query object is a nice way to represent query string. This is especially useful for creating strongly-typed HttpClients, like we did [in this article](https://medium.com/@vosarat1995/creating-strongly-typed-api-clients-in-net-d87a3d7ef016). How can we achieve that?
+Of course, we can rewrite our request to use individual parameters instead of the query object, but a query object is a nice way to represent a query string. This is especially useful for creating strongly-typed HttpClients, like we did [in this article](https://medium.com/@vosarat1995/creating-strongly-typed-api-clients-in-net-d87a3d7ef016). How can we achieve that?
 
 
 
@@ -178,9 +178,9 @@ GET /hard-parameters-mini?name=Egor&age=29&tags=tag1,tag2
 
 ## TLDR;
 
-In a few words, since .NET 7 you should use `AsParameters` instead of `FromQuery` to bind a complex objects to a query string.
+In a few words, since .NET 7, you should use `AsParameters` instead of `FromQuery` to bind a complex object to a query string.
 
-There's more to the `AsParameters` attribute, of course. `FromQuery` also got a few new features in the latest releases - we've covered it in more depth in this article. You can find the source code for the playground [here on the GitHub](https://github.com/astorDev/nist/tree/main/queries/playground). If you also need a way to convert objects to query string this repository also have a helper package for that. It's called `Nist.Queries` and here's how to use it:
+There's more to the `AsParameters` attribute, of course. `FromQuery` also got a few new features in the latest releases - we've covered it in more depth in this article. You can find the source code for the playground [here on GitHub](https://github.com/astorDev/nist/tree/main/queries/playground). If you also need a way to convert objects to a query string, this repository also has a helper package for that. It's called `Nist.Queries`, and here's how to use it:
 
 ```csharp
 var uri = QueryUri.From("example", new {
@@ -191,6 +191,6 @@ var uri = QueryUri.From("example", new {
 Console.WriteLine(uri); // example?search=stuff&good=True
 ```
 
-You might notice, that the [home project (NIST)](https://github.com/astorDev/nist) contains many more folders beyond queries. The project aims to be a verbose toolset for HTTP APIs so there's a high chance you will find something else useful - check it out and don't hesitate to give it a star! ⭐
+You might notice that the [home project (NIST)](https://github.com/astorDev/nist) contains many more folders beyond queries. The project aims to be a verbose toolset for HTTP APIs, so there's a high chance you will find something else useful - check it out and don't hesitate to give it a star! ⭐
 
 Claps for this article are also highly appreciated! 😉
