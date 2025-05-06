@@ -8,15 +8,23 @@ Webhooks are practically the only option to build an eventually consistent, even
 
 ## Assembling our Webhook Sender
 
+First of all, we need a mechanism to actually send our webhook. We'll use a default web package for assembling it:
+
 ```sh
 dotnet new web
 ```
+
+We'll need a set of HTTP-related packages and OneOf just for convenient exception handling. Let's set them up:
 
 ```sh
 dotnet add package OneOf
 dotnet add package System.Net.Http
 dotnet add package Microsoft.Extensions.Http
 ```
+
+Now, let's define a Webhook model, along with a helper method, converting it to an `HttpRequestMessage`. 
+
+> We'll assume JSON body as a de facto standard for modern API communication.
 
 ```csharp
 public interface IWebhook
@@ -37,6 +45,8 @@ public static class IWebhookMapper
     }
 }
 ```
+
+Finally, here's our simple `WebhookSender`:
 
 ```csharp
 public class WebhookSender(HttpClient client, ILogger<WebhookSender> logger)
@@ -62,9 +72,18 @@ public class WebhookSender(HttpClient client, ILogger<WebhookSender> logger)
 }
 ```
 
+This setup is pretty trivial. Now, we can move to the more complicated part, related to queue processing!
+
 ## Making Continuous Webhook Sending Iteration
 
-![this article](https://medium.com/@vosarat1995/how-to-implement-a-net-background-service-for-continuous-work-in-2025-6929c496b62f)
+Beyond sending the webhook, we'll also need to store a webhook queue, with two operations available:
+
+1. Processing Pending Records in a transaction
+2. Handling a sending result.
+
+Let's create an interface for that:
+
+> We will make generic implementation with `TRecord` to allow further database model extension. The extension itself is out of the scope of this article, but you can check out how it is used in the [source GitHub repository](https://github.com/astorDev/nist/blob/main/webhooks/send/lib/Repeats.cs).
 
 ```csharp
 public interface IWebhookStore<TRecord> where TRecord : IWebhook
@@ -73,6 +92,10 @@ public interface IWebhookStore<TRecord> where TRecord : IWebhook
     Task HandleResult(TRecord record, OneOf<HttpResponseMessage, Exception> result);
 }
 ```
+
+Webhook sending is basically a continuous iteration of sending pending records and handling the result. In [this article](https://medium.com/@vosarat1995/how-to-implement-a-net-background-service-for-continuous-work-in-2025-6929c496b62f) we've discussed a system allowing us to implement such continuous iteration. We'll use it now to implement a `IContinuousWorkIteration` for our webhook sending.
+
+> Don't forget to install the base package via `dotnet add package Backi.Continuous`.
 
 ```csharp
 public class WebhookSendingIteration<TRecord>(IWebhookStore<TRecord> store, WebhookSender sender, ILogger<WebhookSendingIteration<TRecord>> logger) 
@@ -103,6 +126,8 @@ public class WebhookSendingIteration<TRecord>(IWebhookStore<TRecord> store, Webh
 }
 ```
 
+Finally, let's add a helper method for registering the webhook sending in a DI container:
+
 ```csharp
 public static class WebhookSendRegistration
 {
@@ -119,7 +144,11 @@ public static class WebhookSendRegistration
 }
 ```
 
-## WebhookRecord: Our Database Model
+With the main setup in place, also that is left to do is to actually implement our database layer. Let's move to it in the next section!
+
+## Postgres Webhook Store: Implementing Database Layer
+
+First things first, we'll need to define our entity:
 
 ```csharp
 public class WebhookRecord : IWebhook
@@ -141,9 +170,19 @@ public class WebhookStatus
 }
 ```
 
-## Postgres Webhook Store: Implementing Database Layer
+In order to let our queue processing application be scalable, we need to make sure every worker processes only its own set of records in a concurrent scenario. In [this article](https://medium.com/@vosarat1995/postgresql-queue-processing-how-to-handle-concurrency-efficiently-44c3632d3828), we've discussed how to achieve this in Postgres using the `FOR UPDATE` operator. Here's how our query will look:
 
-[this article](https://medium.com/@vosarat1995/postgresql-queue-processing-how-to-handle-concurrency-efficiently-44c3632d3828)
+> Since `FOR UPDATE` locks records for a life-cycle of the database transaction, we'll need to wrap it in a transaction as well. You will see the implementation code in a moment.
+
+```sql
+SELECT * 
+FROM webhook_records 
+WHERE status = {WebhookStatus.Pending}
+LIMIT 100
+FOR UPDATE SKIP LOCKED
+```
+
+Combining the query with a simple result handler, we'll get our store implementation:
 
 ```csharp
 public class PostgresWebhookStore<TDb>(TDb db, Func<TDb, DbSet<WebhookRecord>> webhookRecordSetExtractor) 
@@ -191,6 +230,8 @@ public class PostgresWebhookStore<TDb>(TDb db, Func<TDb, DbSet<WebhookRecord>> w
 }
 ```
 
+Let's also create a registration helper to simplify our future endeavour:
+
 ```csharp
 public interface IDbWith<T> where T : class {
     public DbSet<T> WebhookRecords { get; }
@@ -213,6 +254,8 @@ public static class PostgresWebhookStoreRegistration
 }
 ```
 
+These are all the components we need for a basic webhook sending system. Let's see it in action!
+
 ## Testing Our Sender Utilizing Webhook Dump
 
 In order to test the package we can use `webhooks/dump` endpoint, that we've discussed in [the previous webhooks article](https://medium.com/@vosarat1995/webhook-testing-in-c-your-own-wiremock-alternative-1439040931c3). After installing the `Nist.Webhooks.Dump` package we should be able to add it with those two lines of code:
@@ -221,6 +264,8 @@ In order to test the package we can use `webhooks/dump` endpoint, that we've dis
 app.UseRequestBodyStringReader();
 app.MapWebhookDump<Db>();
 ```
+
+For a quick testing, let's initiate our database using the `Persic.EF.Postgres` package. We'll add just one record for testing:
 
 ```csharp
 await app.Services.EnsureRecreated<Db>(async db => {
@@ -233,7 +278,48 @@ await app.Services.EnsureRecreated<Db>(async db => {
 });
 ```
 
-`dotnet run` and `GET /webhooks/dump`
+Here's how our `Program.cs` will look in assembly:
+
+```csharp
+global using Microsoft.EntityFrameworkCore;
+global using Nist;
+global using Persic;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
+        
+builder.Services.AddPostgres<Db>();
+builder.Services.AddPostgresWebhookSending<Db>();
+
+var app = builder.Build();
+
+await app.Services.EnsureRecreated<Db>(async db => {
+    db.WebhookRecords.Add(new WebhookRecord() {
+        Url = "http://localhost:5195/webhooks/dump/from-record",
+        Body = JsonDocument.Parse("{\"example\": \"one\"}")
+    });
+
+    await db.SaveChangesAsync();
+});
+        
+app.UseRequestBodyStringReader();
+app.MapWebhookDump<Db>();
+
+app.Run();
+
+public class Db(DbContextOptions<Db> options) : DbContext(options), IDbWith<RepeatableWebhookRecord>, IDbWithWebhookDump {
+    public DbSet<RepeatableWebhookRecord> WebhookRecords { get; set; }
+    public DbSet<WebhookDump> WebhookDumps { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+    }
+}
+```
+
+With that in place, running `dotnet run` and `GET /webhooks/dump` should give us the result looking like the one below:
 
 ```json
 [
@@ -247,6 +333,8 @@ await app.Services.EnsureRecreated<Db>(async db => {
   }
 ]
 ```
+
+This is the last part of the article. Let's do a quick recap and call it a day!
 
 ## TLDR;
 
