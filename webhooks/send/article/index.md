@@ -4,7 +4,7 @@
 
 ![](thumb.png)
 
-Webhooks are practically the only option to build an eventually consistent, event-based communication between servers without relying on any shared resouce or service. However, .NET does not provide much tooling or guidance on implementing them. This artilcle is another attempt of mine to fixing this unfrairness. In [the previous article]() I've covered webhook testing, this time we'll build a solution for a server sending webhooks. Let's get going!
+Webhooks are practically the only option to build an eventually consistent, event-based communication between servers without relying on any shared resource or service. However, .NET does not provide much tooling or guidance on implementing them. This article is another attempt of mine to fix this unfairness. In [the previous article](https://medium.com/@vosarat1995/webhook-testing-in-c-your-own-wiremock-alternative-1439040931c3), I've covered webhook testing. This time, we'll build a solution for a server sending webhooks. Let's get going!
 
 > Or jump straight to the [TLDR;](#tldr) in the end of this article
 
@@ -95,7 +95,7 @@ public interface IWebhookStore<TRecord> where TRecord : IWebhook
 }
 ```
 
-Webhook sending is basically a continuous iteration of sending pending records and handling the result. In [this article](https://medium.com/@vosarat1995/how-to-implement-a-net-background-service-for-continuous-work-in-2025-6929c496b62f) we've discussed a system allowing us to implement such continuous iteration. We'll use it now to implement a `IContinuousWorkIteration` for our webhook sending.
+Webhook sending is basically a continuous iteration of sending pending records and handling the result. In [this article](https://medium.com/@vosarat1995/how-to-implement-a-net-background-service-for-continuous-work-in-2025-6929c496b62f), we've discussed a system allowing us to implement such continuous iteration. We'll use it now to implement a `IContinuousWorkIteration` for our webhook sending.
 
 > Don't forget to install the base package via `dotnet add package Backi.Continuous`.
 
@@ -128,7 +128,7 @@ public class WebhookSendingIteration<TRecord>(IWebhookStore<TRecord> store, Webh
 }
 ```
 
-Finally, let's add a helper method for registering the webhook sending in a DI container:
+Finally, let's add a helper method for registering webhook sending in a DI container:
 
 ```csharp
 public static class WebhookSendRegistration
@@ -174,7 +174,7 @@ public class WebhookStatus
 
 In order to let our queue processing application be scalable, we need to make sure every worker processes only its own set of records in a concurrent scenario. In [this article](https://medium.com/@vosarat1995/postgresql-queue-processing-how-to-handle-concurrency-efficiently-44c3632d3828), we've discussed how to achieve this in Postgres using the `FOR UPDATE` operator. Here's how our query will look:
 
-> Since `FOR UPDATE` locks records for a life-cycle of the database transaction, we'll need to wrap it in a transaction as well. You will see the implementation code in a moment.
+> Since `FOR UPDATE` locks records for the lifecycle of the database transaction, we'll need to wrap it in a transaction as well. You will see the implementation code in a moment.
 
 ```sql
 SELECT * 
@@ -267,7 +267,7 @@ app.UseRequestBodyStringReader();
 app.MapWebhookDump<Db>();
 ```
 
-For a quick testing, let's initiate our database using the `Persic.EF.Postgres` package. We'll add just one record for testing:
+For quick testing, let's initiate our database using the `Persic.EF.Postgres` package. We'll add just one record for testing:
 
 ```csharp
 await app.Services.EnsureRecreated<Db>(async db => {
