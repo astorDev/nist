@@ -21,7 +21,7 @@ public static class WebApplicationExtensions
                 var error = errorFactory(exception);
                 if (showException)
                 {
-                    error.ExceptionDetails = Error.Details.FromException(exception);
+                    error.ExceptionDetails = Error.ExceptionDetailsModel.FromException(exception);
                 }
 
                 context.Response.StatusCode = (int)error.Code;
@@ -82,17 +82,19 @@ public static class WebApplicationExtensions
         var result =  new ProblemDetails
         {
             Type = error.Reason,
-            Status = (int)error.Code
+            Status = (int)error.Code,
         };
 
-        if (includeException) {
-            result.Extensions = new Dictionary<string, object?> {
-                ["exception"] = new {
-                    exception.Message,
-                    exception.StackTrace,
-                    exception.Data
-                }
-            };
+        result.Extensions = new Dictionary<string, object?>();
+        var exceptionModel = includeException ? Error.ExceptionDetailsModel.FromException(exception) : null;
+        var data = error.Data ?? exceptionModel?.Data;
+
+        if (data != null) {
+            result.Extensions.Add("data", error.Data ?? data);
+        }
+
+        if (exceptionModel != null) {
+            result.Extensions.Add("exception", error.ExceptionDetails ?? Error.ExceptionDetailsModel.FromException(exception));
         }
 
         return result;

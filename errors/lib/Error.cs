@@ -5,11 +5,12 @@ namespace Nist;
 
 public record Error(HttpStatusCode Code, string Reason)
 {
-    public Details? ExceptionDetails { get; set; }
+    public ExceptionDetailsModel? ExceptionDetails { get; set; }
+    public Dictionary<string, object?>? Data { get; set; }
 
-    public record Details(string Message, IDictionary? Data, string? InnerExceptionMessage, string? StackTrace)
+    public record ExceptionDetailsModel(string Message, IDictionary? Data, string? InnerExceptionMessage, string? StackTrace)
     {
-        public static Details FromException(Exception exception)
+        public static ExceptionDetailsModel FromException(Exception exception)
         {
             return new
             (
