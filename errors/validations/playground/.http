@@ -1,0 +1,15 @@
+@host = http://localhost:5286
+
+###
+POST /people
+
+{
+    "name" : "Egor"
+}
+
+###
+POST /people
+
+{
+    "name" : 1
+}
