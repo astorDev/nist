@@ -2,6 +2,8 @@
 
 > .NET 7 Broke It Even Further. Is There Something Instead?
 
+![](thumb.png)
+
 If you are something like me, you will likely bump into the broken behaviour. You will find out that `FromQuery` no longer binds the whole query object from the request. You will face it when upgrading from Controllers to Minimal API, from .NET 6 to .NET 7. Or even if using `FromQuery` for your new Minimal API.
 
 Gladly, since .NET 7, there's a newer attribute that not just replaces the `FromQuery`, but lets you bind whichever part of the request you want. Let's do a quick recap of the problem and get straight to fixing it!
