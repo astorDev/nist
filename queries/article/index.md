@@ -2,7 +2,9 @@
 
 > .NET 7 Broke It Even Further. Is There Something Instead?
 
-If you are something like me, you will likely bump into the broken behaviour. You will find out that `FromQuery` no longer binds the whole query object from the request. You will face it when upgrading from Controllers to Minimal API, from .NET 6 to .NET 7. Or even if using `FromQuery` for your new Minimal API.
+![](thumb.png)
+
+If you are something like me, you will likely bump into the broken behaviour. You will find out that `FromQuery` no longer binds the whole query object from the request. You will face it when upgrading from Controllers to Minimal API, from .NET 6 to .NET 7, or even if using `FromQuery` for your new Minimal API.
 
 Gladly, since .NET 7, there's a newer attribute that not just replaces the `FromQuery`, but lets you bind whichever part of the request you want. Let's do a quick recap of the problem and get straight to fixing it!
 
@@ -99,13 +101,13 @@ The reason is that since .NET 7 (and in Minimal APIs before), the `FromQuery` is
 
 Of course, we can rewrite our request to use individual parameters instead of the query object, but a query object is a nice way to represent a query string. This is especially useful for creating strongly-typed HttpClients, like we did [in this article](https://medium.com/@vosarat1995/creating-strongly-typed-api-clients-in-net-d87a3d7ef016). So, how can we achieve that?
 
-In .NET 7 a new attribute, called `AsParameters` was introduced. The attributes allows binding any part of a request to a single object, which suits our goal perfectly. Let's add a new endpoint using this attribute:
+In .NET 7, a new attribute, called `AsParameters`, was introduced. The attribute allows binding any part of a request to a single object, which suits our goal perfectly. Let's add a new endpoint using this attribute:
 
 ```csharp
 app.MapGet("/parameters-mini", ([AsParameters] SimpleQuery query) => query);
 ```
 
-Running, `GET http://localhost:5074/parameters-mini?name=Egor&age=29` will give us the response we were looking for:
+Running `GET http://localhost:5074/parameters-mini?name=Egor&age=29` will give us the response we were looking for:
 
 ```json
 {
@@ -114,11 +116,11 @@ Running, `GET http://localhost:5074/parameters-mini?name=Egor&age=29` will give 
 }
 ```
 
-The article is all about query parameters, but it's important to understand that `AsParameters` is not just a replacement for `FromQuery`, but the whole new concept. It allows us to include any set of parameters into one object - we can bundle headers values, query strings, route parameters and so on into a single object.
+The article is all about query parameters, but it's important to understand that `AsParameters` is not just a replacement for the `FromQuery`, but a whole new concept. It allows us to include any set of parameters into one object - we can bundle headers, values, query strings, route parameters, and so on into a single object.
 
-By the way, `AsParameters` attribute will not work in controllers, though. And there are no plans to remove this inconsistency as per [this GitHub issue](https://github.com/dotnet/aspnetcore/issues/42605), so if you are fan of the old style you will have to find some other way around.
+By the way, the `AsParameters` attribute will not work in controllers, though. And there are no plans to remove this inconsistency as per [this GitHub issue](https://github.com/dotnet/aspnetcore/issues/42605), so if you are a fan of the old style, you will have to find some other way around.
 
-Getting back to the queries, let's investigate some new opportunity .NET 7 brought to the table.
+Getting back to the queries, let's investigate some new opportunities .NET 7 brought to the table.
 
 ## Custom Query Parameters: The New Opportunity
 
@@ -163,7 +165,7 @@ Let's now just switch back to .NET 7 `<TargetFramework>net7.0</TargetFramework>`
 GET /hard-parameters-mini?name=Egor&age=29&tags=tag1,tag2
 ```
 
-Quite surprisingly, with .NET 7 the binding will just work and parse the tags:
+Quite surprisingly, with .NET 7, the binding will just work and parse the tags:
 
 ```json
 {
@@ -178,9 +180,9 @@ Quite surprisingly, with .NET 7 the binding will just work and parse the tags:
 }
 ```
 
-Well, it didn't exactly "just worked". It worked because we have implemented the static `TryParse(string source, out CommaQueryParameter result)` method. ASP .NET Core used this method in a duck-typing fashion to bind our query parameter. 
+Well, it didn't exactly "just work". It worked because we have implemented the static `TryParse(string source, out CommaQueryParameter result)` method. ASP .NET Core used this method in a duck-typing fashion to bind our query parameter. 
 
-This feature allows us to bring our own custom objects as a query parameters. And this is **almost** the last thing I was planning to cover in this article. Let's recap this article and I'll give you one more thing I find helpful when dealing with query strings.
+This feature allows us to bring our own custom objects as a query parameter. And this is **almost** the last thing I was planning to cover in this article. Let's recap this article, and I'll give you one more thing I find helpful when dealing with query strings.
 
 ## TLDR;
 
