@@ -1,5 +1,5 @@
 yac:
-	httpyac send $(Name).http --all
+	httpyac send $(NAME).http --all
 
-test:
-	bash -c 'dotnet run & pid=$$!; sleep 5; make yac; kill $$pid'
+play:
+	bash -c -i 'dotnet run & sleep 5 && make yac && fg'

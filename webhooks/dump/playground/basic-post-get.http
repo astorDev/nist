@@ -13,3 +13,6 @@ POST /webhooks/dump
 
 ###
 GET /webhooks/dump
+
+###
+GET /webhooks/dump?limit=1
