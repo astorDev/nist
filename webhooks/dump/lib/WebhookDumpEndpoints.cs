@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,9 +56,12 @@ public static class WebhookDumpEndpoints
         string getPath = "/webhooks/dump"
     ) where TDb : DbContext, IDbWithWebhookDump
     {
-        app.MapGet(getPath, async (TDb db) =>
+        app.MapGet(getPath, async (TDb db, [FromQuery] int limit = 100) =>
         {
-            return await db.WebhookDumps.ToArrayAsync();
+            return await db.WebhookDumps
+                .OrderByDescending(x => x.Id)
+                .Take(limit)
+                .ToArrayAsync();
         });
     }
 }
