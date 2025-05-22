@@ -1,5 +1,0 @@
-services:
-  dotnet:
-    image: vosarat/nist-dotnet-template:2025.103.110.9-template-image-with-version
-    ports:
-      - "1111:8080"
