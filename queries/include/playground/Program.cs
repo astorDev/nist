@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 
-builder.Services.AddInMemory<Db>();
 builder.Services.ConfigureHttpJsonOptions(options => {
     options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     options.SerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
 });
+
+builder.Services.AddInMemory<Db>();
 
 var app = builder.Build();
 
@@ -48,6 +48,44 @@ app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query
 
 app.Run();
 
+public record TransactionCollection(
+    int Count,
+    Transaction[] Items,
+    int? Total = null,
+    TransactionGroupCollection? Groups = null
+);
+
+public record TransactionGroupCollection(
+    Dictionary<string, TransactionGroup>? Category = null,
+    Dictionary<string, Dictionary<string, TransactionGroup>>? Amount = null
+);
+
+public record TransactionGroup(
+    decimal? TotalSum,
+    int? Total
+);
+
+public class Transaction
+{
+    public long Id { get; set; }
+    public required string Category { get; set; }
+    public required decimal Amount { get; set; }
+}
+
+public class Db(DbContextOptions<Db> options) : DbContext(options)  {
+    public required DbSet<Transaction> Transactions { get; set; }
+}
+
+public static class WebhookDbRegistration
+{
+    public static IServiceCollection AddInMemory<TDb>(this IServiceCollection services) where TDb : DbContext
+    {
+        var inMemoryDbId = Guid.NewGuid();
+        services.AddDbContext<TDb>(o => o.UseInMemoryDatabase(inMemoryDbId.ToString()));
+        return services;
+    }
+}
+
 public record TransactionsQuery(
     IncludeQueryParameter? Include = null,
     int? Limit = null
@@ -58,7 +96,7 @@ public record TransactionsQuery(
 
 public static class TransactionCollectionAssembler
 {
-    public static async Task<TransactionGroupCollection?> GetGroups(this IQueryable<Transaction> query, IncludeQueryParameter? include) 
+    public static async Task<TransactionGroupCollection?> GetGroups(this IQueryable<Transaction> query, IncludeQueryParameter? include)
     {
         if (include == null) return null;
         var subpathes = include.GetChildren("groups").ToArray();
@@ -66,7 +104,7 @@ public static class TransactionCollectionAssembler
 
         var categoryGroup = await query.SearchCategoryGroup(subpathes);
         var amountGroup = await query.SearchAmountGroup(subpathes);
-        
+
         if (categoryGroup == null && amountGroup == null) return null;
         return new TransactionGroupCollection(
             Category: categoryGroup,
@@ -79,55 +117,5 @@ public static class TransactionCollectionAssembler
         var categoryPathes = groupPathes.GetChildren("category").ToArray();
         if (categoryPathes.Length == 0) return null;
         return await query.GroupBy(x => x.Category).ToTransactionGroup(categoryPathes);
-    }
-
-    public static async Task<Dictionary<string, Dictionary<string, TransactionGroup>>?> SearchAmountGroup(this IQueryable<Transaction> query, ObjectPath[] groupPathes)
-    {
-        var amountPathes = groupPathes.GetChildren("amount")
-            .GetExpressionSubpathes()
-            .NewKeys(AmountExpression.From)
-            .GroupToDictionary();
-
-        if (amountPathes.Count == 0) return null;
-
-        var result = new Dictionary<string, Dictionary<string, TransactionGroup>>();
-        
-        foreach (var pair in amountPathes)
-        {
-            var groups = await query.GroupBy(pair.Key.ToExpression()).ToTransactionGroup(pair.Value);
-            result.Add(pair.Key.ToString(), groups);
-        }
-
-        return result;
-    }
-}
-
-public record AmountExpression(string Operator, decimal Value)
-{
-    public const string FieldKey = "amount";
-    public const string GteOperator = "gte";
-
-    public static AmountExpression From(IncludeExpression source)
-    {
-        return new AmountExpression(
-            Operator: source.Operator,
-            Value: decimal.Parse(source.Value)
-        );
-    }
-
-    public static Expression<Func<Transaction, bool>> Gte(decimal value) => x => x.Amount >= value;
-
-    public Expression<Func<Transaction, bool>> ToExpression()
-    {
-        return Operator switch
-        {
-            GteOperator => Gte(Value),
-            _ => throw new($"operator '{Operator}' not found")
-        };
-    }
-
-    public override string ToString()
-    {
-        return $"{Operator}_{Value}";
     }
 }

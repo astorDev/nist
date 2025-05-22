@@ -29,11 +29,11 @@ public record IncludeQueryParameter(
 
 public static class IncludePathEnumerableExtensions
 {
-    public static IEnumerable<ObjectPath> GetChildren(this IEnumerable<ObjectPath> pathes, string key) => 
+    public static IEnumerable<ObjectPath> GetChildren(this IEnumerable<ObjectPath> pathes, string key) =>
         pathes
             .Where(p => p.Root == key && p.Child != null)
             .Select(p => p.Child!);
 
-    public static bool Have(this IEnumerable<ObjectPath> pathes, string key) => 
+    public static bool Have(this IEnumerable<ObjectPath> pathes, string key) =>
         pathes.Any(p => p.Root == key);
 }

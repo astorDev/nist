@@ -34,11 +34,8 @@ public static class IncludePathExpressionExtensions
 {
     public static Dictionary<IncludeExpression, IEnumerable<ObjectPath>> GetExpressionSubpathesDict(this IEnumerable<ObjectPath> pathes)
     {
-        var result = GetExpressionSubpathes(pathes);
-
-        return result
-            .GroupBy(x => x.Key)
-            .ToDictionary(gr => gr.Key, gr => gr.Select(x => x.Value));
+        return pathes.GetExpressionSubpathes()
+            .GroupToDictionary();
     }
 
     public static IEnumerable<KeyValuePair<IncludeExpression, ObjectPath>> GetExpressionSubpathes(this IEnumerable<ObjectPath> pathes)
