@@ -3,15 +3,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace Nist;
 
-public class DictionaryQueryParameters : Dictionary<string, string>
+public class DictionaryQueryParameters(IDictionary<string, string> source) : Dictionary<string, string>(source)
 {
     public DictionaryQueryParameters(IDictionary<string, object> source) : this(
         source.ToDictionary(kv => kv.Key, kv => QueryStringValue.From(kv.Value))
     )
-    {
-    }
-
-    public DictionaryQueryParameters(IDictionary<string, string> source) : base(source)
     {
     }
 

@@ -1,8 +1,10 @@
-﻿namespace Nist;
+﻿using System.Collections;
 
-public record IncludeQueryParameter(
-    ObjectPath[] Paths
-)
+namespace Nist;
+
+public class IncludeQueryParameter(
+    ObjectPath[] paths
+) : IEnumerable<ObjectPath>
 {
     public static bool TryParse(string source, out IncludeQueryParameter includeQueryParameter)
     {
@@ -13,27 +15,22 @@ public record IncludeQueryParameter(
     public static IncludeQueryParameter Parse(string source)
     {
         var rawValues = source.Split(",");
-        var paths = rawValues.Select(x => ObjectPath.Parse(x));
-        return new IncludeQueryParameter([.. paths]);
+        var parsedPathes = rawValues.Select(x => ObjectPath.Parse(x));
+        return new IncludeQueryParameter([.. parsedPathes]);
     }
-
-    public bool Contains(string key) => Paths.Have(key);
-
-    public IEnumerable<ObjectPath> GetChildren(string key) => Paths.GetChildren(key);
 
     public override string ToString()
     {
-        return string.Join(",", Paths.Select(p => p.ToString()));
+        return string.Join(",", paths.Select(p => p.ToString()));
     }
-}
 
-public static class IncludePathEnumerableExtensions
-{
-    public static IEnumerable<ObjectPath> GetChildren(this IEnumerable<ObjectPath> pathes, string key) =>
-        pathes
-            .Where(p => p.Root == key && p.Child != null)
-            .Select(p => p.Child!);
+    public IEnumerator<ObjectPath> GetEnumerator()
+    {
+        return ((IEnumerable<ObjectPath>)paths).GetEnumerator();
+    }
 
-    public static bool Have(this IEnumerable<ObjectPath> pathes, string key) =>
-        pathes.Any(p => p.Root == key);
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }

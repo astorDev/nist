@@ -15,4 +15,8 @@
     <ProjectReference Include="..\lib\Nist.Queries.Include.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Versions\**\*.cs" />
+  </ItemGroup>
+
 </Project>

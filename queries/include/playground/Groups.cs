@@ -30,26 +30,3 @@ public record AmountExpression(string Operator, decimal Value)
         return $"{Operator}_{Value}";
     }
 }
-
-public static class AmountGroupExtensions
-{
-    public static async Task<Dictionary<string, Dictionary<string, TransactionGroup>>?> SearchAmountGroup(this IQueryable<Transaction> query, ObjectPath[] groupPathes)
-    {
-        var amountPathes = groupPathes.GetChildren("amount")
-            .GetExpressionSubpathes()
-            .NewKeys(AmountExpression.From)
-            .GroupToDictionary();
-
-        if (amountPathes.Count == 0) return null;
-
-        var result = new Dictionary<string, Dictionary<string, TransactionGroup>>();
-        
-        foreach (var pair in amountPathes)
-        {
-            var groups = await query.GroupBy(pair.Key.ToExpression()).ToTransactionGroup(pair.Value);
-            result.Add(pair.Key.ToString(), groups);
-        }
-
-        return result;
-    }
-}
