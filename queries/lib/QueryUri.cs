@@ -15,7 +15,7 @@ public record QueryUri(string Url, IEnumerable<QueryKeyValue> QueryParams)
         var props = queryObject.GetType().GetProperties().Select(p => new { Name = CamelCased(p.Name), Value = p.GetValue(queryObject) });
         var notNullProps = props.Where(p => p.Value != null);
         
-        var (enumerableProps, flatProps) = notNullProps.Fork(p => p.Value is IEnumerable && p.Value is not string);
+        var (enumerableProps, flatProps) = notNullProps.Fork(p => p.Value is IEnumerable && p.Value is not IQueryParameter && p.Value is not string);
         var (dictionaryProps, standardEnumerableProps) = enumerableProps.Fork(p => p.Value is IDictionary);
 
         foreach (var dictionaryProp in dictionaryProps) 
