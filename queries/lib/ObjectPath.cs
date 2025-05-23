@@ -16,6 +16,8 @@ public record ObjectPath(
         parts.Length > 1 ? Parse(parts[1..]) : null
     );
 
+    public static implicit operator ObjectPath(string path) => Parse(path);
+
     override public string ToString()
     {
         return ToString(".");

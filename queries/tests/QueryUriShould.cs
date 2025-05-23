@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-
-using FluentAssertions;
+using Shouldly;
 
 namespace Nist.Queries.Tests;
 
@@ -11,20 +10,20 @@ public class QueryUriShould
     [TestMethod]
     public void NotAppendQuestionMarkWhenThereAreNoParams()
     {
-        string uri = new QueryUri("resource", Array.Empty<QueryKeyValue>());
-        uri.Should().Be("resource");   
+        string uri = new QueryUri("resource", []);
+        uri.ShouldBe("resource");   
     }
 
     [TestMethod]
     public void DisplayCorrectlyUriWithMultipleParams()
     {
-        string uri = new QueryUri("resource", new QueryKeyValue[] 
-        {
+        string uri = new QueryUri("resource",
+        [
             new ("name", "george"),
             new ("age", "17")
-        });
+        ]);
 
-        uri.Should().Be("resource?name=george&age=17");
+        uri.ShouldBe("resource?name=george&age=17");
     }
 
     [TestMethod]
@@ -32,15 +31,15 @@ public class QueryUriShould
     {
         string uri = QueryUri.From("resource", new Query(From: new DateTime(2020, 1, 10, 11, 30, 10, DateTimeKind.Utc)));
 
-        uri.Should().Be("resource?from=2020-01-10T11:30:10.0000000Z");
+        uri.ShouldBe("resource?from=2020-01-10T11:30:10.0000000Z");
     }
 
     [TestMethod]
     public void DisplayCorrectlyQueryWithEnumerable()
     {
-        string uri = QueryUri.From("resource", new Query(Names: new [] { "george", "john" }));
+        string uri = QueryUri.From("resource", new Query(Names: ["george", "john"]));
 
-        uri.Should().Be("resource?names=george&names=john");
+        uri.ShouldBe("resource?names=george&names=john");
     }
 
     [TestMethod]
@@ -53,7 +52,7 @@ public class QueryUriShould
 
         string uri = QueryUri.From("resource", new Query(Tags: tags));
 
-        uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
+        uri.ShouldBe("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
     }
 
     [TestMethod]
@@ -66,7 +65,7 @@ public class QueryUriShould
 
         string uri = QueryUri.From("resource", new Query(Tags: tags));
 
-        uri.Should().Be("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
+        uri.ShouldBe("resource?tags.category=test&tags.createdAt=2020-02-20T12%3A16%3A00.0000000Z");
     }
 
     [TestMethod]
@@ -80,9 +79,20 @@ public class QueryUriShould
         Console.WriteLine(uri); // example?search=stuff&good=True
     }
 
+    [TestMethod]
+    public void Include()
+    {
+        string uri = QueryUri.From("example", new Query(Include: [ "a.b.c", "d.e.f" ]));
+
+        Console.WriteLine(uri); // example?include=a.b.c,d.e.f
+
+        uri.ShouldBe("example?include=a.b.c%2Cd.e.f");
+    }
+
     public record Query(
-        DateTime? From = null, 
-        string[]? Names = null, 
-        DictionaryQueryParameters? Tags = null
+        DateTime? From = null,
+        string[]? Names = null,
+        DictionaryQueryParameters? Tags = null,
+        CommaSeparatedParameters<ObjectPath>? Include = null
     );
 }
