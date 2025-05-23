@@ -1,0 +1,7 @@
+@host = http://localhost:5058
+
+###
+GET /transactions
+
+###
+GET /transactions?limit=2

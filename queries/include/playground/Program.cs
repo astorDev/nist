@@ -64,8 +64,8 @@ public record TransactionGroup(
 
 public record TransactionsQuery(
     IncludeQueryParameter? Include = null,
-    string? Category = null,
-    int? Limit = null
+    int? Limit = null,
+    string? Category = null
 )
 {
     public bool Includes(string value) => Include?.Have(value) ?? false;

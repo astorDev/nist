@@ -11,7 +11,7 @@ public class Db(DbContextOptions<Db> options) : DbContext(options)  {
     public required DbSet<Transaction> Transactions { get; set; }
 }
 
-public static class WebhookDbRegistration
+public static class InMemoryDbRegistration
 {
     public static IServiceCollection AddInMemory<TDb>(this IServiceCollection services) where TDb : DbContext
     {

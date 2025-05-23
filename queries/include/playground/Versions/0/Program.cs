@@ -22,8 +22,7 @@ await app.Services.EnsureRecreated<Db>(async db =>
 
 app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query) =>
 {
-    IQueryable<Transaction> dbQuery = db.Transactions
-        .Where(x => query.Category == null || x.Category == query.Category);
+    IQueryable<Transaction> dbQuery = db.Transactions;
 
     var items = await dbQuery
         .Take(query.Limit ?? int.MaxValue)
@@ -31,8 +30,7 @@ app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query
 
     return new TransactionCollection(
         Count: items.Length,
-        Items: items,
-        Total: query.Includes("total") ? await dbQuery.CountAsync() : null
+        Items: items
     );
 });
 
@@ -40,15 +38,9 @@ app.Run();
 
 public record TransactionCollection(
     int Count,
-    Transaction[] Items,
-    int? Total = null
+    Transaction[] Items
 );
 
 public record TransactionsQuery(
-    string[]? Include = null,
-    int? Limit = null,
-    string? Category = null
-)
-{
-    public bool Includes(string value) => Include?.Contains(value) ?? false;
-}
+    int? Limit = null
+);
