@@ -13,6 +13,7 @@ public sealed class ToQuery
         );
 
         var uri = QueryUri.From("resource", query);
+        Console.WriteLine(uri.ToString());
         uri.ToString().ShouldBe("resource?include=total%2Citems.name");
     }
 }

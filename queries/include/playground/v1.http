@@ -1,0 +1,7 @@
+@host = http://localhost:5058
+
+###
+GET /transactions?limit=0&include=total
+
+###
+GET /transactions?limit=1&include=total&category=salary

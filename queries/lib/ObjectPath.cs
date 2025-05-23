@@ -29,7 +29,7 @@ public record ObjectPath(
     }
 }
 
-public static class IncludePathEnumerableExtensions
+public static class ObjectPathEnumerableExtensions
 {
     public static IEnumerable<ObjectPath> GetChildren(this IEnumerable<ObjectPath> pathes, string key) => 
         pathes
