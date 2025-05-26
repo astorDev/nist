@@ -12,9 +12,7 @@ However, there is a solution to this problem in REST, which is much more elegant
 
 ## The Solution: Include Query Parameter
 
-```http
-GET /transactions
-```
+Let's say we have a transactions API. So, as you might expect from a REST API, it is extremely easy to get started and see the list of all the transactions. You just call the `GET /transactions` method. We'll assume we have just 5 records in the system and this is what the endpoint will return: 
 
 ```json
 {
@@ -49,9 +47,19 @@ GET /transactions
 }
 ```
 
+Of course, a simple query is something when REST is well-known to be good. But what if we want to introduce a pagination? It is likely we'll need to get a `total` number of rows, if we want to show how many pages we have. 
+
+The easiest solution will be to just add the parameter to the response. However, it will mean that we will need to do an additional query on **every** `GET transaction` request. Gladly, there is a solution that is also pretty simple, but is much more flexible: 
+
+> Allow inclusion of additional information via an `include` parameter.
+
+Here's how an example pagination query might look like
+
 ```http
 GET /transactions?limit=2&include=total
 ```
+
+And here's what the response will be:
 
 ```json
 {
@@ -72,10 +80,13 @@ GET /transactions?limit=2&include=total
 }
 ```
 
+So far so good. But using `include` for the `total` count doesn't fully demonstrate the power of the parameter. We'll see the true power when we'll ha
+
+For example, let's say we want to see a just the total sum and number of transactions by categores, not the transactions themselves. Here's how our request will look 
+
 ```http
 GET /transactions?limit=0&include=categories.total,categories.totalSum
 ```
-
 
 ```json
 {
@@ -97,6 +108,10 @@ GET /transactions?limit=0&include=categories.total,categories.totalSum
   }
 }
 ```
+
+As you might see in this example, the `include` parameters enables a significant customization of a `GET` endpoint to satisfy different use cases. Moreover, it gives control over that customization to the client - something GraphQL brags about.
+
+I hope you find the `include` parameter as powerful as I do. You might be wondering how hard it is to implement the parameter on the server side. Let me show you an example implementation in the next sections.
 
 ## Setting Up An Example API
 
