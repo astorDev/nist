@@ -19,11 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.WebSockets", "websocke
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{2B1FFDA1-2C40-4010-A8C0-A78752784998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Protocol", "templates\dotnet\protocol\Template.Protocol.csproj", "{69BA86C5-61A4-4C61-957E-ACCC5612E12C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Protocol", "templates\main\protocol\Template.Protocol.csproj", "{69BA86C5-61A4-4C61-957E-ACCC5612E12C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Host", "templates\dotnet\host\Template.Host.csproj", "{0CD11C7E-B1B5-499C-A97E-B5BCE9A5806A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Host", "templates\main\host\Template.Host.csproj", "{0CD11C7E-B1B5-499C-A97E-B5BCE9A5806A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "templates\dotnet\tests\Template.Tests.csproj", "{DCB2F289-7CF2-4EA4-8C22-BEFA3109B3E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Tests", "templates\main\tests\Template.Tests.csproj", "{DCB2F289-7CF2-4EA4-8C22-BEFA3109B3E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "logging", "logging", "{51CCC18E-8103-4031-A31C-EE3097946B4A}"
 EndProject
@@ -40,8 +40,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "send", "send", "{9F87D931-2A57-4C0E-9E28-22EE758171D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Sender", "webhooks\send\lib\Nist.Webhooks.Sender.csproj", "{DEF76DCF-DE6C-4E87-B247-D6841F75B8F0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Playground", "webhooks\playground\Nist.Webhooks.Playground.csproj", "{21D90A7E-21E1-4A8C-B211-9AF0DFFAB1AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bodies", "bodies", "{FAAF0C92-65CB-4284-AAF0-3ACD40E42C0E}"
 EndProject
@@ -91,7 +89,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "validations", "validations"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Errors.Validations.Playground", "errors\validations\playground\Nist.Errors.Validations.Playground.csproj", "{AF890AD0-FEED-447C-9D37-099AC5A54104}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Playground", "webhooks\playground\Nist.Webhooks.Playground.csproj", "{6880295B-7275-4735-A651-6B22FD585A21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Playground", "webhooks\playground\Nist.Webhooks.Playground.csproj", "{A057CB41-AB5A-4110-A684-25E1BB58F81F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -214,6 +212,10 @@ Global
 		{6880295B-7275-4735-A651-6B22FD585A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6880295B-7275-4735-A651-6B22FD585A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6880295B-7275-4735-A651-6B22FD585A21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A057CB41-AB5A-4110-A684-25E1BB58F81F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A057CB41-AB5A-4110-A684-25E1BB58F81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A057CB41-AB5A-4110-A684-25E1BB58F81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A057CB41-AB5A-4110-A684-25E1BB58F81F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3448B6A0-78B9-4F52-A971-9407F9B331CF} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
@@ -251,5 +253,6 @@ Global
 		{24EE0E80-2D7C-4FAA-8A9B-F9E473AFFAEA} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
 		{AF890AD0-FEED-447C-9D37-099AC5A54104} = {24EE0E80-2D7C-4FAA-8A9B-F9E473AFFAEA}
 		{6880295B-7275-4735-A651-6B22FD585A21} = {80986F3E-256A-4186-B2FC-44F932FAEDEE}
+		{A057CB41-AB5A-4110-A684-25E1BB58F81F} = {80986F3E-256A-4186-B2FC-44F932FAEDEE}
 	EndGlobalSection
 EndGlobal

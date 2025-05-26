@@ -10,4 +10,14 @@
     <Compile Remove="Versions\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\dump\lib\Nist.Webhooks.Dump.csproj" />
+    <ProjectReference Include="..\send\lib\Nist.Webhooks.Sender.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Confi.Fluenv" Version="2025.105.126.4" />
+    <PackageReference Include="Persic.EF.Postgres" Version="2025.105.122.9" />
+  </ItemGroup>
+
 </Project>

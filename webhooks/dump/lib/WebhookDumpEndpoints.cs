@@ -13,11 +13,13 @@ public static class WebhookDumpEndpoints
     private static readonly HashSet<string> registeredGetPaths = [];
 
     public static void MapWebhookDump<TDb>(
-        this IEndpointRouteBuilder app,
+        this WebApplication app,
         string postPath = "/webhooks/dump/{*extra}",
         string getPath = "/webhooks/dump"
     ) where TDb : DbContext, IDbWithWebhookDump
     {
+        app.UseRequestBodyStringReader();
+
         if (!registeredPostPaths.Contains(postPath))
         {
             app.MapWebhookDumpPost<TDb>(postPath);

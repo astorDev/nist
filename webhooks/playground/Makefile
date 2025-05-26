@@ -1,5 +1,12 @@
 TEST ?= main
 
+prep:
+	docker compose up -d --build
+
+down:
+	docker compose down
+	docker volume prune --force
+
 run:
 	dotnet run
 

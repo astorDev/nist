@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dump", "dump", "{52BB76E0-BE4A-4A4E-A8C5-BA8906FD7894}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Dump", "dump\lib\Nist.Webhooks.Dump.csproj", "{79BBEDF5-52E5-4B18-AAB4-5E815C481D79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Dump.Playground", "dump\playground\Nist.Webhooks.Dump.Playground.csproj", "{2EF65131-2510-4F22-BC9A-DF3CBDBB1418}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "send", "send", "{5D5D65AF-2523-4B7B-9EA1-850CB7C4E787}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhook.Sender.Playground", "send\playground\Nist.Webhook.Sender.Playground.csproj", "{29CFD1FD-867C-4999-8F61-6381D6979B33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Sender", "send\lib\Nist.Webhooks.Sender.csproj", "{0925CAA5-D0CD-4BAC-8890-33A5776AD9F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Playground", "playground\Nist.Webhooks.Playground.csproj", "{73780C93-B004-4C57-946F-E97B521B9023}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79BBEDF5-52E5-4B18-AAB4-5E815C481D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79BBEDF5-52E5-4B18-AAB4-5E815C481D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79BBEDF5-52E5-4B18-AAB4-5E815C481D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79BBEDF5-52E5-4B18-AAB4-5E815C481D79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF65131-2510-4F22-BC9A-DF3CBDBB1418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF65131-2510-4F22-BC9A-DF3CBDBB1418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF65131-2510-4F22-BC9A-DF3CBDBB1418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF65131-2510-4F22-BC9A-DF3CBDBB1418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29CFD1FD-867C-4999-8F61-6381D6979B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29CFD1FD-867C-4999-8F61-6381D6979B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29CFD1FD-867C-4999-8F61-6381D6979B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29CFD1FD-867C-4999-8F61-6381D6979B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0925CAA5-D0CD-4BAC-8890-33A5776AD9F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0925CAA5-D0CD-4BAC-8890-33A5776AD9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0925CAA5-D0CD-4BAC-8890-33A5776AD9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0925CAA5-D0CD-4BAC-8890-33A5776AD9F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73780C93-B004-4C57-946F-E97B521B9023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73780C93-B004-4C57-946F-E97B521B9023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73780C93-B004-4C57-946F-E97B521B9023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73780C93-B004-4C57-946F-E97B521B9023}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{79BBEDF5-52E5-4B18-AAB4-5E815C481D79} = {52BB76E0-BE4A-4A4E-A8C5-BA8906FD7894}
+		{2EF65131-2510-4F22-BC9A-DF3CBDBB1418} = {52BB76E0-BE4A-4A4E-A8C5-BA8906FD7894}
+		{29CFD1FD-867C-4999-8F61-6381D6979B33} = {5D5D65AF-2523-4B7B-9EA1-850CB7C4E787}
+		{0925CAA5-D0CD-4BAC-8890-33A5776AD9F7} = {5D5D65AF-2523-4B7B-9EA1-850CB7C4E787}
+	EndGlobalSection
+EndGlobal

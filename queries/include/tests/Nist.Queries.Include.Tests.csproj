@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="MSTest" Version="3.6.1" />
-    <PackageReference Include="Shouldly" Version="4.3.0" />
+    <PackageReference Include="Shouldly" Version="4.2.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\lib\Nist.Queries.Include.csproj" />
-    <ProjectReference Include="..\..\lib\Nist.Queries.csproj" />
   </ItemGroup>
 
 </Project>

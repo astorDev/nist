@@ -1,0 +1,9 @@
+services: 
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: webhooks_playground
+      POSTGRES_PASSWORD: webhooks_playground
+      POSTGRES_DB: webhooks_playground
+    ports:
+      - "8951:5432"

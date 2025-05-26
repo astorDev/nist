@@ -1,2 +1,7 @@
 - [ ] `Nist.Webhooks.Sender` <VERSION>
-    - [ ] `WebhooksManager.Enqueue`
+    - [x] `WebhooksSenderExtensions`
+    - [ ] `GET webhooks?include=statuses.total`
+    - [ ] Webhook Request Search Support
+        - Options:
+            - `SearchTerms` field
+            - Fluent from a limited list (like top 100)

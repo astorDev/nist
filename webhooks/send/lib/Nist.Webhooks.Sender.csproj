@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Backi.Continuous" Version="2025.103.118.3" />
+    <PackageReference Include="Confi" Version="2024.110.108.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3" />
