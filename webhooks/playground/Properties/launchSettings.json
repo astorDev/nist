@@ -4,11 +4,10 @@
     "local": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:5209",
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:43628",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings:Postgres" : "Host=localhost;Port=5432;Database=webhooks_playground;Username=postgres;Password=postgres"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }

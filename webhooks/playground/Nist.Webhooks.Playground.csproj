@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Persic.EF.Postgres" Version="2025.103.126.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\dump\lib\Nist.Webhooks.Dump.csproj" />
-    <ProjectReference Include="..\send\lib\Nist.Webhooks.Sender.csproj" />
+    <Compile Remove="Versions\**\*.cs" />
   </ItemGroup>
 
 </Project>
