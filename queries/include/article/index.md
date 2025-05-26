@@ -49,11 +49,11 @@ Let's say we have a transactions API. So, as you might expect from a REST API, i
 
 Of course, REST is well-known to be good at simple queries. But what if we want to introduce pagination? It is likely we'll need to get a `total` number of rows to show how many pages we have. 
 
-The easiest solution would be to just add the parameter to the response. However, it will mean that we will need to do an additional query on **every** `GET transaction` request. Gladly, there is a solution that is also pretty simple, but is much more flexible: 
+The easiest solution would be to just add the parameter to the response. However, it will mean that we will need to do an additional query on **every** `GET /transactions` request. Gladly, there is a solution that is also pretty simple, but is much more flexible: 
 
 > Allow inclusion of additional information via an `include` parameter.
 
-Here's what an example pagination query might look like
+Here's what an example pagination query might look like:
 
 ```http
 GET /transactions?limit=2&include=total
@@ -82,7 +82,7 @@ And here's what the response will be:
 
 So far so good. But using `include` for the `total` count doesn't fully demonstrate the power of the parameter. The true power is demonstrated best by aggregated queries.
 
-For example, let's say we want to see just the total sum and number of transactions by category, not the transactions themselves. Here's how our request will look 
+For example, let's say we want to see just the total sum and number of transactions by category, not the transactions themselves. Here's how our request will look:
 
 ```http
 GET /transactions?limit=0&include=categories.total,categories.totalSum
@@ -115,10 +115,31 @@ I hope you find the `include` parameter as powerful as I do. You might be wonder
 
 ## Setting Up An Example API
 
+To start, let's initiate a new project. We'll use the most minimalistic template:
+
+```sh
+dotnet new web
+```
+
+Let's also add those two common cosmetic customizations to our app:
+
+```csharp
+builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
+
+builder.Services.ConfigureHttpJsonOptions(options => {
+    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    options.SerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+});
+```
+
+Finally, we'll need two EntityFramework NuGet packages: one for an in-memory database and the second for a simplified database setup:
+
 ```sh
 dotnet add package Microsoft.EntityFrameworkCore.InMemory
 dotnet add package Persic.EF
 ```
+
+Now, we are ready to go. Let's start by defining our database model:
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -145,6 +166,8 @@ public static class InMemoryDbRegistration
 }
 ```
 
+Then, our API models:
+
 ```csharp
 public record TransactionCollection(
     int Count,
@@ -155,6 +178,8 @@ public record TransactionsQuery(
     int? Limit = null
 );
 ```
+
+Finally, let's assemble those together to create a very simple API, prefilled with the transactions we've seen before:
 
 ```csharp
 using Microsoft.EntityFrameworkCore;
@@ -201,9 +226,13 @@ app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query
 app.Run();
 ```
 
+For now, we don't have the `include` parameter, just a single endpoint returning our transactions and letting us `limit` the number of transactions returned like this:
+
 ```http
 GET /transactions?limit=2
 ```
+
+Here's what we should get in response:
 
 ```json
 {
@@ -223,7 +252,11 @@ GET /transactions?limit=2
 }
 ```
 
+The setup is done, let's move to the interesting part!
+
 ## Enabling Pagination: include=total
+
+As you might remember from the first section, the first problem we are going to solve is getting the total number of items for pagination. We'll need an optional `Total` response parameter and an optional `Include` parameter. Let's even increase the complexity and let a client to filter transactions by a category. Here's what our API model will look like:
 
 ```csharp
 public record TransactionCollection(
@@ -242,6 +275,8 @@ public record TransactionsQuery(
 }
 ```
 
+And the logic update is very simple, as well. Let me just show you the code:
+
 ```csharp
 IQueryable<Transaction> dbQuery = db.Transactions
     .Where(x => query.Category == null || x.Category == query.Category);
@@ -257,9 +292,13 @@ return new TransactionCollection(
 );
 ```
 
+Let's check how this works. Let's say we want only the total count, we can use this query:
+
 ```http
-GET http://localhost:5058/transactions?limit=0&include=total
+GET /transactions?limit=0&include=total
 ```
+
+Here's the response we'll get:
 
 ```json
 {
@@ -269,9 +308,13 @@ GET http://localhost:5058/transactions?limit=0&include=total
 }
 ```
 
+Let's also try to combine our `include` with a `category` filter:
+
 ```http
 GET http://localhost:5058/transactions?limit=1&include=total&category=salary
 ```
+
+We will get the first record with the `salary` category and the `total` number of items in the category:
 
 ```json
 {
@@ -287,11 +330,17 @@ GET http://localhost:5058/transactions?limit=1&include=total&category=salary
 }
 ```
 
+Enabling pagination is great, but let's move to the advanced parts with category groups.
+
 ## Building Aggregates: include=categories.totalSum
+
+The first thing we'll need to do is make a more powerful `include` query parameter. In the [previous article about queries in .NET](https://medium.com/@vosarat1995/net-minimal-api-broke-fromquery-1326e0aa50b4) I've introduced a helper package for queries. It will be handy now as well, let's install it:
 
 ```sh
 dotnet add reference Nist.Queries;
 ```
+
+Using the `ObjectPath` and `CommaSeparatedParameters<T>` objects from this package, we should be able to create a custom `IncludeQueryParameter`.
 
 ```csharp
 using Nist;
@@ -466,7 +515,7 @@ app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query
 });
 ```
 
-Check out complete example code [here on GitHub](https://github.com/astorDev/nist/blob/main/queries/include/playground/Program.cs). You can also use the `Nist.Queries.Include` NuGet package from the same project to add various query parameter utils, including `IncludeQueryParameter`, to your app. 
+Check out the complete example code [here on GitHub](https://github.com/astorDev/nist/blob/main/queries/include/playground/Program.cs). You can also use the `Nist.Queries.Include` NuGet package from the same project to add various query parameter utils, including `IncludeQueryParameter`, to your app. 
 
 This example, package, and even this article are part of the [NIST project](https://github.com/astorDev/nist). The project contains many HTTP-related tools beyond queries — check it out and don't hesitate to give the repository a star! ⭐
 
