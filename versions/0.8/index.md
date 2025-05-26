@@ -1,7 +1,7 @@
-- [x] Nist.Queries <VERSION>
+- [x] Nist.Queries **2025.105.123.44**
     - [x] Various Query Models & Misc Improvements
-- [x] Nist.Queries.Include <VERSION>
+- [x] Nist.Queries.Include **2025.105.123.13**
     - [x] `IncludeQueryParameter`
     - [x] `IncludeExpression`
-- [ ] `Nist.Webhooks.Sender` <VERSION>
-    - [ ] `WebhooksManager.Enqueue`
+- [x] `Nist.Template` **2025.105.123.37**
+    - [x] `Nist Playground` template

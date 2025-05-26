@@ -5,7 +5,7 @@ builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 var app = builder.Build();
 
 app.MapGet("/", () => new {
-    Message = "Hello World!"
+    Message = "Hello Me!"
 });
 
 app.Run();
