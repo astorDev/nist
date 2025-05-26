@@ -5,3 +5,5 @@
         - Options:
             - `SearchTerms` field
             - Fluent from a limited list (like top 100)
+- [x] `Nist.Templates` <VERSION>
+    - [x] Replace `Fluenv` with `Confi.Fluenv`
