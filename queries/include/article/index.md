@@ -334,13 +334,33 @@ Enabling pagination is great, but let's move to the advanced parts with category
 
 ## Building Aggregates: include=categories.totalSum
 
-The first thing we'll need to do is make a more powerful `include` query parameter. In the [previous article about queries in .NET](https://medium.com/@vosarat1995/net-minimal-api-broke-fromquery-1326e0aa50b4) I've introduced a helper package for queries. It will be handy now as well, let's install it:
+In this section, we'll allow a client to `include` category groups in the response. Here's the updated response model we'll have:
+
+```csharp
+public record TransactionGroup(
+    decimal? TotalSum,
+    int? Total
+);
+
+public record TransactionCollection(
+    int Count,
+    Transaction[] Items,
+    int? Total = null,
+    Dictionary<string, TransactionGroup>? Categories = null
+);
+```
+
+As you might remember from the examples, we will need a slightly more complex `include` parameter to achieve that: with comma-separated nested paths.
+
+In the [previous article about queries in .NET](https://medium.com/@vosarat1995/net-minimal-api-broke-fromquery-1326e0aa50b4), we've talked about creating custom query parameters. In short, the class should have `public static bool TryParse(string source, out TQueryParameter queryParameter)` method. Let's use the technique for `include` parameter!
+
+In the article, I've also introduced a helper package, called `Nist.Queries`, that will be handy now as well. Let's install it first:
 
 ```sh
 dotnet add reference Nist.Queries;
 ```
 
-Using the `ObjectPath` and `CommaSeparatedParameters<T>` objects from this package, we should be able to create a custom `IncludeQueryParameter`.
+Then, using the `ObjectPath` and `CommaSeparatedParameters<T>` objects from this package, we should be able to create our custom `IncludeQueryParameter`:
 
 ```csharp
 using Nist;
@@ -361,6 +381,8 @@ public record IncludeQueryParameter(CommaSeparatedParameters<ObjectPath> Inner) 
 }
 ```
 
+Of course, we'll need to update `TransactionQuery` accordingly:
+
 ```csharp
 public record TransactionsQuery(
     IncludeQueryParameter? Include = null,
@@ -372,20 +394,9 @@ public record TransactionsQuery(
 }
 ```
 
-```csharp
-public record TransactionCollection(
-    int Count,
-    Transaction[] Items,
-    int? Total = null,
-    Dictionary<string, TransactionGroup>? Categories = null
-);
+Now, to the actual logic implementation!
 
-public record TransactionGroup(
-    decimal? TotalSum,
-    int? Total,
-    Transaction[]? Items = null
-);
-```
+First, we'll need a database model for our group query result:
 
 ```csharp
 public class GroupAggregateDbResult
@@ -394,7 +405,11 @@ public class GroupAggregateDbResult
     public decimal? TotalSum { get; set; }
     public int? Total { get; set; }
 }
+```
 
+Then, we'll build an extension method on `IQueryable` returning the data and a small helper method turning the data into our response object:
+
+```csharp
 public static class GroupAggregateExtensions
 {
     public static async Task<Dictionary<string, TransactionGroup>> ToTransactionGroup<TKey>(this IQueryable<IGrouping<TKey, Transaction>> query, IEnumerable<ObjectPath> includes)
@@ -419,6 +434,18 @@ public static class GroupAggregateExtensions
 }
 ```
 
+Here's how we will use the method:
+
+> `IEnumerable<ObjectPath>.GetChildren(string rootKey)` is an extension method inside the `Nist.Queries` package.
+
+```csharp
+query.Includes("categories")
+  ? await dbQuery.GroupBy(x => x.Category).ToTransactionGroup(query.Include!.GetChildren("categories"))
+  : null
+```
+
+And here's how we'll need to update our endpoint code:
+
 ```csharp
 return new TransactionCollection(
     Count: items.Length,
@@ -430,9 +457,13 @@ return new TransactionCollection(
 );
 ```
 
+With this in place, we will be able to request only the total sum and the number of items by categories with the query like this:
+
 ```http
 GET /transactions?limit=0&include=categories.total,categories.totalSum
 ```
+
+With our data it should give us the following response:
 
 ```json
 {
@@ -455,11 +486,17 @@ GET /transactions?limit=0&include=categories.total,categories.totalSum
 }
 ```
 
+And this is the last piece of code we are going to write in this article. Let me do a quick recap of the things we've done and give you a few useful links in the last section.
+
 ## TLDR;
+
+In this article, I've proposed a REST solution to over-fetching: The `include` query parameter. With this parameter a client can opt-in for additional pieces of data from the server. For example, if a client needs `total` number of items for pagination and total sum by categories for an overview look, the client can send a request like this:
 
 ```http
 GET /transactions?limit=2&include=total,categories.total,categories.totalSum
 ```
+
+A server can then return those additional fields along with the default `count` and `items` fields:
 
 ```json
 {
@@ -494,6 +531,8 @@ GET /transactions?limit=2&include=total,categories.total,categories.totalSum
 }
 ```
 
+Implementing the behaviour on the server side is relatively easy, here's the code of the endpoint:
+
 ```csharp
 app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query) =>
 {
@@ -515,7 +554,7 @@ app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query
 });
 ```
 
-Check out the complete example code [here on GitHub](https://github.com/astorDev/nist/blob/main/queries/include/playground/Program.cs). You can also use the `Nist.Queries.Include` NuGet package from the same project to add various query parameter utils, including `IncludeQueryParameter`, to your app. 
+You can see the rest of the implementation code in the article above or check it out [here on GitHub](https://github.com/astorDev/nist/blob/main/queries/include/playground/Program.cs). To streamline working with the `include` parameter we have implemented `IncludeQueryParameter` in the article. If you don't want to recreate it, you can just use the `Nist.Queries.Include` NuGet package from the same project.
 
 This example, package, and even this article are part of the [NIST project](https://github.com/astorDev/nist). The project contains many HTTP-related tools beyond queries — check it out and don't hesitate to give the repository a star! ⭐
 
