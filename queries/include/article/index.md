@@ -2,7 +2,7 @@
 
 > Ditch GraphQL, Use This Instead!
 
-![All we need is ... . Raccoon throwing GraphQL in garbage.](thumb.png)
+![All we need is ...](thumb.png)
 
 GraphQL appeared in 2012 as a new API architecture, allowing you to "give clients the power to ask for exactly what they need and nothing more". It was solving the problem, commonly known as over-fetching, which is considered a weak point of REST architecture.
 
