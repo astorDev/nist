@@ -350,11 +350,11 @@ public record TransactionCollection(
 );
 ```
 
-As you might remember from the examples, we will need a slightly more complex `include` parameter to achieve that: with comma-separated nested pathes.
+As you might remember from the examples, we will need a slightly more complex `include` parameter to achieve that: with comma-separated nested paths.
 
 In the [previous article about queries in .NET](https://medium.com/@vosarat1995/net-minimal-api-broke-fromquery-1326e0aa50b4), we've talked about creating custom query parameters. In short, the class should have `public static bool TryParse(string source, out TQueryParameter queryParameter)` method. Let's use the technique for `include` parameter!
 
-In the article, I've also introduced a helper package, called `Nist.Queries`, that will be handy now as well. Let's install it fist:
+In the article, I've also introduced a helper package, called `Nist.Queries`, that will be handy now as well. Let's install it first:
 
 ```sh
 dotnet add reference Nist.Queries;
@@ -396,7 +396,7 @@ public record TransactionsQuery(
 
 Now, to the actual logic implementation!
 
-Fist, we'll need a database model for our group query result:
+First, we'll need a database model for our group query result:
 
 ```csharp
 public class GroupAggregateDbResult
@@ -554,7 +554,7 @@ app.MapGet("/transactions", async (Db db, [AsParameters] TransactionsQuery query
 });
 ```
 
-You can see the rest of the implementation code in the article above of check it out [here on GitHub](https://github.com/astorDev/nist/blob/main/queries/include/playground/Program.cs). To streamline working with `include` parameter we have implemented `IncludeQueryParameter` in the article. If you don't want to recreate it you can just use the `Nist.Queries.Include` NuGet package from the same project.
+You can see the rest of the implementation code in the article above or check it out [here on GitHub](https://github.com/astorDev/nist/blob/main/queries/include/playground/Program.cs). To streamline working with the `include` parameter we have implemented `IncludeQueryParameter` in the article. If you don't want to recreate it, you can just use the `Nist.Queries.Include` NuGet package from the same project.
 
 This example, package, and even this article are part of the [NIST project](https://github.com/astorDev/nist). The project contains many HTTP-related tools beyond queries — check it out and don't hesitate to give the repository a star! ⭐
 
