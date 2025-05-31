@@ -21,3 +21,6 @@ v-save:
 v-play:
 	make v-use
 	make play
+
+test:
+	dotnet test --filter FullyQualifiedName~Nist.Template.Playground.$(NAME) --logger "console;verbosity=detailed"

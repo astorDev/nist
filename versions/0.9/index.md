@@ -7,3 +7,4 @@
             - Fluent from a limited list (like top 100)
 - [x] `Nist.Templates` <VERSION>
     - [x] Replace `Fluenv` with `Confi.Fluenv`
+    - [x] MSTests support in `play` template

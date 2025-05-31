@@ -91,6 +91,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Errors.Validations.Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Playground", "webhooks\playground\Nist.Webhooks.Playground.csproj", "{A057CB41-AB5A-4110-A684-25E1BB58F81F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Template.Playground", "templates\playground\Nist.Template.Playground.csproj", "{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -216,6 +218,10 @@ Global
 		{A057CB41-AB5A-4110-A684-25E1BB58F81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A057CB41-AB5A-4110-A684-25E1BB58F81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A057CB41-AB5A-4110-A684-25E1BB58F81F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3448B6A0-78B9-4F52-A971-9407F9B331CF} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
@@ -254,5 +260,6 @@ Global
 		{AF890AD0-FEED-447C-9D37-099AC5A54104} = {24EE0E80-2D7C-4FAA-8A9B-F9E473AFFAEA}
 		{6880295B-7275-4735-A651-6B22FD585A21} = {80986F3E-256A-4186-B2FC-44F932FAEDEE}
 		{A057CB41-AB5A-4110-A684-25E1BB58F81F} = {80986F3E-256A-4186-B2FC-44F932FAEDEE}
+		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834} = {2B1FFDA1-2C40-4010-A8C0-A78752784998}
 	EndGlobalSection
 EndGlobal
