@@ -7,6 +7,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <TargetFrameworks>net7.0;net6.0;net8.0</TargetFrameworks>
+        <RootNamespace>Nist</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
