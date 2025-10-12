@@ -93,6 +93,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Webhooks.Playground", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Template.Playground", "templates\playground\Nist.Template.Playground.csproj", "{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "telemetry", "telemetry", "{D0808B60-0179-4B84-B1CD-0330AFD573ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nist.Telemetry.Playground", "telemetry\play\Nist.Telemetry.Playground.csproj", "{72430921-D25C-41DD-9832-2DBB0E4D2CEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -222,6 +226,10 @@ Global
 		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72430921-D25C-41DD-9832-2DBB0E4D2CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72430921-D25C-41DD-9832-2DBB0E4D2CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72430921-D25C-41DD-9832-2DBB0E4D2CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72430921-D25C-41DD-9832-2DBB0E4D2CEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3448B6A0-78B9-4F52-A971-9407F9B331CF} = {AA026DC3-ACA9-418C-9D5F-C0FA54F764CA}
@@ -259,5 +267,6 @@ Global
 		{AF890AD0-FEED-447C-9D37-099AC5A54104} = {24EE0E80-2D7C-4FAA-8A9B-F9E473AFFAEA}
 		{A057CB41-AB5A-4110-A684-25E1BB58F81F} = {80986F3E-256A-4186-B2FC-44F932FAEDEE}
 		{40E8A8DC-A8C7-4F05-9DCE-632D72E3C834} = {2B1FFDA1-2C40-4010-A8C0-A78752784998}
+		{72430921-D25C-41DD-9832-2DBB0E4D2CEC} = {D0808B60-0179-4B84-B1CD-0330AFD573ED}
 	EndGlobalSection
 EndGlobal
