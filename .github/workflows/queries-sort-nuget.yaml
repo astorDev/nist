@@ -1,0 +1,17 @@
+name: Nist.Queries.Sort NuGet
+on:
+  push:
+    paths:
+      - 'queries/sort/lib/**'
+      - '.github/workflows/queries-sort-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: queries/sort/lib/Nist.Queries.Sort
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
