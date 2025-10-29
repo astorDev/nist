@@ -1,0 +1,71 @@
+POST /deliveries
+
+{
+}
+
+###
+POST /orders
+
+{
+    "id" : 99,
+    "status" : "Figa"
+}
+
+###
+POST /orders
+
+{
+    "id" : 99,
+    "status" : "Delivered"
+}
+
+###
+POST /orders
+
+{
+    "id" : 99,
+    "status" : 2
+}
+
+###
+POST /orders
+
+{
+    "id" : 86,
+    "status" : "InDelivery"
+}
+
+###
+PATCH /orders/11
+
+{
+    "status" : "Delivered"
+}
+
+###
+POST /orders
+
+{
+    "id" : 10
+}
+
+###
+POST /orders
+
+{
+    "status" : 3
+}
+
+###
+POST /orders
+
+{
+    "status" : "PREPARING"
+}
+
+###
+POST /orders
+
+{
+    "status" : "preparing"
+}
