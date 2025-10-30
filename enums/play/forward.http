@@ -1,0 +1,15 @@
+### forward value with strings
+POST /orders
+
+{
+    "id" : 10,
+    "status" : "Rejected"
+}
+
+### forward value with numbers
+POST /orders
+
+{
+    "id" : 10,
+    "status" : 19
+}
