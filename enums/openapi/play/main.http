@@ -1,0 +1,36 @@
+/
+
+###
+POST /
+
+{
+    "topping" : "Mushrooms",
+    "cheese" : "Mozzarella"
+}
+
+###
+POST /
+
+{
+    "topping" : 2,
+    "cheese" : "Mozzarella",
+    "crust" : "Thin"
+}
+
+###
+POST /
+
+{
+    "topping" : 2,
+    "cheese" : "Mozzarella",
+    "crust" : "Standard"
+}
+
+###
+POST /
+
+{
+    "topping" : "2",
+    "cheese" : "Mozzarella",
+    "crust" : "Standard"
+}
