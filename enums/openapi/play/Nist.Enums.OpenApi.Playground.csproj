@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
     <PackageReference Include="MSTest" Version="3.9.1" />
+    <PackageReference Include="Nist.Enums.OpenApi" Version="2025.110.131.1-enum-openapi" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.9.0" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
   </ItemGroup>
