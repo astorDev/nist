@@ -1,0 +1,17 @@
+name: Enums.OpenApi NuGet
+on:
+  push:
+    paths:
+      - 'enums/openapi/lib/**'
+      - '.github/workflows/enums-openapi-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: enums/openapi/lib/Nist.Enums.OpenApi
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
