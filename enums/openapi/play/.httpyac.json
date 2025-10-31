@@ -1,0 +1,7 @@
+{
+    "environments": {
+        "$shared": {
+            "host": "http://localhost:35124"
+        }
+    }
+}
