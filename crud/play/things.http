@@ -1,0 +1,33 @@
+POST /things
+
+{
+    "status" : "PENDING"
+}
+
+###
+# @name selected
+GET /things?limit=2&include=totalCount
+
+###
+# @ref selected
+PUT /things/{{ selected.items[0].id }}
+
+{
+    "status" : "PROCESSING"
+}
+
+###
+# @ref selected
+PATCH /things/{{ selected.items[0].id }}
+
+{
+    "status" : "PROCESSED"
+}
+
+###
+# @ref selected
+GET /things/{{ selected.items[0].id }}
+
+###
+# @ref selected
+DELETE /things/{{ selected.items[0].id }}
