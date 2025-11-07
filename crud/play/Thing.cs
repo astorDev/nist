@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace Nist;
 
 public record Thing
@@ -76,7 +74,7 @@ public partial class Db
     public static Dictionary<string, ThingRecord> Things { get; } = [];
 }
 
-public class Uris
+public partial class Uris
 {
     public const string Things = "things";
     public static string Thing(string id) => $"{Things}/{id}";
@@ -166,7 +164,7 @@ public static class SomethingEndpoints
     }
 }
 
-public class Errors
+public partial class Errors
 {
     public static Error ThingNotFound = new(HttpStatusCode.BadRequest, "ThingNotFound");
     public static Error ThingAlreadyExists = new(HttpStatusCode.BadRequest, "ThingAlreadyExists");

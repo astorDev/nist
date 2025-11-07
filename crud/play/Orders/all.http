@@ -1,0 +1,48 @@
+POST /orders
+
+{
+    "id" : "one",
+    "labels" : {
+        "system" : "Skynet"
+    }
+}
+
+###
+POST /orders
+
+{
+    "id" : "two"
+}
+
+###
+POST /orders
+
+{
+    "id" : "three"
+}
+
+###
+PUT /orders
+
+{
+    "id" : "two",
+    "status" : "Processing"
+}
+
+###
+PATCH /orders/three
+
+{
+    "status" : "Processed"
+}
+
+###
+# @name selected
+GET /orders?statuses=Processed,Processing&limit=0&include=totalCount
+
+###
+# @name selected
+GET /orders?ids=one,three
+
+###
+GET /orders?labels.system=Skynet

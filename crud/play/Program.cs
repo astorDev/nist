@@ -1,3 +1,4 @@
+global using System.Net;
 using Nist;
 using Scalar.AspNetCore;
 
@@ -19,5 +20,6 @@ app.MapGet("/", () => new {
 });
 
 app.MapThingEndpoints();
+app.MapOrders();
 
 app.Run();
