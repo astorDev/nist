@@ -8,7 +8,7 @@ Enums in APIs are surprisingly tricky. There are multiple approaches to represen
 
 ## Getting Started: Integer Enums
 
-[this article](https://medium.com/@vosarat1995/making-your-openapi-swagger-docs-ui-awesome-in-net-9-67fbde6b71b5)
+In [this article](https://medium.com/@vosarat1995/making-your-openapi-swagger-docs-ui-awesome-in-net-9-67fbde6b71b5), I've explained how to set up OpenAPI UI with Scalar - we'll start from there. Let's create our API model with a simple enum just to get started:
 
 ```csharp
 public enum PizzaTopping
@@ -25,8 +25,10 @@ public class Pizza
 }
 ```
 
+Of course, we'll also need endpoints to get a proper Swagger UI:
+
 ```csharp
-app.MapGet("/", () => new Pizza{
+app.MapGet("/", () => new Pizza {
     Topping = PizzaTopping.Onions
 });
 
@@ -36,14 +38,20 @@ app.MapPost("/", (Pizza pizza) =>
 });
 ```
 
+With that setup, if we open our Swagger UI we'll get the following models:
+
 ![](demo-starter.png)
 
+You might see the problem with the default view. There is absolutely no information about what values are supposed to be passed to `PizzaTopping`. Let's fix that in the next section.
+
 ## First Schema Transformer: Enum Numbers Info
+
+OpenAPI models accept an enum property. However, they are not filled by default. Gladly, Microsoft's OpenAPI system allows us to arbitrarily transform the schema using `SchemaTransformer`. Let's add an extension method filling the `enum` property for an encountered enum object property:
 
 ```csharp
 public static class OpenApiEnumExtensions
 {
-    public static OpenApiOptions AddEnumSchemaTransformer(this OpenApiOptions options, bool includeInformationalStrings = true)
+    public static OpenApiOptions AddEnumSchemaTransformer(this OpenApiOptions options)
     {
         options.AddSchemaTransformer((schema, context, cancellationToken) =>
         {
@@ -64,9 +72,20 @@ public static class OpenApiEnumExtensions
 }
 ```
 
+Here's how we can register the transformer:
+
+```csharp
+builder.Services.AddOpenApi(options =>
+{
+    options.AddEnumSchemaTransformer();
+});
+```
+
+Here's what we'll get now:
+
 ![](demo-all-ints.png)
 
-Optional parameter `includeInformationalStrings`
+Now, we know which options are available. However, we still have no idea what those options mean. Let's add and use an optional flag `includeInformationalStrings` in our `AddEnumSchemaTransformer` method:
 
 ```csharp
 .. includeInformationalStrings
@@ -74,7 +93,11 @@ Optional parameter `includeInformationalStrings`
     : []
 ```
 
+With the flag set to `true` by default, we should now see the following:
+
 ![](demo-int-hints.png)
+
+This pretty much covers default int-based representation of enums. However, there is a different way to represent enums, which is actually dominant for most popular public APIs - strings. Let's investigate it! 
 
 ## Standard Representation: JsonStringEnumConverter
 
