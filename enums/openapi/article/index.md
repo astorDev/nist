@@ -101,6 +101,8 @@ This pretty much covers default int-based representation of enums. However, ther
 
 ## Standard Representation: JsonStringEnumConverter
 
+The simplest way to make an enum represented as a string in both the API and OpenAPI model is to decorate it with `[JsonConverter(typeof(JsonStringEnumConverter))]` attribute. Let's utilize that, by adding cheese to our pizza:
+
 ```csharp
 [JsonConverter(typeof(JsonStringEnumConverter))]
 public enum PizzaCheeseType
@@ -110,9 +112,7 @@ public enum PizzaCheeseType
     Parmesan,
     Gouda
 }
-```
 
-```csharp
 public class Pizza
 {
     public required PizzaTopping Topping { get; init; }
@@ -120,7 +120,11 @@ public class Pizza
 }
 ```
 
+With the setup, will will get a pretty informative OpenAPI model right ahead:
+
 ![](demo-strings.png)
+
+However, there is a small problem with this setup. It's not forward-compatible. What this means is that if we send an unknown value for the topping it will be processed just fine:
 
 ```http
 POST /
@@ -131,7 +135,7 @@ POST /
 }
 ```
 
-The request will be processed as if it is an existing enum value.
+The request will be processed as if `11` is an existing enum value. However, if we send an unknown type of cheese like this:
 
 ```http
 POST /
@@ -142,11 +146,19 @@ POST /
 }
 ```
 
+The request will fail with an exception with the following message:
+
 ```text
 The JSON value could not be converted to PizzaCheeseType
 ```
 
+This is also problematic if we use an enum on the client side - any new value added by the server will break our deserialization logic. Let's handle this in the next section.
+
 ## Making It Forward-Compatible: IStringEnum
+
+There's a pretty straightforward fix for the problem: use `string` instead of enum. We will most likely need a set of constants defined somewhere anyway. Let's see what that might look like by adding a `CrustType` to our `Pizza`: 
+
+> Note that for the solution to work we should not convert (at least without `Try` pattern) the value to an enum value. Otherwise we will just be moving the problem to another place.
 
 ```csharp
 public class CrustTypes
@@ -157,14 +169,16 @@ public class CrustTypes
 
     public static string[] All => [Thin, Thick, Stuffed];
 }
-```
 
-```csharp
 public class Pizza
 {
+    // ...
+
     public required string Crust { get; init; }
 }
 ```
+
+The problem is that with the solution we will lose our enum informativeness. Let's get it back. First thing we'll need to do is connect the `Crust` property and `CrustTypes` class. Here's how we can achieve that:
 
 ```csharp
 public interface IStringEnum
@@ -176,7 +190,25 @@ public class StringEnumAttribute<ConstEnumType> : Attribute where ConstEnumType 
 {
     public Type Type => typeof(ConstEnumType);
 }
+
+public class CrustTypes : IStringEnum
+{
+    public const string Thin = "Thin";
+    public const string Thick = "Thick";
+    public const string Stuffed = "Stuffed";
+
+    public static string[] All => [Thin, Thick, Stuffed];
+}
+
+public class Pizza
+{
+    [StringEnum<CrustTypes>]
+    public required string Crust { get; init; }
+}
 ```
+
+Now, of course, we will need to use the connection in OpenAPI.
+Let's first create a simple helper, that is not strictly related to our goal, but makes our future code simpler:
 
 ```csharp
 public static class ReflectionHelper
@@ -197,6 +229,8 @@ public static class ReflectionHelper
 }
 ```
 
+To use the connection, we'll need to find all string enums defined in our solution:
+
 ```csharp
 public static Dictionary<Type, string[]> GetAllLoadedStringEnumTypes()
 {
@@ -211,6 +245,7 @@ public static Dictionary<Type, string[]> GetAllLoadedStringEnumTypes()
 }    
 ```
 
+We'll also need to scan an incoming property, to see if it is decorated with `StringEnumAttribute`:
 
 ```csharp
 class StubStringEnumForNameOf : IStringEnum { public static string[] All => []; }
@@ -226,6 +261,8 @@ public static Type? OptionalPropertyStringEnumType(this OpenApiSchemaTransformer
     return (Type?)type;
 }
 ```
+
+Finally, let's define our transformer using the extensions we've defined earlier:
 
 ```csharp
 public static OpenApiOptions AddStringEnumSchemaTransformer(this OpenApiOptions options)
@@ -247,22 +284,7 @@ public static OpenApiOptions AddStringEnumSchemaTransformer(this OpenApiOptions 
 }
 ```
 
-```csharp
-public class CrustTypes : IStringEnum
-{
-    public const string Thin = "Thin";
-    public const string Thick = "Thick";
-    public const string Stuffed = "Stuffed";
-
-    public static string[] All => [Thin, Thick, Stuffed];
-}
-
-public class Pizza
-{
-    [StringEnum<CrustTypes>]
-    public required string Crust { get; init; }
-}
-```
+And, of course, register the transformer:
 
 ```csharp
 builder.Services.AddOpenApi(options =>
@@ -271,6 +293,8 @@ builder.Services.AddOpenApi(options =>
     options.AddStringEnumSchemaTransformer();
 });
 ```
+
+This should be enough to get a proper string enum representation. Let's recap and see all the ways of representing enums in the last section.
 
 ## Recap
 
