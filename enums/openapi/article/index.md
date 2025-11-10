@@ -38,7 +38,7 @@ app.MapPost("/", (Pizza pizza) =>
 });
 ```
 
-With that setup, if we open our Swagger UI we'll get the following models:
+With that setup, if we open our Swagger UI, we'll get the following models:
 
 ![](demo-starter.png)
 
@@ -316,7 +316,7 @@ builder.Services.AddOpenApi(options =>
 });
 ```
 
-You will get improved representation of all your standard .NET integer enums right away. And if you want to use the string enums, here's an example of how to achieve that:
+You will get an improved representation of all your standard .NET integer enums right away. And if you want to use the string enums, here's an example of how to achieve that:
 
 ```csharp
 public class CrustTypes : IStringEnum
