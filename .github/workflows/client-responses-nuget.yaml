@@ -1,0 +1,17 @@
+name: Publish Nist.Requests (Client)
+on:
+  push:
+    paths:
+      - 'client/requests/lib/**'
+      - '.github/workflows/client-responses-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: client/requests/lib/Nist.Requests
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
