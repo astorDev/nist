@@ -1,0 +1,5 @@
+POST https://httpbin.org/post
+
+{
+    "example" : "data"
+}
