@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Content Include="main\**" Exclude="main\**\bin\**;main\**\obj\**" />
-    <Content Include="playground\**" Exclude="playground\**\bin\**;playground\**\obj\**" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
